@@ -11,7 +11,8 @@ class Login extends Component {
     super(props);
     this.state = {
       username: '',
-      password: '',  
+      password: '',
+      errorMessage: '',
     }
 
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
@@ -41,13 +42,16 @@ class Login extends Component {
     }).then(() => {
       handleIsLoginChange();
       this.props.history.goBack();
-    }).catch(err => console.log(err));
+    }).catch(err => {
+      this.setState({ errorMessage: err.message });
+      console.log(err.message);
+    });
   }
   
 
   render() {
     const { isLogin } = this.props;
-    const { username, password } = this.state;
+    const { username, password, errorMessage } = this.state;
     const { handleUsernameChange, handlePasswordChange, handleLogin } = this;
 
     return (
@@ -59,6 +63,7 @@ class Login extends Component {
           username={username} 
           password={password}
         />
+        <p>{errorMessage}</p>
         <button onClick={(handleLogin)}>Login</button>
       </div>
     );
