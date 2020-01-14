@@ -12,7 +12,7 @@ class App extends Component {
     };
   }
 
-  handlelogin() {
+  handleIsLoginChange() {
     this.setState({ isLogin: true });
   }
 
@@ -30,7 +30,7 @@ class App extends Component {
             render={() => (
               <Login 
                 isLogin={isLogin}
-                handleLogin={this.handleLogin.bind(this)}
+                handleIsLoginChange={this.handleIsLoginChange.bind(this)}
               />
             )}
           />
