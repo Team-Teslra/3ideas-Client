@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
 import { Home, Login, SignUp, Ask, Asks } from './pages';
 import Template from './components/Template';
+import AskEntry from './components/ask/AskEntry';
 
 class App extends Component {
   // eslint Rule?
@@ -33,6 +34,28 @@ class App extends Component {
         <Template isLogin={isLogin} username={username} handleIsLoginChange={handleIsLoginChange}/>
         <Route exact path='/' component={Home}/>
         <Switch>
+          <Route 
+            path={["/asks/:keyword?", "/category/:category?"]} 
+            render={() => (
+              <Asks
+                isLogin={isLogin} 
+                username={username} 
+              />
+            )} 
+          />
+          {/* <Route 
+            path="/ask/:id"
+            render={() => (
+              <AskEntry 
+                isLogin={isLogin} 
+                username={username} 
+              />
+            )}
+          /> */}
+          <Route 
+            path="/ask/:id"
+            component={AskEntry}
+          />
           <Route
             path="/login" 
             render={() => (
@@ -48,6 +71,7 @@ class App extends Component {
             render={() => <SignUp isLogin={isLogin}/>}
           />
           <Route
+            exact
             path='/ask'
             render={() => (
               <Ask
@@ -55,14 +79,15 @@ class App extends Component {
               />
             )}
           />
-          <Route 
+          {/* <Route 
             path='/asks' 
             render={() => (
               <Asks 
-                isLogin={isLogin} 
+                isLogin={isLogin}
+                username={username}
               />
             )}
-          />
+          /> */}
         </Switch>
       </div>
     );
