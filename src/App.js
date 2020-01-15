@@ -9,20 +9,28 @@ class App extends Component {
     super(props);
     this.state = {
       isLogin: false,
+      username: '',
     };
   }
 
-  handleIsLoginChange() {
-    this.setState({ isLogin: true });
+  handleIsLoginChange = () => {
+    this.setState({ isLogin: !this.state.isLogin });
+  }
+
+  handleUsername = (username) => {
+    this.setState({
+      username: username,
+    });
   }
 
   render() {
     const { isLogin } = this.state;
+    const { handleIsLoginChange, handleUsername } = this;
 
     return (
 
       <div>
-        <Template isLogin={isLogin} />
+        <Template isLogin={isLogin} handleIsLoginChange={handleIsLoginChange}/>
         <Route exact path='/' component={Home}/>
         <Switch>
           <Route
@@ -30,7 +38,8 @@ class App extends Component {
             render={() => (
               <Login 
                 isLogin={isLogin}
-                handleIsLoginChange={this.handleIsLoginChange.bind(this)}
+                handleIsLoginChange={handleIsLoginChange}
+                handleUsername={handleUsername}
               />
             )}
           />
