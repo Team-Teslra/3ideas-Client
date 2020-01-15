@@ -24,13 +24,13 @@ class App extends Component {
   }
 
   render() {
-    const { isLogin } = this.state;
+    const { isLogin, username } = this.state;
     const { handleIsLoginChange, handleUsername } = this;
 
     return (
 
       <div>
-        <Template isLogin={isLogin} handleIsLoginChange={handleIsLoginChange}/>
+        <Template isLogin={isLogin} username={username} handleIsLoginChange={handleIsLoginChange}/>
         <Route exact path='/' component={Home}/>
         <Switch>
           <Route

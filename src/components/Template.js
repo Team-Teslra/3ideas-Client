@@ -16,6 +16,7 @@ class Template extends Component {
     axios.post('http://localhost:5000/user/logout', {
       username: username,
     }).then(() => {
+      console.log('username: ', username, 'Logout success');
       handleIsLoginChange();
     }).catch(err => {
       this.setState({ errorMessage: err.message });
