@@ -45,7 +45,7 @@ class Ask extends Component {
               onSubmit={e => {
                 e.preventDefault();
                 axios
-                  .post('http://localhost:4000/ask', {
+                  .post('http://localhost:5000/ask', {
                     title: title,
                     contents: contents,
                     // ! user_id props로 요청 같이 보내야함 (user_id: user_id)
