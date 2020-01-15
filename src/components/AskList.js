@@ -11,7 +11,7 @@ class AskList extends Component {
     };
   }
 
-
+ 
 
   componentDidMount() {
     // 스크롤 이벤트 적용 https://www.npmjs.com/package/react-infinite-scroll-component
@@ -24,7 +24,7 @@ class AskList extends Component {
     const { asks } = this.state;
 
     if (s === 'all') {
-      axios.get('http://localhost:4000/asks').then(res => {
+      axios.get('http://localhost:5000/asks').then(res => {
         this.setState({
           asks: res,
         });
@@ -42,7 +42,7 @@ class AskList extends Component {
         </div>
       );
     } else {
-      axios.get(`http://localhost:4000/asks?s=${s}`).then(res => {
+      axios.get(`http://localhost:5000/asks?s=${s}`).then(res => {
         this.setState({
           asks: res,
         });

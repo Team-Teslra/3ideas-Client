@@ -21,7 +21,7 @@ class Asks extends Component {
     const { s } = this.state;
     
 
-    if(isLogin) {
+    if(!isLogin) {
       return (
         <div>
           <center>
