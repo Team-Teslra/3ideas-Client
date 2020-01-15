@@ -27,7 +27,7 @@ class SignUp extends Component {
 
   handlePasswordChange(e) {
     this.setState({
-      passwordValue: e.target.value
+      password: e.target.value
     });
   }
 
