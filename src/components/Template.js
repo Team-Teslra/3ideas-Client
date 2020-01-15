@@ -11,8 +11,16 @@ class Template extends Component {
   }
 
   handleLogout = () => {
-    // this.props.handleIsLoginChange();
-    // /user/logout POST 요청
+    const { username, handleIsLoginChange } = this.props;
+
+    axios.post('http://localhost:5000/user/logout', {
+      username: username,
+    }).then(() => {
+      handleIsLoginChange();
+    }).catch(err => {
+      this.setState({ errorMessage: err.message });
+      console.log(err.message);
+    });
   }
   
   render () {
