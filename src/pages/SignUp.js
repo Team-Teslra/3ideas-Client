@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import SignUpInput from '../components/users/SignUpInput'
 import axios from 'axios';
 
@@ -10,7 +10,8 @@ class SignUp extends Component {
     super(props);
     this.state = {
       username: '',
-      password: '',  
+      password: '',
+      errorMessage: '',
     }
 
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
@@ -37,14 +38,17 @@ class SignUp extends Component {
       username: username,
       password: password,
     }).then(() => {
-      this.props.history.goBack();
-    }).catch(err => console.log(err));
+      this.props.history.push('/login');
+    }).catch(err => {
+      this.setState({ errorMessage: err.message });
+      console.log(err.message);
+    });
   }
   
 
   render() {
     const { isLogin } = this.props;
-    const { username, password } = this.state;
+    const { username, password, errorMessage } = this.state;
     const { handleUsernameChange, handlePasswordChange, handleSignUp } = this;
 
     return (
@@ -56,10 +60,11 @@ class SignUp extends Component {
           username={username} 
           password={password}
         />
+        <p>{errorMessage}</p>
         <button onClick={handleSignUp}>SignUp</button>
       </div>
     );
   }
 }
 
-export default SignUp;
+export default withRouter(SignUp);
