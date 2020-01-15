@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
-import SignUpInput from '../components/users/SignUpInput'
+import SignUpInput from '../components/user/SignUpInput'
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;

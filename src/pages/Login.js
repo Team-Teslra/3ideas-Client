@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import React, { Component } from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
-import LoginInput from '../components/users/LoginInput'
+import LoginInput from '../components/user/LoginInput'
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;

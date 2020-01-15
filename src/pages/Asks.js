@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import AskList from "../components/AskList"
+import AskList from "../components/ask/AskList"
 import axios from 'axios';
 
 class Asks extends Component {
