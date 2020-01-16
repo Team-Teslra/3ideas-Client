@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
 import AnswerInput from '../answer/AnswerInput'
+import AnswerList from '../answer/AnswerList'
+
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
@@ -19,7 +21,7 @@ class AskEntry extends Component {
         updatedAt: null
       },
       displayAnswerInput: false,
-      isEditable: false
+      havePermission: false
     }
   }
   // questionFlag: boolean(true: 답변 받는 중/false: 답변 마감) - 답변 3개 선택 후 팝업 창으로 마감 최종 확인 받기
@@ -27,12 +29,12 @@ class AskEntry extends Component {
   
   // this.props.username과 this.state.contents.username이 일치하면서 답변이 마감되지 않았다면 ?
   // 질문글 수정 / 삭제  / 답글선택 가능 -> 이걸 componentDidMount시에 검사해서 state하나를 세팅?
-  handleIsEditable = () => {
+  handleHavePermission = () => {
     const { isLogin, username } = this.props;
     const { askContents } = this.state;
     if (isLogin && username === askContents.username && askContents.questionFlag) {
       this.setState({
-        isEditable: true
+        havePermission: true
       });
     }
   }
@@ -46,12 +48,12 @@ class AskEntry extends Component {
             id: '1',
             title: '1번 글의 제목',
             contents: '안녕하세요? 1번 글입니다. 저는 테스트를 하기 위한 질문글 본문입니다.',
-            username: 'Teslra',
+            username: 'sgyoon',
             questionFlag: true,
             createdAt: '2020-01-01',
             updatedAt: '2020-01-01'
           }
-        }, () => this.handleIsEditable());
+        }, () => this.handleHavePermission());
       }).catch(err => {
         console.log(err.message);
         // this.setState({ errorMessage: err.message });
@@ -83,7 +85,7 @@ class AskEntry extends Component {
       console.log('게시글 삭제 성공')
       // 우선 /asks 로 돌아감. 검색어와 카테고리 통해서 필터링 되었던 글 목록으로 돌아가려면
       // 이전 페이지로 돌아가야 할 듯(혹은 다른 정확한 방법)
-      this.props.history.push('/asks');
+      this.props.history.goBack();
     }).catch(err => {
       console.log(err.message);
       // this.setState({ errorMessage: err.message });
@@ -108,7 +110,7 @@ class AskEntry extends Component {
   render() {
     const { getAskInformation, toggleDisplayAnswerInput } = this;
     const { isLogin, username } = this.props;
-    const { askContents, displayAnswerInput, isEditable } = this.state;
+    const { askContents, displayAnswerInput, havePermission } = this.state;
     const { id, title, contents, questionFlag, createdAt, updatedAt } = this.state.askContents;
     // 아래 정보 출력되는 부분 따로 컴포넌트로 빼야할듯
     return (
@@ -118,23 +120,27 @@ class AskEntry extends Component {
           <li>title: {title}</li>
           <li>contents: {contents}</li>
           <li>username: {askContents.username}</li>
-          <li>questionFlag: {questionFlag}</li>
           <li>createdAt: {createdAt}</li>
           <li>updatedAt: {updatedAt}</li>
         </ul>
-        { isLogin && <button onClick={toggleDisplayAnswerInput}>답글 작성하기</button> }
+        <AnswerList 
+          username={username} 
+          isLogin={isLogin} 
+          askId="1"
+          getAskInformation={getAskInformation}
+        />
+        { isLogin && username !== askContents.username && <button onClick={toggleDisplayAnswerInput}>답글 작성하기</button> }
         { displayAnswerInput && 
           <AnswerInput 
             username={username} 
-            author={askContents.username} 
             isLogin={isLogin} 
-            id={id} 
+            id={id}
             getAskInformation={getAskInformation}
             toggleDisplayAnswerInput={toggleDisplayAnswerInput}
           /> 
         }
-        { isEditable && <button onClick={() => this.modifyAsk()}>modifyAsk 실행 권한 있음</button>}
-        { isEditable && <button onClick={() => this.deleteAsk()}>deleteAsk 실행 권한 있음</button>}
+        { havePermission && <button onClick={() => this.modifyAsk()}>modifyAsk 실행 권한 있음</button>}
+        { havePermission && <button onClick={() => this.deleteAsk()}>deleteAsk 실행 권한 있음</button>}
       </div>
     );
   }
