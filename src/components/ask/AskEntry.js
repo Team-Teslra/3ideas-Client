@@ -127,7 +127,7 @@ class AskEntry extends Component {
           username={username} 
           isLogin={isLogin} 
           askId="1"
-          getAskInformation={getAskInformation}
+          questionFlag={questionFlag}
         />
         { isLogin && username !== askContents.username && <button onClick={toggleDisplayAnswerInput}>답글 작성하기</button> }
         { displayAnswerInput && 

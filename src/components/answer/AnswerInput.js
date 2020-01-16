@@ -11,9 +11,6 @@ class AnswerInput extends Component {
     };
   }
   
-  // isLogin, username, 게시글 id, getAskInformation를 props로 넘겨받기
-  // >>>>> 로그인한 username이랑, 글 작성자 정보인 username을 props 구분되도록 해야함 <<<<<<
-
   handleCommentChange = (e) => {
     this.setState({
       comment: e.target.value
@@ -29,6 +26,7 @@ class AnswerInput extends Component {
       id: id,
       comment: comment
     }).then(() => {
+      // 답글 작성 인풋이 보이지 않도록 요청
       // 게시글 정보를 AskEntry.js에서 다시 받도록 요청
       toggleDisplayAnswerInput();
       getAskInformation(id);
@@ -51,7 +49,7 @@ class AnswerInput extends Component {
           value={comment}
           onChange={(e) => handleCommentChange(e)}
         />
-        <button onClick={postAnswer}>답글작성</button>          
+        <button onClick={postAnswer}>답글작성</button>
       </div>
     );
   }

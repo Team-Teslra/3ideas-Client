@@ -32,7 +32,7 @@ class Asks extends Component {
   }
   
   render() {
-    const { isLogin, username } = this.props;
+    // const { isLogin, username } = this.props;
     const { asks } = this.state;
     
     return (
