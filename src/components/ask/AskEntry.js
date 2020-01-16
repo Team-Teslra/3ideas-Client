@@ -9,13 +9,16 @@ class AskEntry extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: null,
-      title: null,
-      contents: null,
-      username: null,
-      questionFlag: null,
-      createdAt: null,
-      updatedAt: null
+      contents : {
+        id: null,
+        title: null,
+        contents: null,
+        username: null,
+        questionFlag: null,
+        createdAt: null,
+        updatedAt: null
+      },
+      displayAnswerInput: false
     }
   }
   // questionFlag: boolean(true: 답변 받는 중/false: 답변 마감) - 답변 3개 선택 후 팝업 창으로 마감 최종 확인 받기
@@ -27,13 +30,15 @@ class AskEntry extends Component {
       .then(res => {
         console.log('게시글 정보 요청 성공')
         this.setState({
-          id: '1',
-          title: '1번 글의 제목',
-          contents: '안녕하세요? 1번 글입니다. 저는 테스트를 하기 위한 질문글 본문입니다.',
-          username: 'Teslra',
-          questionFlag: true,
-          createdAt: '2020-01-01',
-          updatedAt: '2020-01-01'
+          contents : {
+            id: '1',
+            title: '1번 글의 제목',
+            contents: '안녕하세요? 1번 글입니다. 저는 테스트를 하기 위한 질문글 본문입니다.',
+            username: 'Teslra',
+            questionFlag: true,
+            createdAt: '2020-01-01',
+            updatedAt: '2020-01-01'
+          }
         })
       }).catch(err => {
         console.log(err.message);
@@ -73,6 +78,12 @@ class AskEntry extends Component {
     });
   }
 
+  toggleDisplayAnswerInput = () => {
+    this.setState({
+      displayAnswerInput: !this.state.displayAnswerInput
+    });
+  }
+
   componentDidMount() {
     console.log('AskEntry.js - componentDidMount 불림')
     console.log('AskEntry.js props :', this.props);
@@ -83,7 +94,10 @@ class AskEntry extends Component {
   }
 
   render() {
-    const { id, title, contents, username, questionFlag, createdAt, updatedAt } = this.state;
+    const { getAskInformation, toggleDisplayAnswerInput } = this;
+    const { isLogin } = this.props;
+    const { displayAnswerInput } = this.state;
+    const { id, title, contents, username, questionFlag, createdAt, updatedAt } = this.state.contents;
     // 아래 정보 출력되는 부분 따로 컴포넌트로 빼야할듯
     return (
       <div>
@@ -96,7 +110,8 @@ class AskEntry extends Component {
           <li>createdAt: {createdAt}</li>
           <li>updatedAt: {updatedAt}</li>
         </ul>
-        <button>답글 작성하기</button>
+        <button onClick={toggleDisplayAnswerInput}>답글 작성하기</button>
+        { displayAnswerInput && <AnswerInput username={username} isLogin={isLogin} id={id} getAskInformation={getAskInformation} /> }
         <button onClick={() => this.modifyAsk()}>modifyAsk 실행 시 componentDidMount 불리나요?</button>
         <button onClick={() => this.deleteAsk()}>deleteAsk 실행 시 /asks로 돌아가나요?</button>
       </div>
