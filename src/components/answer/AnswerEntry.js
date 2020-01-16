@@ -11,7 +11,7 @@ class AnswerEntry extends Component {
       answerContents : {
         id: null,
         contents: null,
-        username: null,
+        username: 'sgyoon',
         answerFlag: null,
         like: null,
         createdAt: null,
@@ -92,13 +92,16 @@ class AnswerEntry extends Component {
     // props로 넘어온 답글id로 해당 글 정보 요청
     const id = this.props.id;
     this.getAnswerInformation(id);
+    // api가 완성되지 않아서 테스트 권한 부여를 위해 여기에서 호출
+    // 첫번째 글에서는 권한여부 인식이 엇나가는데 여기에서 호출해서인지 함수 문제인지 아직 모름
+    this.handleHavePermission();
   }
 
   render() {
     const { getAnswerInformation } = this;
     const { isLogin, username } = this.props;
     const { answerContents, havePermission } = this.state;
-    const { id, contents, createdAt, updatedAt } = this.state.askContents;
+    const { id, contents, createdAt, updatedAt } = this.state.answerContents;
     return (
       <div>
         <ul>
