@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, withRouter } from 'react-router-dom';
 import './Template.css';
 import axios from 'axios';
 
@@ -18,6 +18,11 @@ class Template extends Component {
     }).then(() => {
       console.log('username: ', username, 'Logout success');
       handleIsLoginChange();
+      // 토큰 유효기간과 내용을 바꿔서 바로 없앰
+      document.cookie = 'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      console.log(this.props.history);
+      // go(0) -> 현재 페이지 새로고침됨. 새로고침인 점이 조금 걸림. -1은 새로고침 아님.
+      this.props.history.go(0);
     }).catch(err => {
       this.setState({ errorMessage: err.message });
       console.log(err.message);
@@ -41,4 +46,4 @@ class Template extends Component {
   }
 }
 
-export default Template;
+export default withRouter(Template);
