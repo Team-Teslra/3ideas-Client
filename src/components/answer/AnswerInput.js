@@ -21,7 +21,7 @@ class AnswerInput extends Component {
   }
 
   postAnswer = () => {
-    const { username, id, getAskInformation } = this.props;
+    const { username, id, getAskInformation, toggleDisplayAnswerInput } = this.props;
     const { comment } = this.state;
 
     axios.post(`http://localhost:5000/answer/${id}`, {
@@ -30,6 +30,7 @@ class AnswerInput extends Component {
       comment: comment
     }).then(() => {
       // 게시글 정보를 AskEntry.js에서 다시 받도록 요청
+      toggleDisplayAnswerInput();
       getAskInformation(id);
     }).catch(err => {
       this.setState({ errorMessage: err.message });
@@ -38,25 +39,21 @@ class AnswerInput extends Component {
   }
   
   render() {
-    const { isLogin, username } = this.props;
+    const { username } = this.props;
     const { comment } = this.state;
     const { handleCommentChange, postAnswer } = this;
 
-    if (isLogin) {
-      return (
-        <div>
-          <p>{username}</p>
-          <input 
-            type="text" 
-            value={comment}
-            onChange={(e) => handleCommentChange(e)}
-          />
-          <button onClick={postAnswer}>답글작성</button>          
-        </div>
-      );
-    } else {
-      return <div>로그인이 필요합니다.</div>;
-    }
+    return (
+      <div>
+        <p>{username}</p>
+        <input 
+          type="text" 
+          value={comment}
+          onChange={(e) => handleCommentChange(e)}
+        />
+        <button onClick={postAnswer}>답글작성</button>          
+      </div>
+    );
   }
 }
 
