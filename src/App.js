@@ -5,7 +5,7 @@ import Template from './components/Template';
 import AskEntry from './components/ask/AskEntry';
 
 class App extends Component {
-  // eslint Rule?
+
   constructor(props) {
     super(props);
     this.state = {
@@ -15,7 +15,9 @@ class App extends Component {
   }
 
   handleIsLoginChange = () => {
-    this.setState({ isLogin: !this.state.isLogin });
+    this.setState({ 
+      isLogin: !this.state.isLogin 
+    });
   }
 
   handleUsername = (username) => {
@@ -32,8 +34,17 @@ class App extends Component {
 
       <div>
         <Template isLogin={isLogin} username={username} handleIsLoginChange={handleIsLoginChange}/>
-        <Route exact path='/' component={Home}/>
         <Switch>
+          <Route
+            exact 
+            path='/' 
+            render={() => (
+              <Home 
+                isLogin={isLogin} 
+                username={username} 
+              />
+            )}
+          />
           <Route 
             path={["/asks/:keyword?", "/category/:category?"]} 
             render={() => (
@@ -43,7 +54,7 @@ class App extends Component {
               />
             )} 
           />
-          {/* <Route 
+          <Route 
             path="/ask/:id"
             render={() => (
               <AskEntry 
@@ -51,10 +62,6 @@ class App extends Component {
                 username={username} 
               />
             )}
-          /> */}
-          <Route 
-            path="/ask/:id"
-            component={AskEntry}
           />
           <Route
             path="/login" 
@@ -68,7 +75,11 @@ class App extends Component {
           />
           <Route
             path='/signup'
-            render={() => <SignUp isLogin={isLogin}/>}
+            render={() => (
+              <SignUp 
+                isLogin={isLogin}
+              />
+            )}
           />
           <Route
             exact
@@ -76,18 +87,10 @@ class App extends Component {
             render={() => (
               <Ask
                 isLogin={isLogin}
-              />
-            )}
-          />
-          {/* <Route 
-            path='/asks' 
-            render={() => (
-              <Asks 
-                isLogin={isLogin}
                 username={username}
               />
             )}
-          /> */}
+          />
         </Switch>
       </div>
     );
