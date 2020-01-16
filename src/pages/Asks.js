@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Redirect, Link, withRouter } from 'react-router-dom';
-
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
@@ -39,16 +38,7 @@ class Asks extends Component {
     return (
       <div>
         {asks.map(ask => 
-          <Link 
-            key={ask.id} 
-            to={{
-              pathname: `/ask/${ask.id}`,
-              state: {
-                isLogin: isLogin,
-                username: username
-              }
-            }}
-          >{ask.title}</Link>
+          <Link key={ask.id} to={`/ask/${ask.id}`}>{ask.title}</Link>
         )}
       </div>
     );

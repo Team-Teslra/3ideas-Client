@@ -30,7 +30,10 @@ class Template extends Component {
       <div>
         <h2>3 ideas</h2>
         {isLogin ? 
-          <span onClick={this.handleLogout}>로그아웃</span> : <Link to={'/login'}>로그인</Link> }
+          <span onClick={this.handleLogout}>로그아웃</span>
+        : 
+          <Link to={'/login'}>로그인</Link> 
+        }
         { !isLogin && <Link to={'/signup'}>회원가입</Link> }
         <Link to={'/'}>홈화면으로</Link>
       </div>
