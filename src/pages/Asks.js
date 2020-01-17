@@ -9,9 +9,10 @@ class Asks extends Component {
     super(props);
     this.state = {
       asks: [
-        {id: 0, title: 'test title 1'}, 
-        {id: 1, title: 'test title 2'}, 
-        {id: 2, title: 'test title 3'}
+        {id: 1, title: 'test title 1'}, 
+        {id: 2, title: 'test title 2'}, 
+        {id: 3, title: 'test title 3'},
+        {id: 4, title: 'test title 4'}
       ],
     };
   }

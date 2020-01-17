@@ -102,17 +102,19 @@ class AnswerEntry extends Component {
     const { isLogin, username } = this.props;
     const { answerContents, havePermission } = this.state;
     const { id, contents, createdAt, updatedAt } = this.state.answerContents;
+    const style = { listStyle: 'none', fontSize: '13px' }
     return (
       <div>
-        <ul>
+        <h5>답글</h5>
+        <ul style={style}>
           <li>id: {id}</li>
           <li>contents: {contents}</li>
           <li>username: {answerContents.username}</li>
           <li>createdAt: {createdAt}</li>
           <li>updatedAt: {updatedAt}</li>
         </ul>
-      { havePermission && <button onClick={() => this.modifyAnswer()}>modifyAnswer 실행 권한 있음</button>}
-      { havePermission && <button onClick={() => this.deleteAnswer()}>deleteAnswer 실행 권한 있음</button>}
+      { havePermission && <button onClick={() => this.modifyAnswer()}>답글수정 권한있음</button>}
+      { havePermission && <button onClick={() => this.deleteAnswer()}>답글삭제 권한있음</button>}
       </div>
     );
   }
