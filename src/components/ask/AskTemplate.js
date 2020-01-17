@@ -16,7 +16,6 @@ const AskTemplate = (props) => {
           <textarea name="contents" value={editedAskContents.contents} onChange={(e) => handleInputChange(e)}></textarea>
           : <li>contents: {contents}</li>
         }
-        <li>contents: {contents}</li>
         <li>username: {username}</li>
         <li>createdAt: {createdAt}</li>
         <li>updatedAt: {updatedAt}</li>
