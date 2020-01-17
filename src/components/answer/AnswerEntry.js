@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import AnswerTemplate from './AnswerTemplate';
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
@@ -17,8 +18,26 @@ class AnswerEntry extends Component {
         createdAt: null,
         updatedAt: null
       },
-      havePermission: false
+      editedAnswerContents : {
+        contents: ''
+      },
+      havePermission: false,
+      isEditable: false
     }
+  }
+
+  handleInputChange = (e) => {
+    this.setState({
+      editedAnswerContents : {
+        [e.target.name] : e.target.value
+      }
+    });
+  }
+
+  toggleIsEditable = () => {
+    this.setState({
+      isEditable: !this.state.isEditable
+    });
   }
 
   // const { id={answer.id} isLogin, username, questionFlag(true일 때만 답글 수정/삭제 가능)
@@ -32,6 +51,9 @@ class AnswerEntry extends Component {
         havePermission: true
       });
     }
+    // questionFlag, answerUsername이 NULL임. 이유 : 실제 구현된 api요청과 그냥 state에 가짜 데이터를 넣어서 랜더되는 속도의 차이때문
+    console.log('isLogin', isLogin, 'username', username, 'questionFlag', questionFlag, 'answerUsername', answerContents.username)
+    console.log('답글 퍼미션 허가: ', this.state.havePermission); // 이거 false나옴
   }
 
   getAnswerContents = (id) => {
@@ -39,8 +61,10 @@ class AnswerEntry extends Component {
       .then(res => {
         console.log('답변글 한 개 요청 성공');
         this.setState({
-          ...this.state,
-          answerContents : res.data
+          answerContents : res.data,
+          editedAnswerContents : {
+            contents : res.data.contents
+          } 
         });
       }, () => this.handleHavePermission())
       .catch(err => {
@@ -59,6 +83,8 @@ class AnswerEntry extends Component {
       console.log('답글 수정 성공');
       // 다시 해당 글 정보 요청
       this.getAnswerContents(id);
+      // 답글 수정모드 취소
+      this.toggleIsEditable();
     }).catch(err => {
       console.log(err.message);
       // this.setState({ errorMessage: err.message });
@@ -88,24 +114,19 @@ class AnswerEntry extends Component {
   }
 
   render() {
-    const { getAnswerContents } = this;
-    const { isLogin, username } = this.props;
-    const { answerContents, havePermission } = this.state;
-    const { id, contents, createdAt, updatedAt } = this.state.answerContents;
-    const style = { listStyle: 'none', fontSize: '13px' }
+    const { modifyAnswer, deleteAnswer, handleInputChange, toggleIsEditable } = this;
+    const { answerContents, havePermission, editedAnswerContents, isEditable } = this.state;
     return (
-      <div>
-        <h5>답글</h5>
-        <ul style={style}>
-          <li>id: {id}</li>
-          <li>contents: {contents}</li>
-          <li>username: {answerContents.username}</li>
-          <li>createdAt: {createdAt}</li>
-          <li>updatedAt: {updatedAt}</li>
-        </ul>
-      { havePermission && <button onClick={() => this.modifyAnswer()}>답글수정 권한있음</button>}
-      { havePermission && <button onClick={() => this.deleteAnswer()}>답글삭제 권한있음</button>}
-      </div>
+      <AnswerTemplate
+        answerContents={answerContents}
+        editedAnswerContents={editedAnswerContents}
+        havePermission={havePermission}
+        isEditable={isEditable}
+        modifyAnswer={modifyAnswer}
+        deleteAnswer={deleteAnswer}
+        handleInputChange={handleInputChange}
+        toggleIsEditable={toggleIsEditable}
+      />
     );
   }
 }
