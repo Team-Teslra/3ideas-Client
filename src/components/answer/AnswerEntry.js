@@ -22,7 +22,7 @@ class AnswerEntry extends Component {
   }
 
   // const { id={answer.id} isLogin, username, questionFlag(true일 때만 답글 수정/삭제 가능)
-  // getAnswerListInformation 답글 정보를 새로 요청하는 함수 } = this.props
+  // getAnswerListInformation 답글 리스트 정보를 새로 요청하는 함수 } = this.props
 
   handleHavePermission = () => {
     const { isLogin, username, questionFlag } = this.props;
@@ -34,7 +34,7 @@ class AnswerEntry extends Component {
     }
   }
 
-  getAnswerInformation = (id) => {
+  getAnswerContents = (id) => {
     axios.get(`http://localhost:5000/answer/${id}`)
       .then(res => {
         console.log('답변글 한 개 요청 성공');
@@ -65,7 +65,7 @@ class AnswerEntry extends Component {
     .then(res => {
       console.log('답글 수정 성공');
       // 다시 해당 글 정보 요청
-      this.getAnswerInformation(id);
+      this.getAnswerContents(id);
     }).catch(err => {
       console.log(err.message);
       // this.setState({ errorMessage: err.message });
@@ -91,14 +91,14 @@ class AnswerEntry extends Component {
 
     // props로 넘어온 답글id로 해당 글 정보 요청
     const id = this.props.id;
-    this.getAnswerInformation(id);
+    this.getAnswerContents(id);
     // api가 완성되지 않아서 테스트 권한 부여를 위해 여기에서 호출
     // 첫번째 글에서는 권한여부 인식이 엇나가는데 여기에서 호출해서인지 함수 문제인지 아직 모름
     this.handleHavePermission();
   }
 
   render() {
-    const { getAnswerInformation } = this;
+    const { getAnswerContents } = this;
     const { isLogin, username } = this.props;
     const { answerContents, havePermission } = this.state;
     const { id, contents, createdAt, updatedAt } = this.state.answerContents;

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
 import AnswerInput from '../answer/AnswerInput'
 import AnswerList from '../answer/AnswerList'
-
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
@@ -39,7 +38,7 @@ class AskEntry extends Component {
     }
   }
 
-  getAskInformation = (id) => {
+  getAskContents = (id) => {
     axios.get(`http://localhost:5000/ask/${id}`)
       .then(res => {
         console.log('게시글 정보 요청 성공')
@@ -70,7 +69,7 @@ class AskEntry extends Component {
     .then(res => {
       console.log('게시글 수정 성공');
       // 다시 해당 글 정보 요청
-      this.getAskInformation(id);
+      this.getAskContents(id);
     }).catch(err => {
       console.log(err.message);
       // this.setState({ errorMessage: err.message });
@@ -104,11 +103,11 @@ class AskEntry extends Component {
 
     // 주소 파라미터로 넘어온 게시글 id로 해당 글 정보 요청함(답글 정보 제외)
     const id = this.props.match.params.id;
-    this.getAskInformation(id);
+    this.getAskContents(id);
   }
 
   render() {
-    const { getAskInformation, toggleDisplayAnswerInput } = this;
+    const { getAskContents, toggleDisplayAnswerInput } = this;
     const { isLogin, username } = this.props;
     const { askContents, displayAnswerInput, havePermission } = this.state;
     const { id, title, contents, questionFlag, createdAt, updatedAt } = this.state.askContents;
@@ -135,7 +134,7 @@ class AskEntry extends Component {
             username={username} 
             isLogin={isLogin} 
             id={id}
-            getAskInformation={getAskInformation}
+            getAskContents={getAskContents}
             toggleDisplayAnswerInput={toggleDisplayAnswerInput}
           /> 
         }
