@@ -140,7 +140,7 @@ class AskEntry extends Component {
     const { id, questionFlag } = this.state.askContents;
     const { askContents, editedAskContents, displayAnswerInput, havePermission, isEditable } = this.state;
     const { getAskContents, toggleDisplayAnswerInput, modifyAsk, deleteAsk, handleInputChange, toggleIsEditable } = this;
-    // 아래 정보 출력되는 부분 따로 컴포넌트로 빼야할듯
+
     return (
       <div>
         <AskTemplate
@@ -153,7 +153,12 @@ class AskEntry extends Component {
           handleInputChange={handleInputChange}
           toggleIsEditable={toggleIsEditable}
         />
-        { isLogin && username !== askContents.username && <button onClick={toggleDisplayAnswerInput}>답글 작성하기</button> }
+        { username !== askContents.username ? 
+          isLogin ? 
+            <button onClick={toggleDisplayAnswerInput}>답글 작성하기</button>
+            : <button onClick={toggleDisplayAnswerInput}>작성 취소하기</button> 
+          : null
+        }
         { displayAnswerInput && 
           <AnswerInput 
             username={username} 
