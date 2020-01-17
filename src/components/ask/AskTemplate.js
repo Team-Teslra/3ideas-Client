@@ -1,19 +1,34 @@
 import React from 'react';
 
 const AskTemplate = (props) => {
-  const { id, title, contents, username, createdAt, updatedAt } = props;
-
+  const { havePermission, modifyAsk, deleteAsk, handleInputChange, toggleIsEditable, isEditable, editedAskContents } = props;
+  const { id, title, contents, username, createdAt, updatedAt } = props.askContents;
   return (
     <div>
       <h3>질문글</h3>
       <ul>
         <li>id: {id}</li>
-        <li>title: {title}</li>
+        {isEditable ? 
+          <input type="text" name="title" value={editedAskContents.title} onChange={(e) => handleInputChange(e)} />
+          : <li>title: {title}</li>
+        }
+        {isEditable ? 
+          <textarea name="contents" value={editedAskContents.contents} onChange={(e) => handleInputChange(e)}></textarea>
+          : <li>contents: {contents}</li>
+        }
         <li>contents: {contents}</li>
         <li>username: {username}</li>
         <li>createdAt: {createdAt}</li>
         <li>updatedAt: {updatedAt}</li>
       </ul>
+      { havePermission ? 
+        isEditable ? 
+          <button onClick={toggleIsEditable}>수정 취소하기</button> 
+          : <button onClick={toggleIsEditable}>질문글 수정하기</button> 
+        : null
+      }
+      { havePermission && isEditable && <button onClick={modifyAsk}>modifyAsk 실행</button>}
+      { havePermission && <button onClick={deleteAsk}>deleteAsk 실행</button>}
     </div>
   );
 };
