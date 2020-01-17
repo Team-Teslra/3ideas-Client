@@ -11,7 +11,7 @@ class AnswerEntry extends Component {
       answerContents : {
         id: null,
         contents: null,
-        username: 'sgyoon',
+        username: null,
         answerFlag: null,
         like: null,
         createdAt: null,
@@ -39,15 +39,8 @@ class AnswerEntry extends Component {
       .then(res => {
         console.log('답변글 한 개 요청 성공');
         this.setState({
-          answerContents : {
-            id: 1,
-            contents: ' 답글 랜더 테스트용 내용',
-            username: 'rami',
-            answerFlag: null,
-            like: null,
-            createdAt: '2020-01-02',
-            updatedAt: '2020-01-02'
-          }
+          ...this.state,
+          answerContents : res.data
         });
       }, () => this.handleHavePermission())
       .catch(err => {
@@ -92,9 +85,6 @@ class AnswerEntry extends Component {
     // props로 넘어온 답글id로 해당 글 정보 요청
     const id = this.props.id;
     this.getAnswerContents(id);
-    // api가 완성되지 않아서 테스트 권한 부여를 위해 여기에서 호출
-    // 첫번째 글에서는 권한여부 인식이 엇나가는데 여기에서 호출해서인지 함수 문제인지 아직 모름
-    this.handleHavePermission();
   }
 
   render() {

@@ -9,9 +9,8 @@ class AnswerList extends Component {
     super(props);
     this.state = {
       answers: [
-        {id: 0, title: 'Test Answer Title 1'}, 
-        {id: 1, title: 'Test Answer Title 2'}, 
-        {id: 2, title: 'Test Answer Title 3'}
+        {id: 1, title: 'Test Answer Title 1'}, 
+        {id: 2, title: 'Test Answer Title 2'}, 
       ]
     };
   }
