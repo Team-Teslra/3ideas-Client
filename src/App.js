@@ -2,19 +2,22 @@ import React, { Component } from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
 import { Home, Login, SignUp, Ask, Asks } from './pages';
 import Template from './components/Template';
+import AskEntry from './components/ask/AskEntry';
 
 class App extends Component {
-  // eslint Rule?
+
   constructor(props) {
     super(props);
     this.state = {
       isLogin: false,
-      username: '',
+      username: null,
     };
   }
 
   handleIsLoginChange = () => {
-    this.setState({ isLogin: !this.state.isLogin });
+    this.setState({ 
+      isLogin: !this.state.isLogin 
+    });
   }
 
   handleUsername = (username) => {
@@ -31,8 +34,35 @@ class App extends Component {
 
       <div>
         <Template isLogin={isLogin} username={username} handleIsLoginChange={handleIsLoginChange}/>
-        <Route exact path='/' component={Home}/>
         <Switch>
+          <Route
+            exact 
+            path='/' 
+            render={() => (
+              <Home 
+                isLogin={isLogin} 
+                username={username} 
+              />
+            )}
+          />
+          <Route 
+            path={["/asks/:keyword?", "/category/:category?"]} 
+            render={() => (
+              <Asks
+                isLogin={isLogin} 
+                username={username} 
+              />
+            )} 
+          />
+          <Route 
+            path="/ask/:id"
+            render={() => (
+              <AskEntry 
+                isLogin={isLogin} 
+                username={username} 
+              />
+            )}
+          />
           <Route
             path="/login" 
             render={() => (
@@ -45,21 +75,19 @@ class App extends Component {
           />
           <Route
             path='/signup'
-            render={() => <SignUp isLogin={isLogin}/>}
-          />
-          <Route
-            path='/ask'
             render={() => (
-              <Ask
+              <SignUp 
                 isLogin={isLogin}
               />
             )}
           />
-          <Route 
-            path='/asks' 
+          <Route
+            exact
+            path='/ask'
             render={() => (
-              <Asks 
-                isLogin={isLogin} 
+              <Ask
+                isLogin={isLogin}
+                username={username}
               />
             )}
           />
