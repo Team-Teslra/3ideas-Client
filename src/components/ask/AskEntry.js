@@ -34,8 +34,8 @@ class AskEntry extends Component {
 
   handleInputChange = (e) => {
     this.setState({
-      ...this.state,
       editedAskContents : {
+        ...this.state.editedAskContents,
         [e.target.name] : e.target.value
       }
     });
@@ -44,6 +44,12 @@ class AskEntry extends Component {
   toggleIsEditable = () => {
     this.setState({
       isEditable: !this.state.isEditable
+    });
+  }
+
+  toggleDisplayAnswerInput = () => {
+    this.setState({
+      displayAnswerInput: !this.state.displayAnswerInput
     });
   }
 
@@ -78,22 +84,31 @@ class AskEntry extends Component {
   }
 
   modifyAsk = () => {
-    const { id } = this.state.askContents;
+    const { askContents } = this.state;
     const { title, contents } = this.state.editedAskContents;
-    axios.patch(`http://localhost:5000/ask/${id}`, {
-      title: title,
-      contents: contents
-    })
-    .then(res => {
-      console.log('게시글 수정 성공');
-      // 다시 해당 글 정보 요청
-      this.getAskContents(id);
-      // 글 수정모드 취소
+    const body = {};
+    if (title && askContents.title !== title) {
+      body['title'] = title;
+    }
+    if (contents && askContents.contents !== contents) {
+      body['contents'] = contents;
+    }
+    
+    if (Object.keys(body).length > 0) {
+      axios.patch(`http://localhost:5000/ask/${askContents.id}`, body)
+      .then(res => {
+        console.log('게시글 수정 성공');
+        // 다시 해당 글 정보 요청
+        this.getAskContents(askContents.id);
+        // 글 수정모드 취소
+        this.toggleIsEditable();
+      }).catch(err => {
+        console.log(err.message);
+        // this.setState({ errorMessage: err.message });
+      });
+    } else {
       this.toggleIsEditable();
-    }).catch(err => {
-      console.log(err.message);
-      // this.setState({ errorMessage: err.message });
-    });    
+    } 
   }
 
   deleteAsk = () => {
@@ -108,12 +123,6 @@ class AskEntry extends Component {
     }).catch(err => {
       console.log(err.message);
       // this.setState({ errorMessage: err.message });
-    });
-  }
-
-  toggleDisplayAnswerInput = () => {
-    this.setState({
-      displayAnswerInput: !this.state.displayAnswerInput
     });
   }
 
@@ -144,22 +153,22 @@ class AskEntry extends Component {
           handleInputChange={handleInputChange}
           toggleIsEditable={toggleIsEditable}
         />
-        <AnswerList 
-          username={username} 
-          isLogin={isLogin} 
-          askId="1"
-          questionFlag={questionFlag}
-        />
         { isLogin && username !== askContents.username && <button onClick={toggleDisplayAnswerInput}>답글 작성하기</button> }
         { displayAnswerInput && 
           <AnswerInput 
             username={username} 
             isLogin={isLogin} 
-            id={id}
+            askId={id}
             getAskContents={getAskContents}
             toggleDisplayAnswerInput={toggleDisplayAnswerInput}
           /> 
         }
+        <AnswerList 
+          username={username} 
+          isLogin={isLogin} 
+          askId={id}
+          questionFlag={questionFlag}
+        />
       </div>
     );
   }
