@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import AskTemplate from './AskTemplate';
 import AnswerInput from '../answer/AnswerInput'
 import AnswerList from '../answer/AnswerList'
