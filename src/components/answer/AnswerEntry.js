@@ -126,7 +126,7 @@ class AnswerEntry extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('AnswerList.js  - componentDidUpdate 불림')
+    console.log('AnswerEntry.js  - componentDidUpdate 불림')
   }
 
   render() {
