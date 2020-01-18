@@ -135,7 +135,6 @@ class AskEntry extends Component {
 
   componentDidMount() {
     console.log('AskEntry.js - componentDidMount 불림')
-    console.log('AskEntry.js props :', this.props);
 
     // 주소 파라미터로 넘어온 게시글 id로 해당 글 정보 요청함(답글 정보 제외)
     const id = this.props.match.params.id;

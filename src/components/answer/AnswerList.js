@@ -17,7 +17,6 @@ class AnswerList extends Component {
     axios.get(`http://localhost:5000/answers/${id}`)
       .then(res => {
         console.log('답변글 목록 요청 성공');
-        console.log('답변글 목록', res.data);
         this.setState({
           answers: res.data,
         });

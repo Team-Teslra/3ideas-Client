@@ -21,7 +21,6 @@ class AnswerInput extends Component {
   postAnswer = () => {
     const { username, askId, toggleDisplayAnswerInput, changeKeyState } = this.props;
     const { contents } = this.state;
-    console.log('postAnswer 불려졌니?')
     axios.post(`http://localhost:5000/answer/${askId}`, {
       username: username,
       contents: contents

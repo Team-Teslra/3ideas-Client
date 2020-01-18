@@ -49,7 +49,7 @@ class AnswerEntry extends Component {
     if (isLogin && questionFlag && username === answerContents.username) {
       this.setState({
         havePermission: true
-      }, () => console.log('답글 퍼미션 허가: ', this.state.havePermission));
+      });
     }
   }
 
