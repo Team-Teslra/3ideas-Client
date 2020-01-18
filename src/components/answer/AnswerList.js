@@ -10,6 +10,7 @@ class AnswerList extends Component {
     super(props);
     this.state = {
       answers: [],
+      commentsCount: null,
       didUpdate: false
     };
   }
@@ -39,17 +40,23 @@ class AnswerList extends Component {
   componentDidMount() {
     console.log('AnswerList.js - componentDidMount 불림')
 
-    const { askId } = this.props;
+    const { askId, commentsCount } = this.props;
+    this.setState({commentsCount: commentsCount});
     this.getAnswerListInformation(askId);
   }
   
   componentDidUpdate(prevProps, prevState) {
     console.log('AnswerList.js  - componentDidUpdate 불림')
+    console.log('AnswerList.js  -', prevState, prevProps)
     if(prevState.answers.length !== this.state.answers.length) {
       this.setState({
         didUpdate: true
       });
     }
+    // if(prevProps.commentsCount !== this.state.commentsCount) {
+    //   console.log('AnswerList.js  - componentDidUpdate 다시 목록 요청함')
+    //   this.getAnswerListInformation(prevProps.askId);
+    // } => 무한 요청함    
   }
 
   render() {

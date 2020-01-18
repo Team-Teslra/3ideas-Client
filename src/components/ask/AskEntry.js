@@ -182,6 +182,7 @@ class AskEntry extends Component {
             isLogin={isLogin} 
             askId={id}
             questionFlag={questionFlag}
+            commentsCount={askContents.commentsCount}
           />
           : null
         }
