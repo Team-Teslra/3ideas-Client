@@ -8,12 +8,7 @@ class Asks extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      asks: [
-        {id: 1, title: 'test title 1'}, 
-        {id: 2, title: 'test title 2'}, 
-        {id: 3, title: 'test title 3'},
-        {id: 4, title: 'test title 4'}
-      ],
+      asks: [],
     };
   }
 
@@ -25,7 +20,10 @@ class Asks extends Component {
     axios.get(`http://localhost:5000/asks/${keyword}`)
       .then(res => {
         console.log('글 목록 요청 성공')
-        // this.setState({ asks: res })
+        console.log(res.data);
+        this.setState({
+          asks: this.state.asks.concat(res.data)
+        })
       }).catch(err => {
         console.log(err.message);
         // this.setState({ errorMessage: err.message });
@@ -35,13 +33,26 @@ class Asks extends Component {
   render() {
     // const { isLogin, username } = this.props;
     const { asks } = this.state;
-    
+    const style = {
+      width: '200px',
+      border: '1px solid black',
+      padding: '15px'
+    }
     return (
-      <div>
-        {asks.map(ask => 
-          <Link key={ask.id} to={`/ask/${ask.id}`}>{ask.title}</Link>
-        )}
-      </div>
+      <>
+        {asks.map(ask => {
+          const { id, title, questionFlag, createdAt, username, commentsCount } = ask;
+          return ( 
+            <div key={id} style={style}>
+              <Link  to={`/ask/${id}`}>{title}</Link>
+              <p>{questionFlag ? '답변모집중' : '마감된질문'}</p>
+              <p>작성일 : {createdAt}</p>
+              <p>작성자 : {username}</p>
+              <p>답변수 : {commentsCount}</p>
+            </div> 
+          )
+        })}
+      </>
     );
   }
 }
