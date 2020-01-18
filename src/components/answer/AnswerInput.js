@@ -19,7 +19,7 @@ class AnswerInput extends Component {
   }
 
   postAnswer = () => {
-    const { username, askId, getAskContents, toggleDisplayAnswerInput } = this.props;
+    const { username, askId, toggleDisplayAnswerInput, changeKeyState } = this.props;
     const { contents } = this.state;
     console.log('postAnswer 불려졌니?')
     axios.post(`http://localhost:5000/answer/${askId}`, {
@@ -29,8 +29,7 @@ class AnswerInput extends Component {
       console.log('답글 작성 성공');
       // 답글 작성 인풋이 보이지 않도록 요청
       toggleDisplayAnswerInput();
-      // 해당 질문글 정보 새로 요청
-      getAskContents(askId);
+      changeKeyState();
     })
     .catch(err => {
       this.setState({ errorMessage: err.message });

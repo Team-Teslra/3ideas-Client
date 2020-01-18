@@ -55,6 +55,12 @@ class AskEntry extends Component {
     });
   }
 
+  changeKeyState = () => {
+    this.setState({
+      keyState: this.state.keyState + 1
+    });
+  }
+
   // this.props.username과 this.state.contents.username이 일치하면서 답변이 마감되지 않았다면 ?
   // 질문글 수정 / 삭제  / 답글선택 가능
   handleHavePermission = () => {
@@ -76,8 +82,7 @@ class AskEntry extends Component {
           editedAskContents : {
             title: res.data.title,
             contents: res.data.contents
-          },
-          keyState: this.state.keyState + 1
+          }
         }, () => this.handleHavePermission());
       }).catch(err => {
         console.log(err.message);
@@ -146,7 +151,7 @@ class AskEntry extends Component {
     const { isLogin, username } = this.props;
     const { id, questionFlag } = this.state.askContents;
     const { askContents, editedAskContents, displayAnswerInput, havePermission, isEditable, keyState } = this.state;
-    const { getAskContents, toggleDisplayAnswerInput, modifyAsk, deleteAsk, handleInputChange, toggleIsEditable } = this;
+    const { toggleDisplayAnswerInput, modifyAsk, deleteAsk, handleInputChange, toggleIsEditable, changeKeyState } = this;
 
     return (
       <div>
@@ -173,8 +178,8 @@ class AskEntry extends Component {
             username={username} 
             isLogin={isLogin} 
             askId={id}
-            getAskContents={getAskContents}
             toggleDisplayAnswerInput={toggleDisplayAnswerInput}
+            changeKeyState={changeKeyState}
           /> 
         }
         { askContents.id ?
