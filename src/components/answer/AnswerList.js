@@ -8,10 +8,7 @@ class AnswerList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      answers: [
-        {id: 1, title: 'Test Answer Title 1'}, 
-        {id: 2, title: 'Test Answer Title 2'}, 
-      ]
+      answers: []
     };
   }
 
@@ -21,6 +18,10 @@ class AnswerList extends Component {
     axios.get(`http://localhost:5000/answers/${id}`)
       .then(res => {
         console.log('답변글 목록 요청 성공');
+        console.log('답변글 목록', res.data);
+        this.setState({
+          answers: this.state.answers.concat(res.data)
+        });
       }).catch(err => {
         console.log(err.message);
         // this.setState({ errorMessage: err.message });
@@ -28,14 +29,21 @@ class AnswerList extends Component {
   }
 
   componentDidMount() {
+    console.log('AnswerList.js - componentDidMount 불림')
+
     const { askId } = this.props;
     this.getAnswerListInformation(askId);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log('AnswerList.js  - componentDidUpdate 불림')
   }
 
   render() {
     const { getAnswerListInformation } = this;
     const { answers } = this.state;
     const { isLogin, username, questionFlag } = this.props;
+    console.log('AnswerList.js 의 questionFlag', questionFlag);
     return (
       <div>
         {answers.map(answer => 
