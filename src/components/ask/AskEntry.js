@@ -18,7 +18,8 @@ class AskEntry extends Component {
         username: null,
         questionFlag: null,
         createdAt: null,
-        updatedAt: null
+        updatedAt: null,
+        commentsCount: null
       },
       editedAskContents : {
         title: '',
@@ -153,10 +154,12 @@ class AskEntry extends Component {
           handleInputChange={handleInputChange}
           toggleIsEditable={toggleIsEditable}
         />
-        { username !== askContents.username ? 
-          isLogin ? 
-            <button onClick={toggleDisplayAnswerInput}>답글 작성하기</button>
-            : <button onClick={toggleDisplayAnswerInput}>작성 취소하기</button> 
+        { isLogin ? 
+          username !== askContents.username ?
+          displayAnswerInput ?
+            <button onClick={toggleDisplayAnswerInput}>작성 취소하기</button>
+            : <button onClick={toggleDisplayAnswerInput}>답글 작성하기</button> 
+          : null
           : null
         }
         { displayAnswerInput && 
