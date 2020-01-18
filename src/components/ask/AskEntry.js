@@ -18,18 +18,41 @@ class AskEntry extends Component {
         username: null,
         questionFlag: null,
         createdAt: null,
-        updatedAt: null
+        updatedAt: null,
+        commentsCount: null
       },
-      editAskContents : {
+      editedAskContents : {
         title: '',
         contents: ''
       },
       displayAnswerInput: false,
-      havePermission: false
+      havePermission: false,
+      isEditable: false,
     }
   }
   // questionFlag: boolean(true: 답변 받는 중/false: 답변 마감) - 답변 3개 선택 후 팝업 창으로 마감 최종 확인 받기
   // 답변 마감 시 불가능한 기능 : 게시글 수정 / 게시글 삭제 / 답글 달기 / 답글 수정 / 답글 삭제
+
+  handleInputChange = (e) => {
+    this.setState({
+      editedAskContents : {
+        ...this.state.editedAskContents,
+        [e.target.name] : e.target.value
+      }
+    });
+  }
+
+  toggleIsEditable = () => {
+    this.setState({
+      isEditable: !this.state.isEditable
+    });
+  }
+
+  toggleDisplayAnswerInput = () => {
+    this.setState({
+      displayAnswerInput: !this.state.displayAnswerInput
+    });
+  }
 
   // this.props.username과 this.state.contents.username이 일치하면서 답변이 마감되지 않았다면 ?
   // 질문글 수정 / 삭제  / 답글선택 가능 -> 이걸 componentDidMount시에 검사해서 state하나를 세팅?
@@ -49,8 +72,11 @@ class AskEntry extends Component {
         console.log('게시글 정보 요청 성공')
         console.log('받은 정보', res);
         this.setState({
-          ...this.state,
-          askContents : res.data
+          askContents : res.data,
+          editedAskContents : {
+            title: res.data.title,
+            contents: res.data.contents
+          }
         }, () => this.handleHavePermission());
       }).catch(err => {
         console.log(err.message);
@@ -59,19 +85,31 @@ class AskEntry extends Component {
   }
 
   modifyAsk = () => {
-    const { id, title, contents } = this.state.askContents;
-    axios.patch(`http://localhost:5000/ask/${id}`, {
-      title: title,
-      contents: contents
-    })
-    .then(res => {
-      console.log('게시글 수정 성공');
-      // 다시 해당 글 정보 요청
-      this.getAskContents(id);
-    }).catch(err => {
-      console.log(err.message);
-      // this.setState({ errorMessage: err.message });
-    });    
+    const { askContents } = this.state;
+    const { title, contents } = this.state.editedAskContents;
+    const body = {};
+    if (askContents.title !== title) {
+      body['title'] = title;
+    }
+    if (askContents.contents !== contents) {
+      body['contents'] = contents;
+    }
+    
+    if (Object.keys(body).length > 0) {
+      axios.patch(`http://localhost:5000/ask/${askContents.id}`, body)
+      .then(res => {
+        console.log('게시글 수정 성공');
+        // 다시 해당 글 정보 요청
+        this.getAskContents(askContents.id);
+        // 글 수정모드 취소
+        this.toggleIsEditable();
+      }).catch(err => {
+        console.log(err.message);
+        // this.setState({ errorMessage: err.message });
+      });
+    } else {
+      this.toggleIsEditable();
+    } 
   }
 
   deleteAsk = () => {
@@ -89,12 +127,6 @@ class AskEntry extends Component {
     });
   }
 
-  toggleDisplayAnswerInput = () => {
-    this.setState({
-      displayAnswerInput: !this.state.displayAnswerInput
-    });
-  }
-
   componentDidMount() {
     console.log('AskEntry.js - componentDidMount 불림')
     console.log('AskEntry.js props :', this.props);
@@ -104,40 +136,55 @@ class AskEntry extends Component {
     this.getAskContents(id);
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    console.log('AskEntry.js - componentDidUpdate 불림')
+  }
+  
+
   render() {
-    const { getAskContents, toggleDisplayAnswerInput } = this;
     const { isLogin, username } = this.props;
-    const { askContents, displayAnswerInput, havePermission } = this.state;
-    const { id, title, contents, questionFlag, createdAt, updatedAt } = this.state.askContents;
-    // 아래 정보 출력되는 부분 따로 컴포넌트로 빼야할듯
+    const { id, questionFlag } = this.state.askContents;
+    const { askContents, editedAskContents, displayAnswerInput, havePermission, isEditable } = this.state;
+    const { getAskContents, toggleDisplayAnswerInput, modifyAsk, deleteAsk, handleInputChange, toggleIsEditable } = this;
+
     return (
       <div>
         <AskTemplate
-          id={id}
-          title={title}
-          contents={contents}
-          username={askContents.username}
-          createdAt={createdAt}
-          updatedAt={updatedAt} 
+          askContents={askContents}
+          editedAskContents={editedAskContents}
+          havePermission={havePermission}
+          isEditable={isEditable}
+          modifyAsk={modifyAsk}
+          deleteAsk={deleteAsk}
+          handleInputChange={handleInputChange}
+          toggleIsEditable={toggleIsEditable}
         />
-        <AnswerList 
-          username={username} 
-          isLogin={isLogin} 
-          askId="1"
-          questionFlag={questionFlag}
-        />
-        { isLogin && username !== askContents.username && <button onClick={toggleDisplayAnswerInput}>답글 작성하기</button> }
+        { isLogin ? 
+          username !== askContents.username ?
+          displayAnswerInput ?
+            <button onClick={toggleDisplayAnswerInput}>작성 취소하기</button>
+            : <button onClick={toggleDisplayAnswerInput}>답글 작성하기</button> 
+          : null
+          : null
+        }
         { displayAnswerInput && 
           <AnswerInput 
             username={username} 
             isLogin={isLogin} 
-            id={id}
+            askId={id}
             getAskContents={getAskContents}
             toggleDisplayAnswerInput={toggleDisplayAnswerInput}
           /> 
         }
-        { havePermission && <button onClick={() => this.modifyAsk()}>modifyAsk 실행 권한 있음</button>}
-        { havePermission && <button onClick={() => this.deleteAsk()}>deleteAsk 실행 권한 있음</button>}
+        { askContents.id ?
+          <AnswerList 
+            username={username} 
+            isLogin={isLogin} 
+            askId={id}
+            questionFlag={questionFlag}
+          />
+          : null
+        }
       </div>
     );
   }
