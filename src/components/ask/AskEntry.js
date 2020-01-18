@@ -88,10 +88,10 @@ class AskEntry extends Component {
     const { askContents } = this.state;
     const { title, contents } = this.state.editedAskContents;
     const body = {};
-    if (title && askContents.title !== title) {
+    if (askContents.title !== title) {
       body['title'] = title;
     }
-    if (contents && askContents.contents !== contents) {
+    if (askContents.contents !== contents) {
       body['contents'] = contents;
     }
     
@@ -135,6 +135,11 @@ class AskEntry extends Component {
     const id = this.props.match.params.id;
     this.getAskContents(id);
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log('AskEntry.js - componentDidUpdate 불림')
+  }
+  
 
   render() {
     const { isLogin, username } = this.props;
