@@ -56,6 +56,7 @@ const AskInput = ({
           <span>
             답변 길이
             <select type="answerLength" value={answerLength} onChange={onInputChange('answerLength')}>
+              <option>&nbsp;</option>
               <option>1 ~ 10개의 단어</option>
               <option>한 줄</option>
               <option>한 문장</option>

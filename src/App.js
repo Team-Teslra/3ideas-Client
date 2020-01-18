@@ -5,95 +5,75 @@ import Template from './components/Template';
 import AskEntry from './components/ask/AskEntry';
 
 class App extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       isLogin: false,
       username: null,
+      renderChildren: false,
     };
   }
 
-  handleIsLoginChange = () => {
-    this.setState({ 
-      isLogin: !this.state.isLogin 
+  componentDidMount() {
+    this.setState({
+      isLogin: this.props.isLogin,
+      username: this.props.username,
+      renderChildren: true,
     });
   }
+  
+  // ? 사용 할 수도 있다~
+  // componentDidUpdate(prevProps) {
+  //   console.log('ComponentDidUpdate!');
+  //   if (prevProps.isLogin !== this.props.isLogin) {
+  //     this.setState({
+  //       isLogin: this.props.isLogin,
+  //       username: this.props.username,
+  //     });
+  //   }
+  // }
 
-  handleUsername = (username) => {
+  handleIsLoginChange = () => {
+    this.setState({
+      isLogin: !this.state.isLogin,
+    });
+  };
+
+  handleUsername = username => {
     this.setState({
       username: username,
     });
-  }
+  };
 
   render() {
-    const { isLogin, username } = this.state;
+    const { isLogin, username, renderChildren } = this.state;
     const { handleIsLoginChange, handleUsername } = this;
 
-    return (
-
-      <div>
-        <Template isLogin={isLogin} username={username} handleIsLoginChange={handleIsLoginChange}/>
-        <Switch>
-          <Route
-            exact 
-            path='/' 
-            render={() => (
-              <Home 
-                isLogin={isLogin} 
-                username={username} 
-              />
-            )}
-          />
-          <Route 
-            path={["/asks/:keyword?", "/category/:category?"]} 
-            render={() => (
-              <Asks
-                isLogin={isLogin} 
-                username={username} 
-              />
-            )} 
-          />
-          <Route 
-            path="/ask/:id"
-            render={() => (
-              <AskEntry 
-                isLogin={isLogin} 
-                username={username} 
-              />
-            )}
-          />
-          <Route
-            path="/login" 
-            render={() => (
-              <Login 
-                isLogin={isLogin}
-                handleIsLoginChange={handleIsLoginChange}
-                handleUsername={handleUsername}
-              />
-            )}
-          />
-          <Route
-            path='/signup'
-            render={() => (
-              <SignUp 
-                isLogin={isLogin}
-              />
-            )}
-          />
-          <Route
-            exact
-            path='/ask'
-            render={() => (
-              <Ask
-                isLogin={isLogin}
-                username={username}
-              />
-            )}
-          />
-        </Switch>
-      </div>
-    );
+    if (renderChildren) {
+      return (
+        <div>
+          <Template isLogin={isLogin} username={username} handleIsLoginChange={handleIsLoginChange} />
+          <Switch>
+            <Route exact path="/" render={() => <Home isLogin={isLogin} username={username} />} />
+            <Route
+              path={['/asks/:keyword?', '/category/:category?']}
+              render={() => <Asks isLogin={isLogin} username={username} />}
+            />
+            <Route path="/ask/:id" render={() => <AskEntry isLogin={isLogin} username={username} />} />
+            <Route
+              path="/login"
+              render={() => (
+                <Login isLogin={isLogin} handleIsLoginChange={handleIsLoginChange} handleUsername={handleUsername} />
+              )}
+            />
+            <Route path="/signup" render={() => <SignUp isLogin={isLogin} />} />
+            <Route exact path="/ask" render={() => <Ask isLogin={isLogin} username={username} />} />
+          </Switch>
+        </div>
+      );
+    } else {
+      return null;
+    }
   }
 }
 

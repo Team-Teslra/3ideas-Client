@@ -49,9 +49,11 @@ class Ask extends Component {
     const { isLogin } = this.props; // ! user_id props 필요
     const { title, contents, category, answerLength, answerAmount, dueTo, errorMessage} = this.state;
     const { handleInputValue, handleAsk } = this;
-
+    
     if (isLogin) {
+      
       return (
+        
         <div>
           <center>
             <AskInput
@@ -80,10 +82,14 @@ class Ask extends Component {
           </center>
         </div>
       );
-    } else {
+      
+    }
+      console.log("isLogin?1 :",  isLogin)
       alert("로그인 하십쇼!");
       return <Redirect to="/login" />;
-    }
+      
+      
+    
   }
 }
 
