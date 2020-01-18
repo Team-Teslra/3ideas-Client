@@ -21,7 +21,7 @@ class AnswerEntry extends Component {
       editedAnswerContents : {
         contents: ''
       },
-      havePermission: false,
+      havePermission: true,
       isEditable: false
     }
   }
@@ -29,7 +29,7 @@ class AnswerEntry extends Component {
   handleInputChange = (e) => {
     this.setState({
       editedAnswerContents : {
-        [e.target.name] : e.target.value
+        contents : e.target.value
       }
     });
   }
@@ -74,21 +74,28 @@ class AnswerEntry extends Component {
   }
 
   modifyAnswer = () => {
-    const { id, contents } = this.state.answerContents;
+    const { answerContent } = this.state;
+    const { contents } = this.state.editedAnswerContents;
+    const body = {};
+    if (answerContent.contents !== contents) {
+      body['contents'] = contents;
+    }
 
-    axios.patch(`http://localhost:5000/answer/${id}`, {
-      contents: contents
-    })
-    .then(res => {
-      console.log('답글 수정 성공');
-      // 다시 해당 글 정보 요청
-      this.getAnswerContents(id);
-      // 답글 수정모드 취소
+    if (Object.keys(body).length > 0) {
+      axios.patch(`http://localhost:5000/answer/${answerContent.id}`, body)
+      .then(res => {
+        console.log('답글 수정 성공');
+        // 다시 해당 글 정보 요청
+        this.getAnswerContents(answerContent.id);
+        // 답글 수정모드 취소
+        this.toggleIsEditable();
+      }).catch(err => {
+        console.log(err.message);
+        // this.setState({ errorMessage: err.message });
+      });
+    } else {
       this.toggleIsEditable();
-    }).catch(err => {
-      console.log(err.message);
-      // this.setState({ errorMessage: err.message });
-    });    
+    } 
   }
 
   deleteAnswer = () => {
@@ -97,8 +104,9 @@ class AnswerEntry extends Component {
     axios.delete(`http://localhost:5000/answer/${id}`)
     .then(res => {
       console.log('답글 삭제 성공')
-      // 새로고침
-      this.props.history.go(0);
+      // 새로고침 -> 이거 안먹는다!
+      // this.props.history.go(0);
+      // 해당 질문글 정보 다시 요청해야하나...???
     }).catch(err => {
       console.log(err.message);
       // this.setState({ errorMessage: err.message });
@@ -111,6 +119,10 @@ class AnswerEntry extends Component {
     // props로 넘어온 답글id로 해당 글 정보 요청
     const id = this.props.id;
     this.getAnswerContents(id);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log('AnswerList.js  - componentDidUpdate 불림')
   }
 
   render() {
