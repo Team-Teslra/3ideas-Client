@@ -176,12 +176,15 @@ class AskEntry extends Component {
             toggleDisplayAnswerInput={toggleDisplayAnswerInput}
           /> 
         }
-        <AnswerList 
-          username={username} 
-          isLogin={isLogin} 
-          askId={id}
-          questionFlag={questionFlag}
-        />
+        { askContents.id ?
+          <AnswerList 
+            username={username} 
+            isLogin={isLogin} 
+            askId={id}
+            questionFlag={questionFlag}
+          />
+          : null
+        }
       </div>
     );
   }

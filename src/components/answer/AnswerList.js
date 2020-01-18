@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import AnswerEntry from './AnswerEntry';
 import axios from 'axios';
 
@@ -8,7 +9,8 @@ class AnswerList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      answers: []
+      answers: [],
+      didUpdate: false
     };
   }
 
@@ -20,7 +22,7 @@ class AnswerList extends Component {
         console.log('답변글 목록 요청 성공');
         console.log('답변글 목록', res.data);
         this.setState({
-          answers: this.state.answers.concat(res.data)
+          answers: this.state.answers.concat(res.data),
         });
       }).catch(err => {
         console.log(err.message);
@@ -28,36 +30,53 @@ class AnswerList extends Component {
       });
   }
 
+  // handleIsRenderChild = () => {
+  //   this.setState({
+  //     isRenderChild: false
+  //   });
+  // }
+
   componentDidMount() {
     console.log('AnswerList.js - componentDidMount 불림')
 
     const { askId } = this.props;
     this.getAnswerListInformation(askId);
   }
-
+  
   componentDidUpdate(prevProps, prevState) {
     console.log('AnswerList.js  - componentDidUpdate 불림')
+    if(prevState.answers.length !== this.state.answers.length) {
+      this.setState({
+        didUpdate: true
+      });
+    }
   }
 
   render() {
-    const { getAnswerListInformation } = this;
-    const { answers } = this.state;
-    const { isLogin, username, questionFlag } = this.props;
+    const { getAnswerListInformation, handleIsRenderChild } = this;
+    const { answers, didUpdate } = this.state;
+    const { isLogin, username, questionFlag, askId } = this.props;
     console.log('AnswerList.js 의 questionFlag', questionFlag);
-    return (
-      <div>
-        {answers.map(answer => 
-          <AnswerEntry 
-            key={answer.id}
-            id={answer.id}
-            isLogin={isLogin}
-            username={username}
-            questionFlag={questionFlag}
-            getAnswerListInformation={getAnswerListInformation}
-          />
-        )}
-      </div>
-    );
+    if (didUpdate) {
+      return (
+        <div>
+          {answers.map(answer => 
+            <AnswerEntry 
+              key={answer.id}
+              id={answer.id}
+              askId={askId}
+              isLogin={isLogin}
+              username={username}
+              questionFlag={questionFlag}
+              handleIsRenderChild={handleIsRenderChild}
+              getAnswerListInformation={getAnswerListInformation}
+            />
+          )}
+        </div>
+      );
+    } else {
+      return null;
+    }
   }
 }
 
