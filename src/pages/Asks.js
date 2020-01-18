@@ -22,7 +22,7 @@ class Asks extends Component {
         console.log('글 목록 요청 성공')
         console.log(res.data);
         this.setState({
-          asks: this.state.asks.concat(res.data)
+          asks: res.data
         })
       }).catch(err => {
         console.log(err.message);
