@@ -28,6 +28,7 @@ class AskEntry extends Component {
       displayAnswerInput: false,
       havePermission: false,
       isEditable: false,
+      keyState: 0
     }
   }
   // questionFlag: boolean(true: 답변 받는 중/false: 답변 마감) - 답변 3개 선택 후 팝업 창으로 마감 최종 확인 받기
@@ -55,7 +56,7 @@ class AskEntry extends Component {
   }
 
   // this.props.username과 this.state.contents.username이 일치하면서 답변이 마감되지 않았다면 ?
-  // 질문글 수정 / 삭제  / 답글선택 가능 -> 이걸 componentDidMount시에 검사해서 state하나를 세팅?
+  // 질문글 수정 / 삭제  / 답글선택 가능
   handleHavePermission = () => {
     const { isLogin, username } = this.props;
     const { askContents } = this.state;
@@ -70,13 +71,13 @@ class AskEntry extends Component {
     axios.get(`http://localhost:5000/ask/${id}`)
       .then(res => {
         console.log('게시글 정보 요청 성공')
-        console.log('받은 정보', res);
         this.setState({
           askContents : res.data,
           editedAskContents : {
             title: res.data.title,
             contents: res.data.contents
-          }
+          },
+          keyState: this.state.keyState + 1
         }, () => this.handleHavePermission());
       }).catch(err => {
         console.log(err.message);
@@ -144,7 +145,7 @@ class AskEntry extends Component {
   render() {
     const { isLogin, username } = this.props;
     const { id, questionFlag } = this.state.askContents;
-    const { askContents, editedAskContents, displayAnswerInput, havePermission, isEditable } = this.state;
+    const { askContents, editedAskContents, displayAnswerInput, havePermission, isEditable, keyState } = this.state;
     const { getAskContents, toggleDisplayAnswerInput, modifyAsk, deleteAsk, handleInputChange, toggleIsEditable } = this;
 
     return (
@@ -178,11 +179,11 @@ class AskEntry extends Component {
         }
         { askContents.id ?
           <AnswerList 
+            key={keyState + 'List'}
             username={username} 
             isLogin={isLogin} 
             askId={id}
             questionFlag={questionFlag}
-            commentsCount={askContents.commentsCount}
           />
           : null
         }
