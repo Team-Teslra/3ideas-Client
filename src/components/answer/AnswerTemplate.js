@@ -3,24 +3,28 @@ import React from 'react';
 const AnswerTemplate = (props) => {
 
   const { id, contents, username, createdAt, updatedAt } = props.answerContents;
-  const { editedAnswerContents, havePermission, isEditable, modifyAnswer, deleteAnswer, handleInputChange, 
-          toggleIsEditable, rank, isSelectable, selectedAnswers, addSelectedAnswer, removeSelectedAnswer } = props;
+  const { editedAnswerContents, havePermission, isEditable, modifyAnswer, deleteAnswer, handleInputChange, toggleIsEditable, 
+          rank, isSelectable, selectedAnswers, addSelectedAnswer, removeSelectedAnswer, postSelectAnswers, answerFlag } = props;
+          
+  const nextRank = selectedAnswers.length + 1;
+  let number = rank || answerFlag;
 
   const rankColors = {
     '1': 'tomato',
     '2': 'orange',
     '3': 'gold'
   }
+  
   const style = {
     listStyle: 'none', 
     fontSize: '13px',
-    backgroundColor: rankColors[rank]
+    backgroundColor: rankColors[number]
   }
-  const nextRank = selectedAnswers.length + 1;
-
+  
   const confirmSelect = () => {
     if(window.confirm('답변 선택은 되돌릴 수 없습니다. 제출하시겠습니까?')) {
-      console.log('답변 선택하여 제출 성공')
+      console.log('답변 선택하여 제출 성공');
+      postSelectAnswers();
     } else {
       removeSelectedAnswer(id);
     }

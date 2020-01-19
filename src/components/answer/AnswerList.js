@@ -52,9 +52,12 @@ class AnswerList extends Component {
       second: this.state.selectedAnswers[1],
       third: this.state.selectedAnswers[2]
     }
+
     axios.patch(`http://localhost:5000/ask/selection/${this.props.askId}`, body)
     .then(res => {
-      console.log('최종 답변 선택 성공')
+      console.log('최종 답변 선택 성공');
+      this.props.getAskContents(this.props.askId);
+      this.props.changeKeyState();
     })
     .catch(err => {
       console.log(err.message);
@@ -88,10 +91,13 @@ class AnswerList extends Component {
     if (prevState.selectedAnswers.length !== this.state.selectedAnswers.length) {
       this.handleIsSelectable();
     }
+    if (prevProps.questionFlag !== this.props.questionFlag) {
+      this.handleIsSelectable();
+    }
   }
 
   render() {
-    const { getAnswerListInformation, addSelectedAnswer, removeSelectedAnswer } = this;
+    const { getAnswerListInformation, addSelectedAnswer, removeSelectedAnswer, postSelectAnswers } = this;
     const { answers, isSelectable, selectedAnswers } = this.state;
     const { isLogin, username, questionFlag, askId } = this.props;
     return (
@@ -109,6 +115,7 @@ class AnswerList extends Component {
             selectedAnswers={selectedAnswers}
             addSelectedAnswer={addSelectedAnswer}
             removeSelectedAnswer={removeSelectedAnswer}
+            postSelectAnswers={postSelectAnswers}
           />
         )}
       </div>

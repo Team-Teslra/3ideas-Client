@@ -51,6 +51,10 @@ class AnswerEntry extends Component {
       this.setState({
         havePermission: true
       });
+    } else {
+      this.setState({
+        havePermission: false
+      });
     }
   }
 
@@ -116,6 +120,7 @@ class AnswerEntry extends Component {
     // props로 넘어온 답글id로 해당 글 정보 요청
     const { id, selectedAnswers } = this.props;
     this.getAnswerContents(id);
+
     if (selectedAnswers.includes(id)) {
       const rank = selectedAnswers.indexOf(id) + 1;
       this.setState({
@@ -142,12 +147,10 @@ class AnswerEntry extends Component {
     }
   }
 
-  // isSelectable, selectedAnswers, addSelectedAnswer, removeSelectedAnswer from Props
-
   render() {
     const { modifyAnswer, deleteAnswer, handleInputChange, toggleIsEditable } = this;
     const { answerContents, havePermission, editedAnswerContents, isEditable, rank } = this.state;
-    const { isSelectable, selectedAnswers, addSelectedAnswer, removeSelectedAnswer } = this.props;
+    const { isSelectable, selectedAnswers, addSelectedAnswer, removeSelectedAnswer, postSelectAnswers } = this.props;
     return (
         <AnswerTemplate
           answerContents={answerContents}
@@ -163,6 +166,8 @@ class AnswerEntry extends Component {
           selectedAnswers={selectedAnswers}
           addSelectedAnswer={addSelectedAnswer}
           removeSelectedAnswer={removeSelectedAnswer}
+          postSelectAnswers={postSelectAnswers}
+          answerFlag={answerContents.answerFlag}
         />
     );
   }
