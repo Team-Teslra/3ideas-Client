@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect, Link, withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
@@ -14,13 +14,10 @@ class Asks extends Component {
 
   // 키워드로 검색한(키워드가 존재할 때, 없으면 전체) 모든 글의 id 목록을 받음 
   componentDidMount() {
-    console.log('Asks.js props :', this.props);
-
     const keyword = this.props.match.keyword ? this.props.match.params.keyword : '';
     axios.get(`http://localhost:5000/asks/${keyword}`)
       .then(res => {
         console.log('글 목록 요청 성공')
-        console.log(res.data);
         this.setState({
           asks: res.data
         })

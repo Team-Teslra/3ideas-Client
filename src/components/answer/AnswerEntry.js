@@ -49,7 +49,7 @@ class AnswerEntry extends Component {
     if (isLogin && questionFlag && username === answerContents.username) {
       this.setState({
         havePermission: true
-      }, () => console.log('답글 퍼미션 허가: ', this.state.havePermission));
+      });
     }
   }
 
@@ -103,14 +103,8 @@ class AnswerEntry extends Component {
     axios.delete(`http://localhost:5000/answer/${id}`)
     .then(res => {
       console.log('답글 삭제 성공');
-      // this.props.handleIsRenderChild();
-      // this.props.getAnswerListInformation(this.props.askId);
-      // 새로고침 -> 이거 안먹는다!
-      // this.props.history.go(0);
-      // 해당 질문글 정보 다시 요청해야하나...??? 
-      // -> 요청하면 나오긴 하는데, 기존에 랜더된 답글들이 지워지지 않고 고대로 있음.
+      this.props.getAnswerListInformation(this.props.askId);
     })
-    .then(() => this.props.getAnswerListInformation(this.props.askId))
     .catch(err => {
       console.log(err.message);
       // this.setState({ errorMessage: err.message });

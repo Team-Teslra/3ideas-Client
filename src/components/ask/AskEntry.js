@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import AskTemplate from './AskTemplate';
 import AnswerInput from '../answer/AnswerInput'
 import AnswerList from '../answer/AnswerList'
@@ -28,6 +28,7 @@ class AskEntry extends Component {
       displayAnswerInput: false,
       havePermission: false,
       isEditable: false,
+      keyState: 0
     }
   }
   // questionFlag: boolean(true: 답변 받는 중/false: 답변 마감) - 답변 3개 선택 후 팝업 창으로 마감 최종 확인 받기
@@ -54,8 +55,14 @@ class AskEntry extends Component {
     });
   }
 
+  changeKeyState = () => {
+    this.setState({
+      keyState: this.state.keyState + 1
+    });
+  }
+
   // this.props.username과 this.state.contents.username이 일치하면서 답변이 마감되지 않았다면 ?
-  // 질문글 수정 / 삭제  / 답글선택 가능 -> 이걸 componentDidMount시에 검사해서 state하나를 세팅?
+  // 질문글 수정 / 삭제  / 답글선택 가능
   handleHavePermission = () => {
     const { isLogin, username } = this.props;
     const { askContents } = this.state;
@@ -70,7 +77,6 @@ class AskEntry extends Component {
     axios.get(`http://localhost:5000/ask/${id}`)
       .then(res => {
         console.log('게시글 정보 요청 성공')
-        console.log('받은 정보', res);
         this.setState({
           askContents : res.data,
           editedAskContents : {
@@ -129,7 +135,6 @@ class AskEntry extends Component {
 
   componentDidMount() {
     console.log('AskEntry.js - componentDidMount 불림')
-    console.log('AskEntry.js props :', this.props);
 
     // 주소 파라미터로 넘어온 게시글 id로 해당 글 정보 요청함(답글 정보 제외)
     const id = this.props.match.params.id;
@@ -144,8 +149,8 @@ class AskEntry extends Component {
   render() {
     const { isLogin, username } = this.props;
     const { id, questionFlag } = this.state.askContents;
-    const { askContents, editedAskContents, displayAnswerInput, havePermission, isEditable } = this.state;
-    const { getAskContents, toggleDisplayAnswerInput, modifyAsk, deleteAsk, handleInputChange, toggleIsEditable } = this;
+    const { askContents, editedAskContents, displayAnswerInput, havePermission, isEditable, keyState } = this.state;
+    const { toggleDisplayAnswerInput, modifyAsk, deleteAsk, handleInputChange, toggleIsEditable, changeKeyState } = this;
 
     return (
       <div>
@@ -172,17 +177,17 @@ class AskEntry extends Component {
             username={username} 
             isLogin={isLogin} 
             askId={id}
-            getAskContents={getAskContents}
             toggleDisplayAnswerInput={toggleDisplayAnswerInput}
+            changeKeyState={changeKeyState}
           /> 
         }
         { askContents.id ?
           <AnswerList 
+            key={keyState + 'List'}
             username={username} 
             isLogin={isLogin} 
             askId={id}
             questionFlag={questionFlag}
-            commentsCount={askContents.commentsCount}
           />
           : null
         }
