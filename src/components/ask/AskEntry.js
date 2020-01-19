@@ -70,6 +70,10 @@ class AskEntry extends Component {
       this.setState({
         havePermission: true
       });
+    } else {
+      this.setState({
+        havePermission: false
+      });
     }
   }
 
@@ -143,6 +147,9 @@ class AskEntry extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     console.log('AskEntry.js - componentDidUpdate 불림')
+    if (prevState.askContents.questionFlag !== this.state.askContents.questionFlag) {
+      this.handleHavePermission();
+    }
   }
   
 
@@ -150,7 +157,7 @@ class AskEntry extends Component {
     const { isLogin, username } = this.props;
     const { id, questionFlag } = this.state.askContents;
     const { askContents, editedAskContents, displayAnswerInput, havePermission, isEditable, keyState } = this.state;
-    const { toggleDisplayAnswerInput, modifyAsk, deleteAsk, handleInputChange, toggleIsEditable, changeKeyState } = this;
+    const { toggleDisplayAnswerInput, modifyAsk, deleteAsk, handleInputChange, toggleIsEditable, changeKeyState, getAskContents } = this;
 
     return (
       <div>
@@ -164,7 +171,7 @@ class AskEntry extends Component {
           handleInputChange={handleInputChange}
           toggleIsEditable={toggleIsEditable}
         />
-        { isLogin ? 
+        { questionFlag && isLogin ? 
           username !== askContents.username ?
           displayAnswerInput ?
             <button onClick={toggleDisplayAnswerInput}>작성 취소하기</button>
@@ -187,7 +194,10 @@ class AskEntry extends Component {
             username={username} 
             isLogin={isLogin} 
             askId={id}
+            author={askContents.username}
             questionFlag={questionFlag}
+            changeKeyState={changeKeyState}
+            getAskContents={getAskContents}
           />
           : null
         }
