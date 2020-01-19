@@ -22,9 +22,12 @@ class AnswerEntry extends Component {
         contents: ''
       },
       havePermission: false,
-      isEditable: false
+      isEditable: false,
+      didLike: false  // ? like버튼을 누르면 post요청(api 20번)을 보내고 true로 전환, 다시 누르면 delete요청(api 21번)을 보내고 false로 전환. 
     }
   }
+
+
 
   handleInputChange = (e) => {
     this.setState({
@@ -32,6 +35,29 @@ class AnswerEntry extends Component {
         contents : e.target.value
       }
     });
+  }
+
+
+  postLike = () => {
+    const { id } = this.state.answerContents;
+    axios.post(`http://localhost:5000/like/${id}`, {username: this.props.username})
+    .then(res => {
+      console.log(res);
+      this.setState({
+        didLike: true
+      })
+    })
+  }
+
+  deleteLike = () => {
+    const { id } = this.state.answerContents;
+    axios.delete(`http://localhost:5000/like/${id}`, {username: this.props.username})
+    .then(res => {
+      console.log(res);
+      this.setState({
+        didLike: false
+      })
+    })
   }
 
   toggleIsEditable = () => {
@@ -43,6 +69,7 @@ class AnswerEntry extends Component {
   // const { id={answer.id} isLogin, username, questionFlag(true일 때만 답글 수정/삭제 가능)
   // getAnswerListInformation 답글 리스트 정보를 새로 요청하는 함수 } = this.props
 
+  // ! 내 답글인 경우에 true
   handleHavePermission = () => {
     const { isLogin, username, questionFlag } = this.props;
     const { answerContents } = this.state;
@@ -124,8 +151,8 @@ class AnswerEntry extends Component {
   }
 
   render() {
-    const { modifyAnswer, deleteAnswer, handleInputChange, toggleIsEditable } = this;
-    const { answerContents, havePermission, editedAnswerContents, isEditable } = this.state;
+    const { modifyAnswer, deleteAnswer, handleInputChange, toggleIsEditable, postLike, deleteLike } = this;
+    const { answerContents, havePermission, editedAnswerContents, isEditable, didLike } = this.state;
     return (
         <AnswerTemplate
           answerContents={answerContents}
@@ -136,6 +163,9 @@ class AnswerEntry extends Component {
           deleteAnswer={deleteAnswer}
           handleInputChange={handleInputChange}
           toggleIsEditable={toggleIsEditable}
+          didLike={didLike}
+          postLike={postLike}
+          deleteLike={deleteLike}
         />
     );
   }

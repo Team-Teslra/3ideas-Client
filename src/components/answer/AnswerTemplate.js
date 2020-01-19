@@ -2,8 +2,8 @@ import React from 'react';
 
 const AnswerTemplate = (props) => {
 
-  const { id, contents, username, createdAt, updatedAt } = props.answerContents;
-  const { editedAnswerContents, havePermission, isEditable, modifyAnswer, deleteAnswer, handleInputChange, toggleIsEditable } = props;
+  const { id, contents, username, createdAt, updatedAt, like } = props.answerContents;
+  const { editedAnswerContents, havePermission, isEditable, modifyAnswer, deleteAnswer, handleInputChange, toggleIsEditable, didLike, postLike, deleteLike } = props;
   const style = { listStyle: 'none', fontSize: '13px' }
 
   return (
@@ -18,6 +18,9 @@ const AnswerTemplate = (props) => {
         <li>username: {username}</li>
         <li>createdAt: {createdAt}</li>
         <li>updatedAt: {updatedAt}</li>
+        <li>likes: {like}</li>
+        { !havePermission && !didLike && <button onClick={postLike}>좋아요!</button>}
+        { !havePermission && didLike && <button onClick={deleteLike}>좋아요 취소</button>}
       </ul>
       { havePermission ? 
         isEditable ? 
