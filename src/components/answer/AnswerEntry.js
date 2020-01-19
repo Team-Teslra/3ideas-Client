@@ -22,7 +22,8 @@ class AnswerEntry extends Component {
         contents: ''
       },
       havePermission: false,
-      isEditable: false
+      isEditable: false,
+      rank: null,
     }
   }
 
@@ -42,7 +43,7 @@ class AnswerEntry extends Component {
 
   // const { id={answer.id} isLogin, username, questionFlag(true일 때만 답글 수정/삭제 가능)
   // getAnswerListInformation 답글 리스트 정보를 새로 요청하는 함수 } = this.props
-
+  // 답글 수정/삭제 권한 정하는 함수
   handleHavePermission = () => {
     const { isLogin, username, questionFlag } = this.props;
     const { answerContents } = this.state;
@@ -95,8 +96,6 @@ class AnswerEntry extends Component {
     } 
   }
 
-  
-
   deleteAnswer = () => {
     const { id } = this.state.answerContents;
 
@@ -115,17 +114,40 @@ class AnswerEntry extends Component {
     console.log('AnswerEntry.js - componentDidMount 불림')
 
     // props로 넘어온 답글id로 해당 글 정보 요청
-    const id = this.props.id;
+    const { id, selectedAnswers } = this.props;
     this.getAnswerContents(id);
+    if (selectedAnswers.includes(id)) {
+      const rank = selectedAnswers.indexOf(id) + 1;
+      this.setState({
+        rank: rank
+      });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
     console.log('AnswerEntry.js  - componentDidUpdate 불림')
+
+    if (prevProps.selectedAnswers.length !== this.props.selectedAnswers.length) {
+      const { id, selectedAnswers } = this.props;
+      if (selectedAnswers.includes(id)) {
+        const rank = selectedAnswers.indexOf(id) + 1;
+        this.setState({
+          rank: rank
+        });
+      } else {
+        this.setState({
+          rank: null
+        });
+      }
+    }
   }
+
+  // isSelectable, selectedAnswers, addSelectedAnswer, removeSelectedAnswer from Props
 
   render() {
     const { modifyAnswer, deleteAnswer, handleInputChange, toggleIsEditable } = this;
-    const { answerContents, havePermission, editedAnswerContents, isEditable } = this.state;
+    const { answerContents, havePermission, editedAnswerContents, isEditable, rank } = this.state;
+    const { isSelectable, selectedAnswers, addSelectedAnswer, removeSelectedAnswer } = this.props;
     return (
         <AnswerTemplate
           answerContents={answerContents}
@@ -136,6 +158,11 @@ class AnswerEntry extends Component {
           deleteAnswer={deleteAnswer}
           handleInputChange={handleInputChange}
           toggleIsEditable={toggleIsEditable}
+          rank={rank}
+          isSelectable={isSelectable}
+          selectedAnswers={selectedAnswers}
+          addSelectedAnswer={addSelectedAnswer}
+          removeSelectedAnswer={removeSelectedAnswer}
         />
     );
   }

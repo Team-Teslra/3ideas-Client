@@ -187,6 +187,7 @@ class AskEntry extends Component {
             username={username} 
             isLogin={isLogin} 
             askId={id}
+            author={askContents.username}
             questionFlag={questionFlag}
           />
           : null
