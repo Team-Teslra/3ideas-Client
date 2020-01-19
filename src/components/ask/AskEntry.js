@@ -171,7 +171,7 @@ class AskEntry extends Component {
           handleInputChange={handleInputChange}
           toggleIsEditable={toggleIsEditable}
         />
-        { isLogin ? 
+        { questionFlag && isLogin ? 
           username !== askContents.username ?
           displayAnswerInput ?
             <button onClick={toggleDisplayAnswerInput}>작성 취소하기</button>
