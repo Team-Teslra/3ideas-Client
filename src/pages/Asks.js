@@ -14,13 +14,23 @@ class Asks extends Component {
 
   // 키워드로 검색한(키워드가 존재할 때, 없으면 전체) 모든 글의 id 목록을 받음 
   componentDidMount() {
-    const keyword = this.props.match.keyword ? this.props.match.params.keyword : '';
-    axios.get(`http://localhost:5000/asks/${keyword}`)
+    // const keyword = this.props.match.keyword ? this.props.match.params.keyword : '';
+    // const keyword = '?q=' + this.props.match.params.keyword || '/'
+
+    let keyword = '/';
+    if (this.props.match.params.keyword) {
+      keyword = '?q=' + this.props.match.params.keyword.split(' ').join('+');
+    }
+
+    console.log('keyword', keyword)
+
+    axios.get(`http://localhost:5000/asks${keyword}`)
       .then(res => {
         console.log('글 목록 요청 성공')
         this.setState({
           asks: res.data
         })
+        console.log(res);
       }).catch(err => {
         console.log(err.message);
         // this.setState({ errorMessage: err.message });

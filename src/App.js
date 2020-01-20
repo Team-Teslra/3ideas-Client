@@ -57,7 +57,7 @@ class App extends Component {
             <Route exact path="/" render={() => <Home isLogin={isLogin} username={username} />} />
             <Route
               path={['/asks/:keyword?', '/category/:category?']}
-              render={() => <Asks isLogin={isLogin} username={username} />}
+              render={({ match }) => <Asks isLogin={isLogin} username={username} match={match}/>}
             />
             <Route path="/ask/:id" render={() => <AskEntry isLogin={isLogin} username={username} />} />
             <Route
