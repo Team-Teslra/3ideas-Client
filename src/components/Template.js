@@ -56,7 +56,6 @@ class Template extends Component {
     const { isHome, isNavClicked } = this.state;
     const { redirectToHome } = this;
     
-    console.log('isHome',isHome)
     return (
       <div>
         <h2>3 ideas</h2>

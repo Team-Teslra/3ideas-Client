@@ -18,7 +18,6 @@ class Home extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('prevProps', prevProps, 'prevState', prevState)
     if(prevProps.location.state) {
       if (prevProps.location.state.isNavClicked !== this.props.location.state.isNavClicked) {
         this.setState({
