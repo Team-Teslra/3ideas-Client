@@ -64,7 +64,7 @@ class Asks extends Component {
           const { id, title, questionFlag, createdAt, username, commentsCount } = ask;
           return ( 
             <div key={id} style={style}>
-              <Link to={{pathname: `/ask/${id}`, state: {asksLength: asks.length}}}>{title}</Link>
+              <Link to={{pathname: `/ask/${id}`, state: {asksLength: asks.length || 0}}}>{title}</Link>
               <p>{questionFlag ? '답변모집중' : '마감된질문'}</p>
               <p>작성일 : {createdAt}</p>
               <p>작성자 : {username}</p>

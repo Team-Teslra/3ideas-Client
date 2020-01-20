@@ -160,9 +160,12 @@ class AskEntry extends Component {
     const { id, questionFlag } = this.state.askContents;
     const { askContents, editedAskContents, displayAnswerInput, havePermission, isEditable, keyState } = this.state;
     const { toggleDisplayAnswerInput, modifyAsk, deleteAsk, handleInputChange, toggleIsEditable, changeKeyState, getAskContents } = this;
-    // 왜 asks말고는 안내려오지? && 왜 안내려줘도 asks 정보는 내려오지?
-    const { asksLength } = this.props.location.state
-    console.log(asksLength);
+
+    let asksLength = 0;
+    if (this.props.location.state) {
+      asksLength = this.props.location.state.asksLength
+    }
+
     return (
       <div>
         <AskTemplate
