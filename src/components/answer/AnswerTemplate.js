@@ -6,11 +6,22 @@ const AnswerTemplate = (props) => {
   const { id, username, contents, answerFlag, like, createdAt, updatedAt } = props.answerContents;
   const { editedAnswerContents, havePermission, isEditable, modifyAnswer, deleteAnswer, handleInputChange, toggleIsEditable, 
           rank, isSelectable, selectedAnswers, addSelectedAnswer, removeSelectedAnswer, postSelectAnswers, postLike, deleteLike, myUserName, isLogin } = props;
+  
+  const rankColors = {
+    '1': 'tomato',
+    '2': 'orange',
+    '3': 'gold'
+  }
+  let number = rank || answerFlag; 
+
   const style = {
     listStyle: 'none', 
     fontSize: '13px',
     backgroundColor: rankColors[number]
   }
+
+  const nextRank = selectedAnswers.length + 1;
+
   const likers = (function (like) {  // ? 즉시실행함수로 likers에 각 답변에 좋아요를 한 사람을 배열로 저장
     var result = [];
     for (let i =0; i < like.length; i++) {
@@ -18,15 +29,6 @@ const AnswerTemplate = (props) => {
     }
     return result;
   })(like);
-  
-  const nextRank = selectedAnswers.length + 1;
-  let number = rank || answerFlag;
-
-  const rankColors = {
-    '1': 'tomato',
-    '2': 'orange',
-    '3': 'gold'
-  }
   
   const confirmSelect = () => {
     if(window.confirm('답변 선택은 되돌릴 수 없습니다. 제출하시겠습니까?')) {
