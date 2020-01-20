@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Redirect, withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import './Template.css';
 import axios from 'axios';
 import SearchInput from './SearchInput';
@@ -68,7 +68,6 @@ class Template extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.currentPage)
     this.setShowWriteAndSearch(this.props.currentPage);
   }
 

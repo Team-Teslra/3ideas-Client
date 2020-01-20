@@ -22,6 +22,7 @@ class SearchInput extends Component {
     });
   }
 
+  // search 요청을 네비바에서 보내면, asks.js가 언마운트 되지 않아서 다시 마운트를 안하니 요청을 안받아옴.
   render() {
     const { keyword } = this.state;
     const { handleKeywordChange, clearInput } = this;

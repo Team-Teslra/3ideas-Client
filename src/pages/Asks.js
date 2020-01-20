@@ -14,12 +14,13 @@ class Asks extends Component {
   }
 
   // 키워드로 검색한(키워드가 존재할 때, 없으면 전체) 모든 글의 id 목록을 받음 
-  componentDidMount() {
+  getAskList = () => {
     let url = `http://localhost:5000/asks`
 
     // this.props.location 객체에서 search값을 객체로 뽑아주는 라이브러리 qs
     const query = qs.parse(this.props.location.search, {ignoreQueryPrefix: true});
-    if (Object.keys(query) > 0) {
+    console.log(query);
+    if ('q' in query && query.q !== '') {
       url = `http://localhost:5000/search?q=${encodeURIComponent(query.q)}`;
     }
 
@@ -34,8 +35,17 @@ class Asks extends Component {
         console.log(err.message);
         // this.setState({ errorMessage: err.message });
       });
+  }
 
+  componentDidMount() {
+    this.getAskList();
     this.props.changeCurrentPage('asks');
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.location.search !== this.props.location.search) {
+      this.getAskList();
+    }
   }
   
   render() {
