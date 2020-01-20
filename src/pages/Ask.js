@@ -11,13 +11,14 @@ class Ask extends Component {
     this.state = {  
       title: '',
       contents: '',
-      category: '', // ? 어드밴스드
+      selectedCategories: [],  // ? 어드밴스드
       answerLength: '',  // ? 나이트메어 1
       answerAmount: '',  // ? 나이트메어 2
       dueTo: '', // ? 나이트메어 3
       errorMessage: ''
     };
     this.handleInputValue = this.handleInputValue.bind(this);
+    this.handleSelectedCategories = this.handleSelectedCategories.bind(this);
     this.handleAsk = this.handleAsk.bind(this);
   }
 
@@ -25,14 +26,36 @@ class Ask extends Component {
     this.setState({ [key]: e.target.value });
   };
 
+  handleSelectedCategories(e) {
+    if (!this.state.selectedCategories.includes(e.target.value)) {
+      this.setState({selectedCategories: [...this.state.selectedCategories, e.target.value]});
+    } else {
+      var array = [...this.state.selectedCategories];
+      var index = array.indexOf(e.target.value)
+      if (index !== -1) {
+        array.splice(index, 1);
+        this.setState({selectedCategories: array})
+      }
+    }
+  }
+
   handleAsk() {
     const { username } = this.props;
-    const { title, contents } = this.state;
+    const { title, contents, selectedCategories } = this.state;
+    var categoryToRequest = (function (arr) {
+      var result=[];
+      arr.map((el) => {
+        result.push({categoryName: el})
+      })
+      return result;
+    })(selectedCategories)
+    console.log(categoryToRequest)
 
     axios.post('http://localhost:5000/ask', {
       username: username,
       title: title,
-      contents: contents
+      contents: contents,
+      categories: categoryToRequest
     })
     .then(res => {
       console.log(res.data.id);
@@ -46,9 +69,9 @@ class Ask extends Component {
   }
 
   render() {
-    const { isLogin } = this.props; // ! user_id props 필요
-    const { title, contents, category, answerLength, answerAmount, dueTo, errorMessage} = this.state;
-    const { handleInputValue, handleAsk } = this;
+    const { isLogin, category } = this.props;
+    const { title, contents, answerLength, answerAmount, dueTo, errorMessage} = this.state;
+    const { handleInputValue, handleSelectedCategories, handleAsk } = this;
     
     if (isLogin) {
       
@@ -64,6 +87,7 @@ class Ask extends Component {
               answerAmount={answerAmount}
               dueTo={dueTo}
               onInputChange={handleInputValue}
+              onCategoryChange={handleSelectedCategories}
             />
             <p>{errorMessage}</p>
             <button

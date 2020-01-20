@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, withRouter, Redirect } from 'react-router-dom';
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
@@ -9,14 +9,18 @@ class Asks extends Component {
     super(props);
     this.state = {
       asks: [],
+      selectedCategory: ''
     };
+    this.handleCategoryChange = this.handleCategoryChange.bind(this);
   }
 
   // 키워드로 검색한(키워드가 존재할 때, 없으면 전체) 모든 글의 id 목록을 받음 
   componentDidMount() {
     // const keyword = this.props.match.keyword ? this.props.match.params.keyword : '';
     // const keyword = '?q=' + this.props.match.params.keyword || '/'
-
+    console.log("match:", this.props.match);
+    console.log("path:", this.props.path);
+    // if (this.props.path === "/ans")
     let keyword = '/';
     if (this.props.match.params.keyword) {
       keyword = '?q=' + this.props.match.params.keyword.split(' ').join('+');
@@ -36,10 +40,26 @@ class Asks extends Component {
         // this.setState({ errorMessage: err.message });
       });
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    // console.log('업데이트?')
+    // console.log('prevProps: ',prevProps)
+    // console.log('prevState: ',prevState)
+  }
+  
+
+  handleCategoryChange(e) {
+    this.setState({selectedCategory: e.target.value})
+    console.log(this.props.history)
+    this.props.history.location.pathname = '';
+    this.props.history.push(`category/${e.target.value}`)
+    // return <Redirect to={`http://localhost:3000/category/${e.target.value}`}/>
+  }
   
   render() {
-    // const { isLogin, username } = this.props;
+    const { category } = this.props;
     const { asks } = this.state;
+    const { handleCategoryChange } = this;
     const style = {
       width: '200px',
       border: '1px solid black',
@@ -47,6 +67,15 @@ class Asks extends Component {
     }
     return (
       <>
+        <div>
+          <select onChange={handleCategoryChange}>
+            <option>&nbsp;</option>
+            {category.map(item => {
+              const { categoryName } = item;
+              return <option>{categoryName}</option>
+            })}
+          </select>
+        </div>
         {asks.map(ask => {
           const { id, title, questionFlag, createdAt, username, commentsCount } = ask;
           return ( 

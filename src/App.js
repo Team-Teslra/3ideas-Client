@@ -3,6 +3,7 @@ import { Route, Switch, Link } from 'react-router-dom';
 import { Home, Login, SignUp, Ask, Asks } from './pages';
 import Template from './components/Template';
 import AskEntry from './components/ask/AskEntry';
+import axios from 'axios';
 
 class App extends Component {
   constructor(props) {
@@ -11,10 +12,16 @@ class App extends Component {
       isLogin: false,
       username: null,
       renderChildren: false,
+      category:[{categoryName: "one"},{categoryName: "two"},{categoryName: "three"}]  // ! ask, asks에 내려줄거다.
     };
   }
 
   componentDidMount() {
+    axios.get('http://localhost:5000/category')
+    .then(res => this.setState({
+      category: res
+    }))
+    .catch(err => console.log(err))
     this.setState({
       isLogin: this.props.isLogin,
       username: this.props.username,
@@ -46,7 +53,7 @@ class App extends Component {
   };
 
   render() {
-    const { isLogin, username, renderChildren } = this.state;
+    const { isLogin, username, renderChildren, category } = this.state;
     const { handleIsLoginChange, handleUsername } = this;
 
     if (renderChildren) {
@@ -57,7 +64,7 @@ class App extends Component {
             <Route exact path="/" render={() => <Home isLogin={isLogin} username={username} />} />
             <Route
               path={['/asks/:keyword?', '/category/:category?']}
-              render={({ match }) => <Asks isLogin={isLogin} username={username} match={match}/>}
+              render={({ match }) => <Asks isLogin={isLogin} username={username} match={match} path={match.path} category={category} />}
             />
             <Route path="/ask/:id" render={() => <AskEntry isLogin={isLogin} username={username} />} />
             <Route
@@ -67,7 +74,7 @@ class App extends Component {
               )}
             />
             <Route path="/signup" render={() => <SignUp isLogin={isLogin} />} />
-            <Route exact path="/ask" render={() => <Ask isLogin={isLogin} username={username} />} />
+            <Route exact path="/ask" render={() => <Ask isLogin={isLogin} username={username} category={category} />} />
           </Switch>
         </div>
       );
