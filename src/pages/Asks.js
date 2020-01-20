@@ -35,10 +35,11 @@ class Asks extends Component {
         console.log(err.message);
         // this.setState({ errorMessage: err.message });
       });
+
+    this.props.changeCurrentPage('asks');
   }
   
   render() {
-    // const { isLogin, username } = this.props;
     const { asks } = this.state;
     const style = {
       width: '200px',

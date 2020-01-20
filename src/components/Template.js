@@ -10,15 +10,10 @@ class Template extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isHome: true,
+      showWriteAndSearch: true,
+      showSearchOnly: false,
       isHomeClicked: false,
     }
-  }
-
-  toggleIsHome = () => {
-    this.setState({
-      isHome: !this.state.isHome
-    });
   }
 
   toggleIsHomeClicked = () => {
@@ -51,9 +46,41 @@ class Template extends Component {
     });
   }
 
+  setShowWriteAndSearch = (page) => {
+    const invalidPages = ['home', null];
+    const userPages = ['login', 'signUp', 'ask'];
+
+    if (invalidPages.includes(page)) {
+      this.setState({
+        showWriteAndSearch: false,
+        showSearchOnly: false
+      });
+    } else if (userPages.includes(page)) {
+      this.setState({
+        showWriteAndSearch: false,
+        showSearchOnly: true
+      });
+    } else {
+      this.setState({
+        showWriteAndSearch: true
+      });
+    }
+  }
+
+  componentDidMount() {
+    console.log(this.props.currentPage)
+    this.setShowWriteAndSearch(this.props.currentPage);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.currentPage !== this.props.currentPage) {
+      this.setShowWriteAndSearch(this.props.currentPage);
+    }
+  }
+  
   render () {
     const { isLogin } = this.props;
-    const { isHome, isHomeClicked } = this.state;
+    const { showWriteAndSearch, isHomeClicked, showSearchOnly } = this.state;
     const { redirectToHome } = this;
     
     return (
@@ -70,8 +97,8 @@ class Template extends Component {
             홈화면으로
           </button>
         </Link>
-        { !isHome && <Link to={'/ask'}>질문글 작성하기</Link>}
-        { !isHome && <SearchInput />}
+        { isLogin && showWriteAndSearch && <Link to={'/ask'}>질문글 작성하기</Link>}
+        { showWriteAndSearch ? <SearchInput /> : showSearchOnly ? <SearchInput /> : null}
       </div>
     )
   }

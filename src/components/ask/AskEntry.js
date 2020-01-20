@@ -143,6 +143,8 @@ class AskEntry extends Component {
     // 주소 파라미터로 넘어온 게시글 id로 해당 글 정보 요청함(답글 정보 제외)
     const id = this.props.match.params.id;
     this.getAskContents(id);
+
+    this.props.changeCurrentPage('askEntry');
   }
 
   componentDidUpdate(prevProps, prevState) {

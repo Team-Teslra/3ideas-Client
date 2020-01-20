@@ -11,7 +11,14 @@ class App extends Component {
       isLogin: false,
       username: null,
       renderChildren: false,
+      currentPage: null,
     };
+  }
+
+  changeCurrentPage = (pageName) => {
+    this.setState({
+      currentPage: pageName
+    });
   }
 
   componentDidMount() {
@@ -46,28 +53,28 @@ class App extends Component {
   };
 
   render() {
-    const { isLogin, username, renderChildren } = this.state;
-    const { handleIsLoginChange, handleUsername } = this;
+    const { isLogin, username, renderChildren, currentPage } = this.state;
+    const { handleIsLoginChange, handleUsername, changeCurrentPage } = this;
 
     if (renderChildren) {
       return (
         <div>
-          <Template isLogin={isLogin} username={username} handleIsLoginChange={handleIsLoginChange} />
+          <Template isLogin={isLogin} username={username} handleIsLoginChange={handleIsLoginChange} currentPage={currentPage} changeCurrentPage={changeCurrentPage} />
           <Switch>
-            <Route exact path="/" render={() => <Home isLogin={isLogin} username={username} />} />
+            <Route exact path="/" render={() => <Home isLogin={isLogin} username={username} currentPage={currentPage} changeCurrentPage={changeCurrentPage} />} />
             <Route
               path={['/asks/:keyword?', '/category/:category?']}
-              render={({ match }) => <Asks isLogin={isLogin} username={username} match={match}/>}
+              render={({ match }) => <Asks isLogin={isLogin} username={username} match={match} currentPage={currentPage} changeCurrentPage={changeCurrentPage}/>}
             />
-            <Route path="/ask/:id" render={() => <AskEntry isLogin={isLogin} username={username} />} />
+            <Route path="/ask/:id" render={() => <AskEntry isLogin={isLogin} username={username} currentPage={currentPage} changeCurrentPage={changeCurrentPage} />} />
             <Route
               path="/login"
               render={() => (
-                <Login isLogin={isLogin} handleIsLoginChange={handleIsLoginChange} handleUsername={handleUsername} />
+                <Login isLogin={isLogin} handleIsLoginChange={handleIsLoginChange} handleUsername={handleUsername} currentPage={currentPage} changeCurrentPage={changeCurrentPage} />
               )}
             />
-            <Route path="/signup" render={() => <SignUp isLogin={isLogin} />} />
-            <Route exact path="/ask" render={() => <Ask isLogin={isLogin} username={username} />} />
+            <Route path="/signup" render={() => <SignUp isLogin={isLogin} currentPage={currentPage} changeCurrentPage={changeCurrentPage} />} />
+            <Route exact path="/ask" render={() => <Ask isLogin={isLogin} username={username} currentPage={currentPage} changeCurrentPage={changeCurrentPage} />} />
           </Switch>
         </div>
       );
