@@ -19,7 +19,7 @@ class Asks extends Component {
 
     // this.props.location 객체에서 search값을 객체로 뽑아주는 라이브러리 qs
     const query = qs.parse(this.props.location.search, {ignoreQueryPrefix: true});
-    if (query) {
+    if (Object.keys(query) > 0) {
       url = `http://localhost:5000/search?q=${encodeURIComponent(query.q)}`;
     }
 
