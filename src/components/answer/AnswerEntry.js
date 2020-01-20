@@ -11,12 +11,12 @@ class AnswerEntry extends Component {
     this.state = {
       answerContents : {
         id: null,
-        contents: null,
         username: null,
+        contents: null,
         answerFlag: null,
-        like: null,
+        like: [], //username, username, username, ... 
         createdAt: null,
-        updatedAt: null
+        updatedAt: null,   
       },
       editedAnswerContents : {
         contents: ''
@@ -27,12 +27,43 @@ class AnswerEntry extends Component {
     }
   }
 
+
+
   handleInputChange = (e) => {
     this.setState({
       editedAnswerContents : {
         contents : e.target.value
       }
     });
+  }
+
+
+  postLike = () => {
+    // localStorage.setItem(`didLike${id}`, true);
+    // this.setState({ didLike: true })
+    
+    const { id } = this.state.answerContents;
+    const { username } = this.props;
+    axios.post(`http://localhost:5000/like/${id}`, {username: username})
+    .then(res => {
+      console.log(res);
+      this.getAnswerContents(id);
+    })
+    .catch(err => {console.log(err.message);});
+  }
+
+  deleteLike = () => {
+    // localStorage.setItem(`didLike${id}`, '');
+    // this.setState({ didLike: false })
+
+    const { id } = this.state.answerContents;
+    const { username } = this.props;
+    axios.delete(`http://localhost:5000/like/${id}`, {data: {username: username}})
+    .then(res => {
+      console.log(res);
+      this.getAnswerContents(id);
+    })
+    .catch(err => {console.log(err.message);});
   }
 
   toggleIsEditable = () => {
@@ -43,6 +74,8 @@ class AnswerEntry extends Component {
 
   // const { id={answer.id} isLogin, username, questionFlag(true일 때만 답글 수정/삭제 가능)
   // getAnswerListInformation 답글 리스트 정보를 새로 요청하는 함수 } = this.props
+
+
   // 답글 수정/삭제 권한 정하는 함수
   handleHavePermission = () => {
     const { isLogin, username, questionFlag } = this.props;
@@ -148,9 +181,10 @@ class AnswerEntry extends Component {
   }
 
   render() {
-    const { modifyAnswer, deleteAnswer, handleInputChange, toggleIsEditable } = this;
+    const { modifyAnswer, deleteAnswer, handleInputChange, toggleIsEditable, postLike, deleteLike } = this;
     const { answerContents, havePermission, editedAnswerContents, isEditable, rank } = this.state;
-    const { isSelectable, selectedAnswers, addSelectedAnswer, removeSelectedAnswer, postSelectAnswers } = this.props;
+    const { isSelectable, selectedAnswers, addSelectedAnswer, removeSelectedAnswer, postSelectAnswers, username, isLogin } = this.props;
+
     return (
         <AnswerTemplate
           answerContents={answerContents}
@@ -161,13 +195,16 @@ class AnswerEntry extends Component {
           deleteAnswer={deleteAnswer}
           handleInputChange={handleInputChange}
           toggleIsEditable={toggleIsEditable}
+          postLike={postLike}
+          deleteLike={deleteLike}
+          myUserName={username}  // like버튼 렌더 여부에 쓸 prop 1
+          isLogin={isLogin}  // like버튼 렌더 여부에 쓸 prop 2
           rank={rank}
           isSelectable={isSelectable}
           selectedAnswers={selectedAnswers}
           addSelectedAnswer={addSelectedAnswer}
           removeSelectedAnswer={removeSelectedAnswer}
           postSelectAnswers={postSelectAnswers}
-          answerFlag={answerContents.answerFlag}
         />
     );
   }
