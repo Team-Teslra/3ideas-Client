@@ -63,8 +63,8 @@ class App extends Component {
           <Switch>
             <Route exact path="/" render={() => <Home isLogin={isLogin} username={username} currentPage={currentPage} changeCurrentPage={changeCurrentPage} />} />
             <Route
-              path={['/asks/:keyword?', '/category/:category?']}
-              render={({ match }) => <Asks isLogin={isLogin} username={username} match={match} currentPage={currentPage} changeCurrentPage={changeCurrentPage}/>}
+              path={['/asks', '/search', '/category/:category?']}
+              render={({ match }) => <Asks isLogin={isLogin} username={username} match={match} params={match.params} currentPage={currentPage} changeCurrentPage={changeCurrentPage}/>}
             />
             <Route path="/ask/:id" render={() => <AskEntry isLogin={isLogin} username={username} currentPage={currentPage} changeCurrentPage={changeCurrentPage} />} />
             <Route

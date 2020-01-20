@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import qs from 'qs';
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
@@ -14,17 +15,15 @@ class Asks extends Component {
 
   // 키워드로 검색한(키워드가 존재할 때, 없으면 전체) 모든 글의 id 목록을 받음 
   componentDidMount() {
-    // const keyword = this.props.match.keyword ? this.props.match.params.keyword : '';
-    // const keyword = '?q=' + this.props.match.params.keyword || '/'
+    let url = `http://localhost:5000/asks`
 
-    let keyword = '/';
-    if (this.props.match.params.keyword) {
-      keyword = '?q=' + this.props.match.params.keyword.split(' ').join('+');
+    // this.props.location 객체에서 search값을 객체로 뽑아주는 라이브러리 qs
+    const query = qs.parse(this.props.location.search, {ignoreQueryPrefix: true});
+    if (query) {
+      url = `http://localhost:5000/search?q=${encodeURIComponent(query.q)}`;
     }
 
-    console.log('keyword', keyword)
-
-    axios.get(`http://localhost:5000/asks${keyword}`)
+    axios.get(url)
       .then(res => {
         console.log('글 목록 요청 성공')
         this.setState({

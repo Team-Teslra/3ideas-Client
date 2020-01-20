@@ -14,17 +14,23 @@ class SearchInput extends Component {
     this.setState({
       keyword: e.target.value
     });
-  } 
+  }
+
+  clearInput = () => {
+    this.setState({
+      keyword: ''
+    });
+  }
 
   render() {
     const { keyword } = this.state;
-    const { handleKeywordChange } = this;
+    const { handleKeywordChange, clearInput } = this;
 
     return (
       <div>
         <input type="text" value={keyword} onChange={(e) => handleKeywordChange(e)} />
-        <Link to={`/asks/${keyword}`}>
-          <button>검색하기</button>
+        <Link to={{pathname: '/search', search: `?q=${encodeURIComponent(keyword)}`}}>
+          <button onClick={clearInput}>검색하기</button>
         </Link>
       </div>
     );
