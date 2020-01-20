@@ -10,6 +10,7 @@ class Asks extends Component {
     super(props);
     this.state = {
       asks: [],
+      keyword: null
     };
   }
 
@@ -28,8 +29,9 @@ class Asks extends Component {
       .then(res => {
         console.log('글 목록 요청 성공')
         this.setState({
-          asks: res.data
-        })
+          asks: res.data,
+          keyword: query.q
+        }, () => console.log(this.state))
         console.log(res);
       }).catch(err => {
         console.log(err.message);
@@ -49,7 +51,7 @@ class Asks extends Component {
   }
   
   render() {
-    const { asks } = this.state;
+    const { asks, keyword } = this.state;
     const style = {
       width: '200px',
       border: '1px solid black',
@@ -57,6 +59,7 @@ class Asks extends Component {
     }
     return (
       <>
+        <h3>{keyword !== '' ? `${keyword}의 검색결과` : '전체글 목록'}</h3>
         {asks.map(ask => {
           const { id, title, questionFlag, createdAt, username, commentsCount } = ask;
           return ( 
