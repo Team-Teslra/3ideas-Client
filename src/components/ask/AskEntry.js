@@ -160,7 +160,9 @@ class AskEntry extends Component {
     const { id, questionFlag } = this.state.askContents;
     const { askContents, editedAskContents, displayAnswerInput, havePermission, isEditable, keyState } = this.state;
     const { toggleDisplayAnswerInput, modifyAsk, deleteAsk, handleInputChange, toggleIsEditable, changeKeyState, getAskContents } = this;
-
+    // 왜 asks말고는 안내려오지? && 왜 안내려줘도 asks 정보는 내려오지?
+    const { asksLength } = this.props.location.state
+    console.log(asksLength);
     return (
       <div>
         <AskTemplate
@@ -203,6 +205,7 @@ class AskEntry extends Component {
           />
           : null
         }
+        {asksLength > 0 && <button onClick={() => this.props.history.goBack()}><b>목록으로 돌아가기</b></button>}
       </div>
     );
   }

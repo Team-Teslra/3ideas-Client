@@ -10,7 +10,7 @@ class Asks extends Component {
     super(props);
     this.state = {
       asks: [],
-      keyword: null
+      keyword: ''
     };
   }
 
@@ -30,8 +30,8 @@ class Asks extends Component {
         console.log('글 목록 요청 성공')
         this.setState({
           asks: res.data,
-          keyword: query.q
-        }, () => console.log(this.state))
+          keyword: query.q || ''
+        })
         console.log(res);
       }).catch(err => {
         console.log(err.message);
@@ -64,7 +64,7 @@ class Asks extends Component {
           const { id, title, questionFlag, createdAt, username, commentsCount } = ask;
           return ( 
             <div key={id} style={style}>
-              <Link  to={`/ask/${id}`}>{title}</Link>
+              <Link to={{pathname: `/ask/${id}`, state: {asksLength: asks.length}}}>{title}</Link>
               <p>{questionFlag ? '답변모집중' : '마감된질문'}</p>
               <p>작성일 : {createdAt}</p>
               <p>작성자 : {username}</p>
