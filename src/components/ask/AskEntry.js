@@ -143,6 +143,8 @@ class AskEntry extends Component {
     // 주소 파라미터로 넘어온 게시글 id로 해당 글 정보 요청함(답글 정보 제외)
     const id = this.props.match.params.id;
     this.getAskContents(id);
+
+    this.props.changeCurrentPage('askEntry');
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -158,6 +160,11 @@ class AskEntry extends Component {
     const { id, questionFlag } = this.state.askContents;
     const { askContents, editedAskContents, displayAnswerInput, havePermission, isEditable, keyState } = this.state;
     const { toggleDisplayAnswerInput, modifyAsk, deleteAsk, handleInputChange, toggleIsEditable, changeKeyState, getAskContents } = this;
+
+    let asksLength = 0;
+    if (this.props.location.state) {
+      asksLength = this.props.location.state.asksLength
+    }
 
     return (
       <div>
@@ -201,6 +208,7 @@ class AskEntry extends Component {
           />
           : null
         }
+        {asksLength > 0 && <button onClick={() => this.props.history.goBack()}><b>목록으로 돌아가기</b></button>}
       </div>
     );
   }

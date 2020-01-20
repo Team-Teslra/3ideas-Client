@@ -45,6 +45,10 @@ class Ask extends Component {
     });
   }
 
+  componentDidMount() {
+    this.props.changeCurrentPage('ask');
+  }
+  
   render() {
     const { isLogin } = this.props; // ! user_id props 필요
     const { title, contents, category, answerLength, answerAmount, dueTo, errorMessage} = this.state;

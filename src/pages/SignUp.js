@@ -44,8 +44,11 @@ class SignUp extends Component {
       console.log(err.message);
     });
   }
-  
 
+  componentDidMount() {
+    this.props.changeCurrentPage('signUp');
+  }
+  
   render() {
     const { isLogin } = this.props;
     const { username, password, errorMessage } = this.state;

@@ -48,8 +48,11 @@ class Login extends Component {
       console.log(err.message);
     });
   }
-  
 
+  componentDidMount() {
+    this.props.changeCurrentPage('login');
+  }
+  
   render() {
     const { isLogin } = this.props;
     const { username, password, errorMessage } = this.state;

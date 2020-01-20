@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Redirect, withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import './Template.css';
 import axios from 'axios';
 import SearchInput from './SearchInput';
@@ -10,25 +10,20 @@ class Template extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isHome: true,
-      isNavClicked: false,
+      showWriteAndSearch: true,
+      showSearchOnly: false,
+      isHomeClicked: false,
     }
   }
 
-  toggleIsHome = () => {
+  toggleIsHomeClicked = () => {
     this.setState({
-      isHome: !this.state.isHome
-    });
-  }
-
-  toggleIsNavClicked = () => {
-    this.setState({
-      isNavClicked: !this.state.isNavClicked
+      isHomeClicked: !this.state.isHomeClicked
     });
   }
 
   redirectToHome = () => {
-    this.toggleIsNavClicked();
+    this.toggleIsHomeClicked();
     this.props.history.push('/');
   }
 
@@ -51,9 +46,40 @@ class Template extends Component {
     });
   }
 
+  setShowWriteAndSearch = (page) => {
+    const invalidPages = ['home', null];
+    const userPages = ['login', 'signUp', 'ask'];
+
+    if (invalidPages.includes(page)) {
+      this.setState({
+        showWriteAndSearch: false,
+        showSearchOnly: false
+      });
+    } else if (userPages.includes(page)) {
+      this.setState({
+        showWriteAndSearch: false,
+        showSearchOnly: true
+      });
+    } else {
+      this.setState({
+        showWriteAndSearch: true
+      });
+    }
+  }
+
+  componentDidMount() {
+    this.setShowWriteAndSearch(this.props.currentPage);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.currentPage !== this.props.currentPage) {
+      this.setShowWriteAndSearch(this.props.currentPage);
+    }
+  }
+  
   render () {
     const { isLogin } = this.props;
-    const { isHome, isNavClicked } = this.state;
+    const { showWriteAndSearch, isHomeClicked, showSearchOnly } = this.state;
     const { redirectToHome } = this;
     
     return (
@@ -65,13 +91,13 @@ class Template extends Component {
           <Link to={'/login'}>로그인</Link> 
         }
         { !isLogin && <Link to={'/signup'}>회원가입</Link> }
-        <Link to={{state: {isNavClicked: isNavClicked }}} onClick={redirectToHome}>
+        <Link to={{state: {isHomeClicked: isHomeClicked }}} onClick={redirectToHome}>
           <button>
             홈화면으로
           </button>
         </Link>
-        { !isHome && <Link to={'/ask'}>질문글 작성하기</Link>}
-        { !isHome && <SearchInput />}
+        { isLogin && showWriteAndSearch && <Link to={'/ask'}>질문글 작성하기</Link>}
+        { showWriteAndSearch ? <SearchInput /> : showSearchOnly ? <SearchInput /> : null}
       </div>
     )
   }

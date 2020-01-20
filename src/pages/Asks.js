@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import qs from 'qs';
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
@@ -9,26 +10,27 @@ class Asks extends Component {
     super(props);
     this.state = {
       asks: [],
+      keyword: ''
     };
   }
 
   // 키워드로 검색한(키워드가 존재할 때, 없으면 전체) 모든 글의 id 목록을 받음 
-  componentDidMount() {
-    // const keyword = this.props.match.keyword ? this.props.match.params.keyword : '';
-    // const keyword = '?q=' + this.props.match.params.keyword || '/'
+  getAskList = () => {
+    let url = `http://localhost:5000/asks`
 
-    let keyword = '/';
-    if (this.props.match.params.keyword) {
-      keyword = '?q=' + this.props.match.params.keyword.split(' ').join('+');
+    // this.props.location 객체에서 search값을 객체로 뽑아주는 라이브러리 qs
+    const query = qs.parse(this.props.location.search, {ignoreQueryPrefix: true});
+    console.log(query);
+    if ('q' in query && query.q !== '') {
+      url = `http://localhost:5000/search?q=${encodeURIComponent(query.q)}`;
     }
 
-    console.log('keyword', keyword)
-
-    axios.get(`http://localhost:5000/asks${keyword}`)
+    axios.get(url)
       .then(res => {
         console.log('글 목록 요청 성공')
         this.setState({
-          asks: res.data
+          asks: res.data,
+          keyword: query.q || ''
         })
         console.log(res);
       }).catch(err => {
@@ -36,10 +38,20 @@ class Asks extends Component {
         // this.setState({ errorMessage: err.message });
       });
   }
+
+  componentDidMount() {
+    this.getAskList();
+    this.props.changeCurrentPage('asks');
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.location.search !== this.props.location.search) {
+      this.getAskList();
+    }
+  }
   
   render() {
-    // const { isLogin, username } = this.props;
-    const { asks } = this.state;
+    const { asks, keyword } = this.state;
     const style = {
       width: '200px',
       border: '1px solid black',
@@ -47,11 +59,12 @@ class Asks extends Component {
     }
     return (
       <>
+        <h3>{keyword !== '' ? `${keyword}의 검색결과` : '전체글 목록'}</h3>
         {asks.map(ask => {
           const { id, title, questionFlag, createdAt, username, commentsCount } = ask;
           return ( 
             <div key={id} style={style}>
-              <Link  to={`/ask/${id}`}>{title}</Link>
+              <Link to={{pathname: `/ask/${id}`, state: {asksLength: asks.length || 0}}}>{title}</Link>
               <p>{questionFlag ? '답변모집중' : '마감된질문'}</p>
               <p>작성일 : {createdAt}</p>
               <p>작성자 : {username}</p>
