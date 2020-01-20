@@ -23,7 +23,7 @@ class AnswerEntry extends Component {
       },
       havePermission: false,
       isEditable: false,
-      // didLike: localStorage.getItem(`didLike${AnswerEntry.state.answerContents.id}`) || '' // ? like버튼을 누르면 post요청(api 20번)을 보내고 true로 전환, 다시 누르면 delete요청(api 21번)을 보내고 false로 전환. 
+      rank: null,
     }
   }
 
@@ -75,13 +75,18 @@ class AnswerEntry extends Component {
   // const { id={answer.id} isLogin, username, questionFlag(true일 때만 답글 수정/삭제 가능)
   // getAnswerListInformation 답글 리스트 정보를 새로 요청하는 함수 } = this.props
 
-  // ! 내 답글인 경우에 true
+
+  // 답글 수정/삭제 권한 정하는 함수
   handleHavePermission = () => {
     const { isLogin, username, questionFlag } = this.props;
     const { answerContents } = this.state;
     if (isLogin && questionFlag && username === answerContents.username) {
       this.setState({
         havePermission: true
+      });
+    } else {
+      this.setState({
+        havePermission: false
       });
     }
   }
@@ -128,8 +133,6 @@ class AnswerEntry extends Component {
     } 
   }
 
-  
-
   deleteAnswer = () => {
     const { id } = this.state.answerContents;
 
@@ -148,18 +151,40 @@ class AnswerEntry extends Component {
     console.log('AnswerEntry.js - componentDidMount 불림')
 
     // props로 넘어온 답글id로 해당 글 정보 요청
-    const id = this.props.id;
+    const { id, selectedAnswers } = this.props;
     this.getAnswerContents(id);
+
+    if (selectedAnswers.includes(id)) {
+      const rank = selectedAnswers.indexOf(id) + 1;
+      this.setState({
+        rank: rank
+      });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
     console.log('AnswerEntry.js  - componentDidUpdate 불림')
+
+    if (prevProps.selectedAnswers.length !== this.props.selectedAnswers.length) {
+      const { id, selectedAnswers } = this.props;
+      if (selectedAnswers.includes(id)) {
+        const rank = selectedAnswers.indexOf(id) + 1;
+        this.setState({
+          rank: rank
+        });
+      } else {
+        this.setState({
+          rank: null
+        });
+      }
+    }
   }
 
   render() {
     const { modifyAnswer, deleteAnswer, handleInputChange, toggleIsEditable, postLike, deleteLike } = this;
-    const { answerContents, havePermission, editedAnswerContents, isEditable } = this.state;
-    const { username, isLogin } =this.props; 
+    const { answerContents, havePermission, editedAnswerContents, isEditable, rank } = this.state;
+    const { isSelectable, selectedAnswers, addSelectedAnswer, removeSelectedAnswer, postSelectAnswers, username, isLogin } = this.props;
+
     return (
         <AnswerTemplate
           answerContents={answerContents}
@@ -174,6 +199,12 @@ class AnswerEntry extends Component {
           deleteLike={deleteLike}
           myUserName={username}  // like버튼 렌더 여부에 쓸 prop 1
           isLogin={isLogin}  // like버튼 렌더 여부에 쓸 prop 2
+          rank={rank}
+          isSelectable={isSelectable}
+          selectedAnswers={selectedAnswers}
+          addSelectedAnswer={addSelectedAnswer}
+          removeSelectedAnswer={removeSelectedAnswer}
+          postSelectAnswers={postSelectAnswers}
         />
     );
   }
