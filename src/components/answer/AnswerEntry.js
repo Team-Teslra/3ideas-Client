@@ -11,19 +11,19 @@ class AnswerEntry extends Component {
     this.state = {
       answerContents : {
         id: null,
-        contents: null,
         username: null,
+        contents: null,
         answerFlag: null,
-        like: null,
+        like: [], //username, username, username, ... 
         createdAt: null,
-        updatedAt: null
+        updatedAt: null,   
       },
       editedAnswerContents : {
         contents: ''
       },
       havePermission: false,
       isEditable: false,
-      didLike: false  // ? like버튼을 누르면 post요청(api 20번)을 보내고 true로 전환, 다시 누르면 delete요청(api 21번)을 보내고 false로 전환. 
+      // didLike: localStorage.getItem(`didLike${AnswerEntry.state.answerContents.id}`) || '' // ? like버튼을 누르면 post요청(api 20번)을 보내고 true로 전환, 다시 누르면 delete요청(api 21번)을 보내고 false로 전환. 
     }
   }
 
@@ -39,25 +39,31 @@ class AnswerEntry extends Component {
 
 
   postLike = () => {
+    // localStorage.setItem(`didLike${id}`, true);
+    // this.setState({ didLike: true })
+    
     const { id } = this.state.answerContents;
-    axios.post(`http://localhost:5000/like/${id}`, {username: this.props.username})
+    const { username } = this.props;
+    axios.post(`http://localhost:5000/like/${id}`, {username: username})
     .then(res => {
       console.log(res);
-      this.setState({
-        didLike: true
-      })
+      this.getAnswerContents(id);
     })
+    .catch(err => {console.log(err.message);});
   }
 
   deleteLike = () => {
+    // localStorage.setItem(`didLike${id}`, '');
+    // this.setState({ didLike: false })
+
     const { id } = this.state.answerContents;
-    axios.delete(`http://localhost:5000/like/${id}`, {username: this.props.username})
+    const { username } = this.props;
+    axios.delete(`http://localhost:5000/like/${id}`, {data: {username: username}})
     .then(res => {
       console.log(res);
-      this.setState({
-        didLike: false
-      })
+      this.getAnswerContents(id);
     })
+    .catch(err => {console.log(err.message);});
   }
 
   toggleIsEditable = () => {
@@ -152,7 +158,8 @@ class AnswerEntry extends Component {
 
   render() {
     const { modifyAnswer, deleteAnswer, handleInputChange, toggleIsEditable, postLike, deleteLike } = this;
-    const { answerContents, havePermission, editedAnswerContents, isEditable, didLike } = this.state;
+    const { answerContents, havePermission, editedAnswerContents, isEditable } = this.state;
+    const { username, isLogin } =this.props; 
     return (
         <AnswerTemplate
           answerContents={answerContents}
@@ -163,9 +170,10 @@ class AnswerEntry extends Component {
           deleteAnswer={deleteAnswer}
           handleInputChange={handleInputChange}
           toggleIsEditable={toggleIsEditable}
-          didLike={didLike}
           postLike={postLike}
           deleteLike={deleteLike}
+          myUserName={username}  // like버튼 렌더 여부에 쓸 prop 1
+          isLogin={isLogin}  // like버튼 렌더 여부에 쓸 prop 2
         />
     );
   }
