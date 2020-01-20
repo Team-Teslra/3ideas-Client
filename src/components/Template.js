@@ -11,7 +11,7 @@ class Template extends Component {
     super(props);
     this.state = {
       isHome: true,
-      isNavClicked: false,
+      isHomeClicked: false,
     }
   }
 
@@ -21,14 +21,14 @@ class Template extends Component {
     });
   }
 
-  toggleIsNavClicked = () => {
+  toggleIsHomeClicked = () => {
     this.setState({
-      isNavClicked: !this.state.isNavClicked
+      isHomeClicked: !this.state.isHomeClicked
     });
   }
 
   redirectToHome = () => {
-    this.toggleIsNavClicked();
+    this.toggleIsHomeClicked();
     this.props.history.push('/');
   }
 
@@ -53,7 +53,7 @@ class Template extends Component {
 
   render () {
     const { isLogin } = this.props;
-    const { isHome, isNavClicked } = this.state;
+    const { isHome, isHomeClicked } = this.state;
     const { redirectToHome } = this;
     
     return (
@@ -65,7 +65,7 @@ class Template extends Component {
           <Link to={'/login'}>로그인</Link> 
         }
         { !isLogin && <Link to={'/signup'}>회원가입</Link> }
-        <Link to={{state: {isNavClicked: isNavClicked }}} onClick={redirectToHome}>
+        <Link to={{state: {isHomeClicked: isHomeClicked }}} onClick={redirectToHome}>
           <button>
             홈화면으로
           </button>

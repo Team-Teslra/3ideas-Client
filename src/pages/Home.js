@@ -19,7 +19,7 @@ class Home extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if(prevProps.location.state) {
-      if (prevProps.location.state.isNavClicked !== this.props.location.state.isNavClicked) {
+      if (prevProps.location.state.isHomeClicked !== this.props.location.state.isHomeClicked) {
         this.setState({
           isSearching: false
         });
