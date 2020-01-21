@@ -22,9 +22,8 @@ class Asks extends Component {
     // this.props.location 객체에서 search값을 객체로 뽑아주는 라이브러리 qs
     const query = qs.parse(this.props.location.search, {ignoreQueryPrefix: true});
     const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
-    let filteredQuery = null;
-    if ('q' in query && query.q !== '') {
-      filteredQuery = query.q.replace(regExp, '')
+    let filteredQuery = query.q && query.q.replace(regExp, '');
+    if ('q' in query && filteredQuery && filteredQuery !== '') {
       url = `http://localhost:5000/search?q=${encodeURIComponent(filteredQuery)}`;
     }
 
