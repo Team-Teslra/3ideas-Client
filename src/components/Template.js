@@ -78,13 +78,14 @@ class Template extends Component {
   }
   
   render () {
-    const { isLogin } = this.props;
+    const { isLogin, username } = this.props;
     const { showWriteAndSearch, isHomeClicked, showSearchOnly } = this.state;
     const { redirectToHome } = this;
     
     return (
       <div>
         <h2>3 ideas</h2>
+        {isLogin && <Link to={`/user/${username}`}>내 정보</Link>}
         {isLogin ? 
           <span onClick={this.handleLogout}>로그아웃</span>
         : 

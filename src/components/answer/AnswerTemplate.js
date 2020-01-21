@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const AnswerTemplate = (props) => {
 
@@ -49,7 +50,7 @@ const AnswerTemplate = (props) => {
           <textarea name="contents" value={editedAnswerContents.contents} onChange={(e) => handleInputChange(e)}></textarea>
           : <li>contents: {contents}</li>
         }
-        <li>username: {username}</li>
+        <li>username: <Link to={`/user/${username}`}>{username}</Link></li>
         <li>createdAt: {createdAt}</li>
         <li>updatedAt: {updatedAt}</li>
         <li>likes: {like.length}</li>
