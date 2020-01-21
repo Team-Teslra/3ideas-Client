@@ -18,8 +18,8 @@ class Asks extends Component {
   componentDidMount() {
     // const keyword = this.props.match.keyword ? this.props.match.params.keyword : '';
     // const keyword = '?q=' + this.props.match.params.keyword || '/'
-    console.log("match:", this.props.match);
-    console.log("path:", this.props.path);
+    // console.log("match:", this.props.match);
+    // console.log("path:", this.props.path);
     // if (this.props.path === "/ans")
     let keyword = '/';
     if (this.props.match.params.keyword) {
@@ -34,26 +34,24 @@ class Asks extends Component {
         this.setState({
           asks: res.data
         })
-        console.log(res);
       }).catch(err => {
         console.log(err.message);
         // this.setState({ errorMessage: err.message });
       });
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    // console.log('업데이트?')
-    // console.log('prevProps: ',prevProps)
-    // console.log('prevState: ',prevState)
+  componentDidUpdate() {
+    let category = '/';
+    if (this.props.match.params.category) {
+      category = '?q=' + this.props.match.params.category.split(' ').join('+');
+    }
+    console.log('category', category)
   }
   
 
   handleCategoryChange(e) {
     this.setState({selectedCategory: e.target.value})
-    console.log(this.props.history)
-    this.props.history.location.pathname = '';
-    this.props.history.push(`category/${e.target.value}`)
-    // return <Redirect to={`http://localhost:3000/category/${e.target.value}`}/>
+    this.props.history.push(`/category/${e.target.value}`)
   }
   
   render() {
@@ -72,7 +70,10 @@ class Asks extends Component {
             <option>&nbsp;</option>
             {category.map(item => {
               const { categoryName } = item;
-              return <option>{categoryName}</option>
+              return (
+                // eslint-disable-next-line react/jsx-key
+                <option>{categoryName}</option>
+              )
             })}
           </select>
         </div>

@@ -12,14 +12,14 @@ class App extends Component {
       isLogin: false,
       username: null,
       renderChildren: false,
-      category:[{categoryName: "one"},{categoryName: "two"},{categoryName: "three"}]  // ! ask, asks에 내려줄거다.
+      category:[]  // ! ask, asks에 내려줄거다.
     };
   }
 
   componentDidMount() {
     axios.get('http://localhost:5000/category')
     .then(res => this.setState({
-      category: res
+      category: res.data
     }))
     .catch(err => console.log(err))
     this.setState({
