@@ -58,6 +58,7 @@ class Asks extends Component {
     return (
       <>
         <h3>{keyword !== '' ? `'${keyword}'의 검색결과` : '전체글 목록'}</h3>
+        {asks.length === 0 && keyword !== '' && <p>검색결과가 없습니다.</p>}
         {asks.map(ask => <AskListTemplate key={ask.id} ask={ask} asks={asks} keyword={keyword} />)}
       </>
     );
