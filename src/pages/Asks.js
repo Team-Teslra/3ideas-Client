@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import qs from 'qs';
 import axios from 'axios';
+import AskListTemplate from '../components/ask/AskListTemplate';
 
 axios.defaults.withCredentials = true;
 
@@ -22,9 +23,10 @@ class Asks extends Component {
 
     // this.props.location 객체에서 search값을 객체로 뽑아주는 라이브러리 qs
     const query = qs.parse(this.props.location.search, {ignoreQueryPrefix: true});
-    console.log(query);
-    if ('q' in query && query.q !== '') {
-      url = `http://localhost:5000/search?q=${encodeURIComponent(query.q)}`;
+    const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+    let filteredQuery = query.q && query.q.replace(regExp, '');
+    if ('q' in query && filteredQuery && filteredQuery !== '') {
+      url = `http://localhost:5000/search?q=${encodeURIComponent(filteredQuery)}`;
     }
 
     axios.get(url)
@@ -32,7 +34,7 @@ class Asks extends Component {
         console.log('글 목록 요청 성공')
         this.setState({
           asks: res.data,
-          keyword: query.q || ''
+          keyword: filteredQuery || ''
         })
       }).catch(err => {
         console.log(err.message);
@@ -68,11 +70,6 @@ class Asks extends Component {
     const { category } = this.props;
     const { handleCategoryChange } = this;
 
-    const style = {
-      width: '200px',
-      border: '1px solid black',
-      padding: '15px'
-    }
     return (
       <>
         <div>
@@ -87,21 +84,9 @@ class Asks extends Component {
             })}
           </select>
         </div>
-
-        <h3>{keyword !== '' ? `${keyword}의 검색결과` : '전체글 목록'}</h3>
-
-        {asks.map(ask => {
-          const { id, title, questionFlag, createdAt, username, commentsCount } = ask;
-          return ( 
-            <div key={id} style={style}>
-              <Link to={{pathname: `/ask/${id}`, state: {asksLength: asks.length || 0}}}>{title}</Link>
-              <p>{questionFlag ? '답변모집중' : '마감된질문'}</p>
-              <p>작성일 : {createdAt}</p>
-              <p>작성자 : {username}</p>
-              <p>답변수 : {commentsCount}</p>
-            </div> 
-          )
-        })}
+        <h3>{keyword !== '' ? `'${keyword}'의 검색결과` : '전체글 목록'}</h3>
+        {asks.length === 0 && keyword !== '' && <p>검색결과가 없습니다.</p>}
+        {asks.map(ask => <AskListTemplate key={ask.id} ask={ask} asks={asks} keyword={keyword} />)}
       </>
     );
   }
