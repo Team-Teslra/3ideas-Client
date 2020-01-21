@@ -15,25 +15,37 @@ class User extends Component {
       createdAt: null
     }
   }
+
+  getUserInfo = (username) => {
+    axios.get(`http://localhost:5000/user/${username}`)
+    .then(res => {
+      console.log('유저 정보 요청 성공')
+      this.setState({
+        ...res.data
+      });
+      console.log(res.data);
+    }).catch(err => {
+      console.log(err.message);
+      // this.setState({ errorMessage: err.message });
+    });
+  }
   
   componentDidMount() {
     this.props.changeCurrentPage('user');
     
-    const username = this.props.match.params.username;
     if (this.props.isLogin) {
-      axios.get(`http://localhost:5000/user/${username}`)
-        .then(res => {
-          console.log('유저 정보 요청 성공')
-          this.setState({
-            ...res.data
-          });
-          console.log(res.data);
-        }).catch(err => {
-          console.log(err.message);
-          // this.setState({ errorMessage: err.message });
-        });
+      const username = this.props.match.params.username;
+      this.getUserInfo(username);
     }
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.match.params.username !== this.props.match.params.username) {
+      const username = this.props.match.params.username;
+      this.getUserInfo(username);
+    }
+  }
+  
   
   render() {
     const { isLogin } = this.props;

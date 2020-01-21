@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const AskTemplate = (props) => {
   const { havePermission, modifyAsk, deleteAsk, handleInputChange, toggleIsEditable, isEditable, editedAskContents } = props;
@@ -16,7 +17,7 @@ const AskTemplate = (props) => {
           <textarea name="contents" value={editedAskContents.contents} onChange={(e) => handleInputChange(e)}></textarea>
           : <li>contents: {contents}</li>
         }
-        <li>username: {username}</li>
+        <li>username: <Link to={`/user/${username}`}>{username}</Link></li>
         <li>createdAt: {createdAt}</li>
         <li>updatedAt: {updatedAt}</li>
       </ul>
