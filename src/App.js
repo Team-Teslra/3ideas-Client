@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Home, Login, SignUp, Ask, Asks } from './pages';
+import { Home, Login, SignUp, Ask, Asks, User } from './pages';
 import Template from './components/Template';
 import AskEntry from './components/ask/AskEntry';
 import axios from 'axios';
+
+axios.defaults.withCredentials = true;
 
 class App extends Component {
   constructor(props) {
@@ -74,13 +76,13 @@ class App extends Component {
               render={({ match }) => <Asks isLogin={isLogin} username={username} match={match} params={match.params} currentPage={currentPage} changeCurrentPage={changeCurrentPage} category={category} />}
             />
             <Route path="/ask/:id" render={() => <AskEntry isLogin={isLogin} username={username} currentPage={currentPage} changeCurrentPage={changeCurrentPage} />} />
+            <Route path="/user/:username" render={() => <User isLogin={isLogin} username={username} currentPage={currentPage} changeCurrentPage={changeCurrentPage} />} />
             <Route
               path="/login"
               render={() => (
                 <Login isLogin={isLogin} handleIsLoginChange={handleIsLoginChange} handleUsername={handleUsername} currentPage={currentPage} changeCurrentPage={changeCurrentPage} />
               )}
             />
-
             <Route path="/signup" render={() => <SignUp isLogin={isLogin} currentPage={currentPage} changeCurrentPage={changeCurrentPage} />} />
             <Route exact path="/ask" render={() => <Ask isLogin={isLogin} username={username} currentPage={currentPage} changeCurrentPage={changeCurrentPage} category={category} />} />
           </Switch>
