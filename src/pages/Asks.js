@@ -19,9 +19,10 @@ class Asks extends Component {
 
   getCategorizedAskList = () => {
     let url = `http://localhost:5000/asks`;
+    console.log(this.props)
     const category = qs.parse(this.props.location.pathname.split('/')[2]);
     console.log(Object.keys(category)[0])
-    if (Object.keys(category)[0] && Object.keys(category)[0] !== '') {
+    if (Object.keys(category)[0] !== 'all' && Object.keys(category)[0] && Object.keys(category)[0] !== '') {
       url = `http://localhost:5000/category/${encodeURIComponent(Object.keys(category)[0])}`;
     }
     axios.get(url)
@@ -101,6 +102,8 @@ class Asks extends Component {
             {category.map(item => {
               const { categoryName } = item;
               return (
+                categoryName === null ? 
+                <option>all</option> :
                 // eslint-disable-next-line react/jsx-key
                 <option>{categoryName}</option>
               )
