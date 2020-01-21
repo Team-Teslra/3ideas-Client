@@ -10,8 +10,10 @@ class Asks extends Component {
     super(props);
     this.state = {
       asks: [],
+      selectedCategory: ''
       keyword: ''
     };
+    this.handleCategoryChange = this.handleCategoryChange.bind(this);
   }
 
   // 키워드로 검색한(키워드가 존재할 때, 없으면 전체) 모든 글의 id 목록을 받음 
@@ -32,13 +34,18 @@ class Asks extends Component {
           asks: res.data,
           keyword: query.q || ''
         })
-        console.log(res);
       }).catch(err => {
         console.log(err.message);
         // this.setState({ errorMessage: err.message });
       });
   }
 
+
+  handleCategoryChange(e) {
+    this.setState({selectedCategory: e.target.value})
+    this.props.history.push(`/category/${e.target.value}`)
+  }
+  
   componentDidMount() {
     this.getAskList();
     this.props.changeCurrentPage('asks');
@@ -48,10 +55,19 @@ class Asks extends Component {
     if (prevProps.location.search !== this.props.location.search) {
       this.getAskList();
     }
+    
+    let category = '/';
+    if (this.props.match.params.category) {
+      category = '?q=' + this.props.match.params.category.split(' ').join('+');
+    }
+    console.log('category', category)
   }
   
   render() {
     const { asks, keyword } = this.state;
+    const { category } = this.props;
+    const { handleCategoryChange } = this;
+
     const style = {
       width: '200px',
       border: '1px solid black',
@@ -59,7 +75,21 @@ class Asks extends Component {
     }
     return (
       <>
+        <div>
+          <select onChange={handleCategoryChange}>
+            <option>&nbsp;</option>
+            {category.map(item => {
+              const { categoryName } = item;
+              return (
+                // eslint-disable-next-line react/jsx-key
+                <option>{categoryName}</option>
+              )
+            })}
+          </select>
+        </div>
+
         <h3>{keyword !== '' ? `${keyword}의 검색결과` : '전체글 목록'}</h3>
+
         {asks.map(ask => {
           const { id, title, questionFlag, createdAt, username, commentsCount } = ask;
           return ( 
