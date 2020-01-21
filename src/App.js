@@ -12,7 +12,7 @@ class App extends Component {
       isLogin: false,
       username: null,
       renderChildren: false,
-      category:[]  // ! ask, asks에 내려줄거다.
+      category:[],  // ! ask, asks에 내려줄거다.
       currentPage: null,
     };
   }
