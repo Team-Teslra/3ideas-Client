@@ -22,7 +22,7 @@ class Asks extends Component {
     console.log(this.props)
     const category = qs.parse(this.props.location.pathname.split('/')[2]);
     console.log(Object.keys(category)[0])
-    if (Object.keys(category)[0] !== 'all' && Object.keys(category)[0] && Object.keys(category)[0] !== '') {
+    if (Object.keys(category)[0] !== '전체 글 보기' && Object.keys(category)[0] && Object.keys(category)[0] !== '') {
       url = `http://localhost:5000/category/${encodeURIComponent(Object.keys(category)[0])}`;
     }
     axios.get(url)
@@ -99,13 +99,12 @@ class Asks extends Component {
       <>
         <div>
           <select onChange={handleCategoryChange}>
-            {category.map(item => {
+            <option>전체 글 보기</option>
+            {category.map((item, i) => {
               const { categoryName } = item;
               return (
-                categoryName === null ? 
-                <option>all</option> :
                 // eslint-disable-next-line react/jsx-key
-                <option>{categoryName}</option>
+                <option key={i}>{categoryName}</option>
               )
             })}
           </select>

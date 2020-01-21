@@ -3,7 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 
 const AskListTemplate = (props) => {
   const { asks, keyword } = props;
-  const { id, title, questionFlag, createdAt, username, commentsCount, contents, answers } = props.ask;
+  const { id, title, questionFlag, createdAt, username, commentsCount, contents, answers } = props.ask;  //categories : [ {categoryName: 카테고리 이름}, ]} 
   const style = {
     width: '200px',
     border: '1px solid black',

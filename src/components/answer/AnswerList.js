@@ -10,8 +10,12 @@ class AnswerList extends Component {
     this.state = {
       answers: [],
       selectedAnswers: [],
-      isSelectable: false
+      isSelectable: false,
+      sortButton: true,
+      sortButtonAfterRanked: true
     };
+    this.sortButtonChanger = this.sortButtonChanger.bind(this);
+    this.sortButtonChangerAfterRanked = this.sortButtonChangerAfterRanked.bind(this)
   }
   
   handleIsSelectable = () => {
@@ -96,12 +100,45 @@ class AnswerList extends Component {
     }
   }
 
+  sortButtonChanger() {  //? this.state.sortButton이 true일 경우 먼저등록한  답변순, false일 경우 좋아요 많은 순이다.
+    const boolean = this.state.sortButton;
+    this.setState({
+      sortButton: !boolean
+    })
+  }
+
+  sortButtonChangerAfterRanked() {
+    const boolean = this.state.sortButtonAfterRanked;
+    this.setState({
+      sortButtonAfterRanked: !boolean
+    })
+  }
+
   render() {
-    const { getAnswerListInformation, addSelectedAnswer, removeSelectedAnswer, postSelectAnswers } = this;
-    const { answers, isSelectable, selectedAnswers } = this.state;
+    const { getAnswerListInformation, addSelectedAnswer, removeSelectedAnswer, postSelectAnswers, sortButtonChanger, sortButtonChangerAfterRanked } = this;
+    const { isSelectable, selectedAnswers, sortButton, sortButtonAfterRanked } = this.state;
+    var { answers } = this.state;
     const { isLogin, username, questionFlag, askId } = this.props;
+    if (questionFlag) {
+      if (!sortButton) {
+        answers = answers.sort((a, b) => { return b.like - a.like})
+      } else {
+        answers = answers.sort((a, b) => { return a.id - b.id })
+      }
+    } else {
+      if (sortButtonAfterRanked) {
+        answers = answers.filter((a) => {return a.answerFlag !== null}).sort((a, b) => { return a.answerFlag - b.answerFlag })
+      } else {
+        answers = answers.filter((a) => {return a}).sort((a, b) => { return b.like - a.like })
+      }     
+    }
+    
     return (
       <div>
+        <div>-------------------------------------------------------------------------</div>
+        {questionFlag ?
+          (sortButton ? <button onClick={sortButtonChanger}>좋아요 많은 순</button> : <button onClick={sortButtonChanger}>먼저 등록한 답변 순</button>)
+          : (sortButtonAfterRanked ? <button onClick={sortButtonChangerAfterRanked}>모든 답변 보기(좋아요순)</button> : <button onClick={sortButtonChangerAfterRanked}>선택된 답변 보기</button>)}
         {answers.map(answer => 
           <AnswerEntry 
             key={answer.id}
@@ -117,7 +154,8 @@ class AnswerList extends Component {
             removeSelectedAnswer={removeSelectedAnswer}
             postSelectAnswers={postSelectAnswers}
           />
-        )}
+          )
+          }
       </div>
     );
   }
