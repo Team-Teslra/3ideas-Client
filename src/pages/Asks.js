@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import qs from 'qs';
 import axios from 'axios';
+import AskListTemplate from '../components/ask/AskListTemplate';
 
 axios.defaults.withCredentials = true;
 
@@ -52,29 +53,24 @@ class Asks extends Component {
   
   render() {
     const { asks, keyword } = this.state;
-    const style = {
-      width: '200px',
-      border: '1px solid black',
-      padding: '15px'
-    }
     return (
       <>
         <h3>{keyword !== '' ? `${keyword}의 검색결과` : '전체글 목록'}</h3>
-        {asks.map(ask => {
-          const { id, title, questionFlag, createdAt, username, commentsCount } = ask;
-          return ( 
-            <div key={id} style={style}>
-              <Link to={{pathname: `/ask/${id}`, state: {asksLength: asks.length || 0}}}>{title}</Link>
-              <p>{questionFlag ? '답변모집중' : '마감된질문'}</p>
-              <p>작성일 : {createdAt}</p>
-              <p>작성자 : {username}</p>
-              <p>답변수 : {commentsCount}</p>
-            </div> 
-          )
-        })}
+        {asks.map(ask => <AskListTemplate key={ask.id} ask={ask} asks={asks} keyword={keyword} />)}
       </>
     );
   }
 }
 
 export default withRouter(Asks);
+
+// const { id, title, questionFlag, createdAt, username, commentsCount, contents, answers } = ask;
+// return ( 
+//   <div key={id} style={style}>
+//     <Link to={{pathname: `/ask/${id}`, state: {asksLength: asks.length || 0}}}>{title}</Link>
+//     <p>{questionFlag ? '답변모집중' : '마감된질문'}</p>
+//     <p>작성일 : {createdAt}</p>
+//     <p>작성자 : {username}</p>
+//     <p>답변수 : {commentsCount}</p>
+//   </div> 
+// )
