@@ -101,17 +101,21 @@ class AnswerList extends Component {
   }
 
   sortButtonChanger() {  //? this.state.sortButton이 true일 경우 먼저등록한  답변순, false일 경우 좋아요 많은 순이다.
+    const {askId} = this.props;
     const boolean = this.state.sortButton;
     this.setState({
       sortButton: !boolean
     })
+    this.getAnswerListInformation(askId);
   }
 
   sortButtonChangerAfterRanked() {
+    const {askId} = this.props;
     const boolean = this.state.sortButtonAfterRanked;
     this.setState({
       sortButtonAfterRanked: !boolean
     })
+    this.getAnswerListInformation(askId);
   }
 
   render() {
