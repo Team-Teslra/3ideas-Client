@@ -16,11 +16,11 @@ const AskInput = ({
       <form>
         <div>
           카테고리 선택
-          {category.map((item) => {
+          {category.map((item, i) => {
             const {categoryName} = item;
             return (
               // eslint-disable-next-line react/jsx-key
-              <div>
+              <div key={i}>
                 <label>
                   <input
                     type="checkbox"

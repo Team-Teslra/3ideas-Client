@@ -42,7 +42,6 @@ const AnswerTemplate = (props) => {
 
   return (
     <div style={style}>
-      {console.log(`${id}번 답변을 좋아한 유저 : ${likers}, `,`현재 로그인 중인유저: ${myUserName}`)}
       <h5>답글</h5>
       <ul>
         <li>id: {id}</li>
