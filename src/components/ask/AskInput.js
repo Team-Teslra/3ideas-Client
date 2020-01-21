@@ -7,7 +7,8 @@ const AskInput = ({
   answerLength,
   answerAmount,
   dueTo,
-  onInputChange
+  onInputChange,
+  onCategoryChange
 }) => {
   return (
     <div>
@@ -15,12 +16,21 @@ const AskInput = ({
       <form>
         <div>
           카테고리 선택
-          <select type="category" value={category} onChange={onInputChange('category')}>
-            <option>&nbsp;</option>
-            <option>개발</option>
-            <option>내발</option>
-            <option>새발</option>
-          </select>
+          {category.map((item) => {
+            const {categoryName} = item;
+            return (
+              // eslint-disable-next-line react/jsx-key
+              <div>
+                <label>
+                  <input
+                    type="checkbox"
+                    value={categoryName}
+                    onChange={onCategoryChange}
+                  />{categoryName}
+                </label>
+              </div>
+            )
+          })}
         </div>
         <div>
           <input
