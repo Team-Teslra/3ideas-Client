@@ -22,8 +22,9 @@ class Asks extends Component {
     // this.props.location 객체에서 search값을 객체로 뽑아주는 라이브러리 qs
     const query = qs.parse(this.props.location.search, {ignoreQueryPrefix: true});
     const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
-    const filteredQuery = query.q.replace(regExp, '');
-    if ('q' in query && filteredQuery !== '') {
+    let filteredQuery = null;
+    if ('q' in query && query.q !== '') {
+      filteredQuery = query.q.replace(regExp, '')
       url = `http://localhost:5000/search?q=${encodeURIComponent(filteredQuery)}`;
     }
 
@@ -56,7 +57,7 @@ class Asks extends Component {
     const { asks, keyword } = this.state;
     return (
       <>
-        <h3>{keyword !== '' ? `${keyword}의 검색결과` : '전체글 목록'}</h3>
+        <h3>{keyword !== '' ? `'${keyword}'의 검색결과` : '전체글 목록'}</h3>
         {asks.map(ask => <AskListTemplate key={ask.id} ask={ask} asks={asks} keyword={keyword} />)}
       </>
     );
