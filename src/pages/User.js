@@ -48,15 +48,16 @@ class User extends Component {
   
   
   render() {
-    const { isLogin } = this.props;
+    const { isLogin, match } = this.props;
     const { username, createdAt, postCount, commentsCount } = this.state;
     if (isLogin) {
       return (
         <div>
+          {this.props.username === match.params.username ? <h3>내 정보</h3> : <h3>{username} 정보</h3>}
           <p>username: {username}</p>
           <p>가입일: {createdAt}</p>
-          <p>작성한 질문글 수: {postCount}</p>
-          <p>작성한 답글 수: {commentsCount}</p>
+          {this.props.username === match.params.username && <p>작성한 질문글 수: {postCount}</p>}
+          {this.props.username === match.params.username && <p>작성한 답글 수: {commentsCount}</p>}
         </div>
       );
     } else {
