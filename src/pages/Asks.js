@@ -21,9 +21,10 @@ class Asks extends Component {
 
     // this.props.location 객체에서 search값을 객체로 뽑아주는 라이브러리 qs
     const query = qs.parse(this.props.location.search, {ignoreQueryPrefix: true});
-    console.log(query);
-    if ('q' in query && query.q !== '') {
-      url = `http://localhost:5000/search?q=${encodeURIComponent(query.q)}`;
+    const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+    const filteredQuery = query.q.replace(regExp, '');
+    if ('q' in query && filteredQuery !== '') {
+      url = `http://localhost:5000/search?q=${encodeURIComponent(filteredQuery)}`;
     }
 
     axios.get(url)
@@ -31,7 +32,7 @@ class Asks extends Component {
         console.log('글 목록 요청 성공')
         this.setState({
           asks: res.data,
-          keyword: query.q || ''
+          keyword: filteredQuery || ''
         })
         console.log(res);
       }).catch(err => {
@@ -63,14 +64,3 @@ class Asks extends Component {
 }
 
 export default withRouter(Asks);
-
-// const { id, title, questionFlag, createdAt, username, commentsCount, contents, answers } = ask;
-// return ( 
-//   <div key={id} style={style}>
-//     <Link to={{pathname: `/ask/${id}`, state: {asksLength: asks.length || 0}}}>{title}</Link>
-//     <p>{questionFlag ? '답변모집중' : '마감된질문'}</p>
-//     <p>작성일 : {createdAt}</p>
-//     <p>작성자 : {username}</p>
-//     <p>답변수 : {commentsCount}</p>
-//   </div> 
-// )
