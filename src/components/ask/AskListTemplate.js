@@ -19,9 +19,7 @@ const AskListTemplate = (props) => {
   }
 
   const convertToHTMLElement = (text) => {
-    const markedText = markKeywords(text);
-
-    return <span dangerouslySetInnerHTML={ {__html: markedText} }></span>
+    return <span dangerouslySetInnerHTML={ {__html: text} }></span>
   }
 
   const cutMarkedText = (text) => {
@@ -34,28 +32,22 @@ const AskListTemplate = (props) => {
   }
 
   const cutContents = (text) => {
-    return `...${text.slice(0, 40)}`;
+    return `${text.slice(0, 40)}...`;
   }
-
-  // 답글 검색된 게 10개여도 다 보이게 해야하나? 2개까지만 보여주기?
-  console.log(answers)
 
   return (
     <div style={style}>
       <Link to={{pathname: `/ask/${id}`, state: {asksLength: asks.length || 0}}}>
-        {keyword === '' ? title : convertToHTMLElement(title)}
+        {keyword === '' ? title : convertToHTMLElement(markKeywords(title))}
       </Link>
       <p>{questionFlag ? '답변모집중' : '마감된질문'}</p>
       <p>작성일 : {createdAt}</p>
       <p>작성자 : {username}</p>
       <p>답변수 : {commentsCount}</p>
-      {keyword === '' ? <p>내용 : {cutContents(contents)}</p> : <p>내용 : {cutMarkedText(contents)}</p>}
-      {answers && answers.length > 0 && <p>{answers[0].id}</p>}
+      {keyword === '' ? <p>내용 : {cutContents(contents)}</p> : <p>내용검색 : {cutMarkedText(contents)}</p>}
+      {answers && answers.length > 0 && <p>답글검색 : {cutMarkedText(answers[0].contents)}</p>}
     </div>
   );
 };
 
 export default withRouter(AskListTemplate);
-
-// {answers && answers.length > 0 && answers.map(answer => <AskListTemplate key={answer.id} answer={answer}/>)}
-
