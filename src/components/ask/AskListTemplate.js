@@ -1,9 +1,8 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Row, Col, Button, Input, PageHeader, Typography, Descriptions, Avatar, Icon } from 'antd';
+import { Row, Input, Typography } from 'antd';
 
-const { Paragraph, Title, Text } = Typography;
-const { TextArea } = Input;
+const { Paragraph, Text } = Typography;
 
 const AskListTemplate = props => {
   const { asks, keyword } = props;
