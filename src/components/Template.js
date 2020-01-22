@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import axios from 'axios';
 import SearchInput from './SearchInput';
+import { Row, Col } from 'antd';
+import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 
@@ -83,17 +84,32 @@ class Template extends Component {
     const { showWriteAndSearch, isHomeClicked, showSearchOnly } = this.state;
     const { redirectToHome } = this;
 
+    const styleTemplate = { padding: '25px 0'};
+    const styleNav = { height: '55px', paddingBottom: '8px', borderBottom: '1px solid #d5d5d5' };
+    const styleLogout = { color: '#1890ff'}
+
     return (
-      <div>
+      <div style={styleTemplate}>
+        <Row>
         <h2>3 ideas</h2>
-        {isLogin && <Link to={`/user/${username}`}>내 정보</Link>}
-        {isLogin ? <span onClick={this.handleLogout}>로그아웃</span> : <Link to={'/login'}>로그인</Link>}
-        {!isLogin && <Link to={'/signup'}>회원가입</Link>}
-        <Link to={{ state: { isHomeClicked: isHomeClicked } }} onClick={redirectToHome}>
-          <button>홈화면으로</button>
-        </Link>
-        {isLogin && showWriteAndSearch && <Link to={'/ask'}>질문글 작성하기</Link>}
-        {showWriteAndSearch ? <SearchInput /> : showSearchOnly ? <SearchInput /> : null}
+        </Row>
+        <Row style={styleNav} type="flex" align="middle">
+          <Col span={8}>
+            <Row gutter={8}>
+              <Col span={8}>
+                <Link to={{ state: { isHomeClicked: isHomeClicked } }} onClick={redirectToHome}>Home</Link>
+              </Col>
+              <Col span={8}>{isLogin ? <span style={styleLogout} onClick={this.handleLogout}>로그아웃</span> : <Link to={'/login'}>로그인</Link>}</Col>
+              <Col span={8}>{isLogin ? <Link to={`/user/${username}`}>내 정보</Link> : <Link to={'/signup'}>회원가입</Link>}</Col>
+            </Row>
+          </Col>
+          <Col span={16}>
+            <Row type="flex" justify="end" align="middle">
+              <Col span={5}>{isLogin && showWriteAndSearch && <Link to={'/ask'}>질문글 작성하기</Link>}</Col>
+              <Col span={10}>{showWriteAndSearch ? <SearchInput /> : showSearchOnly ? <SearchInput /> : null}</Col>
+            </Row>
+          </Col>
+        </Row>
       </div>
     );
   }

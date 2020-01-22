@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { Row, Col, Button, Input } from 'antd';  
 
 class SearchInput extends Component {
   constructor(props) {
@@ -28,10 +29,12 @@ class SearchInput extends Component {
 
     return (
       <div>
-        <input type="text" value={keyword} onChange={e => handleKeywordChange(e)} />
-        <Link to={{ pathname: '/search', search: `?q=${encodeURIComponent(keyword)}` }}>
-          <button onClick={clearInput}>검색하기</button>
-        </Link>
+        <Row type="flex" justify="space-between">
+          <Col span={18}><Input placeholder="키워드를 입력하세요" value={keyword} onChange={e => handleKeywordChange(e)} /></Col>
+          <Col span={6}><Link to={{ pathname: '/search', search: `?q=${encodeURIComponent(keyword)}` }}>
+            <Button onClick={clearInput}>검색</Button>
+          </Link></Col>
+        </Row>
       </div>
     );
   }

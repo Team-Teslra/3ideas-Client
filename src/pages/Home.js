@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import SearchInput from '../components/SearchInput';
+import { Row, Col, Button } from 'antd';  
 
 class Home extends Component {
 
@@ -35,14 +36,27 @@ class Home extends Component {
     const { changeIsSearching } = this;
     const { isSearching } = this.state;
 
+    const styleHome = { height: '280px' }
+    const styleWrapper = { width: '600px' }
+    const styleButtons = { padding: '25px' }
+
     return (
       <div>
-        <p>메인에 들어왔을 때 가장 처음 보이는 페이지</p>
-        <Link to={'/ask'}>질문하기</Link>
-        <Link to={'/asks'}>질문목록</Link>
-        { isSearching ? 
-          <SearchInput /> : <button onClick={changeIsSearching}>질문 검색하기</button> 
-        }
+        <Row style={styleHome} type="flex" justify="center" align="middle">
+          <Row style={styleWrapper}>
+            <Row style={styleButtons} type="flex" justify="center">
+              <Link to={'/ask'}><Button type="primary">질문하기</Button></Link>
+            </Row>
+            <Row style={styleButtons} type="flex" justify="center">
+              <Link to={'/asks'}><Button type="primary">질문목록</Button></Link>
+            </Row>
+            <Row style={styleButtons} type="flex" justify="center">
+              { isSearching ? 
+                <Row type="flex"><SearchInput /></Row> : <Button type="primary" onClick={changeIsSearching}>질문검색</Button> 
+              }
+            </Row>
+          </Row>
+        </Row>
       </div>
     );
   }
