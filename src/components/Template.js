@@ -43,8 +43,7 @@ class Template extends Component {
         this.props.history.go(0);
       })
       .catch(err => {
-        this.setState({ errorMessage: err.message });
-        console.log(err.message);
+        console.log(err.response.data);
       });
   };
 

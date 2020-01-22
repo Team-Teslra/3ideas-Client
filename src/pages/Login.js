@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
 import LoginInput from '../components/user/LoginInput';
-import { Row, Col, Button, Input } from 'antd';  
+import { Row } from 'antd';
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
@@ -47,8 +47,7 @@ class Login extends Component {
         this.props.history.goBack();
       })
       .catch(err => {
-        this.setState({ errorMessage: err.message });
-        console.log(err.message);
+        this.setState({ errorMessage: err.response.data });
       });
   }
 
@@ -72,7 +71,10 @@ class Login extends Component {
             password={password}
             handleLogin={handleLogin}
           />
-          <p>{errorMessage}</p>
+        </Row>
+        <Row>&nbsp;</Row>
+        <Row type="flex" justify="center">
+          {errorMessage}
         </Row>
       </div>
     );

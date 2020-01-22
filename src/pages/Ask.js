@@ -45,8 +45,12 @@ class Ask extends Component {
       arr.map(el => {
         result.push({ categoryName: el });
       });
+      if(result.length === 0) {
+        result.push({categoryName: '미분류'})
+      }
       return result;
     })(selectedCategories);
+    console.log(categoryToRequest)
 
     axios
       .post('http://localhost:5000/ask', {
@@ -60,8 +64,7 @@ class Ask extends Component {
         this.props.history.push(`/ask/${res.data.id}`);
       })
       .catch(err => {
-        this.setState({ errorMessage: err.message });
-        console.log(err.message);
+        this.setState({ errorMessage: err.response.data });
       });
   }
 

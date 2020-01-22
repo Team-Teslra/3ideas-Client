@@ -26,13 +26,16 @@ class Asks extends Component {
     axios
       .get(url)
       .then(res => {
-        console.log('글 목록 요청 성공');
+        console.log('글 목록 요청 성공(카테고리별)');
+        res.data.map((data) => {
+          data.createdAt = data.createdAt.slice(0,-8).split('T').join(' ')
+        })
         this.setState({
           asks: res.data,
         });
       })
       .catch(err => {
-        console.log(err.message);
+        console.log(err.response.data);
       });
   };
 
@@ -53,14 +56,17 @@ class Asks extends Component {
       .get(url)
       .then(res => {
         console.log('글 목록 요청 성공');
+        res.data.map((data) => {
+          data.createdAt = data.createdAt.slice(0,-8).split('T').join(' ')
+        })
+        console.log(res.data)
         this.setState({
           asks: res.data,
           keyword: filteredQuery || '',
         });
       })
       .catch(err => {
-        console.log(err.message);
-        // this.setState({ errorMessage: err.message });
+        console.log(err.response.data);
       });
   };
 

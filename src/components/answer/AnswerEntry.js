@@ -35,9 +35,6 @@ class AnswerEntry extends Component {
   };
 
   postLike = () => {
-    // localStorage.setItem(`didLike${id}`, true);
-    // this.setState({ didLike: true })
-
     const { id } = this.state.answerContents;
     const { username } = this.props;
     axios
@@ -46,14 +43,11 @@ class AnswerEntry extends Component {
         this.getAnswerContents(id);
       })
       .catch(err => {
-        console.log(err.message);
+        console.log(err.response.data);
       });
   };
 
   deleteLike = () => {
-    // localStorage.setItem(`didLike${id}`, '');
-    // this.setState({ didLike: false })
-
     const { id } = this.state.answerContents;
     const { username } = this.props;
     axios
@@ -62,7 +56,7 @@ class AnswerEntry extends Component {
         this.getAnswerContents(id);
       })
       .catch(err => {
-        console.log(err.message);
+        console.log(err.response.data);
       });
   };
 
@@ -95,6 +89,8 @@ class AnswerEntry extends Component {
       .get(`http://localhost:5000/answer/${id}`)
       .then(res => {
         console.log('답변글 한 개 요청 성공');
+        res.data.createdAt = res.data.createdAt.slice(0,-8).split('T').join(' ');
+        res.data.updatedAt = res.data.updatedAt.slice(0,-8).split('T').join(' ');
         this.setState(
           {
             answerContents: res.data,
@@ -106,8 +102,7 @@ class AnswerEntry extends Component {
         );
       })
       .catch(err => {
-        console.log(err.message);
-        // this.setState({ errorMessage: err.message });
+        console.log(err.response.data);
       });
   };
 
@@ -130,8 +125,7 @@ class AnswerEntry extends Component {
           this.toggleIsEditable();
         })
         .catch(err => {
-          console.log(err.message);
-          // this.setState({ errorMessage: err.message });
+          console.log(err.response.data);
         });
     } else {
       this.toggleIsEditable();
@@ -148,8 +142,7 @@ class AnswerEntry extends Component {
         this.props.getAnswerListInformation(this.props.askId);
       })
       .catch(err => {
-        console.log(err.message);
-        // this.setState({ errorMessage: err.message });
+        console.log(err.response.data);
       });
   };
 

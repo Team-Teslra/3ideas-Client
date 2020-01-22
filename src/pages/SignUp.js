@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
 import SignUpInput from '../components/user/SignUpInput';
-import { Row, Col, Button, Input } from 'antd';  
+import { Row } from 'antd';
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
@@ -44,8 +44,8 @@ class SignUp extends Component {
         this.props.history.push('/login');
       })
       .catch(err => {
-        this.setState({ errorMessage: err.message });
-        console.log(err.message);
+        console.log(err.response.data)
+        this.setState({ errorMessage: err.response.data });
       });
   }
 
@@ -55,7 +55,8 @@ class SignUp extends Component {
 
   render() {
     const { isLogin } = this.props;
-    const { username, password, errorMessage } = this.state;
+    const { username, password } = this.state;
+    var { errorMessage } = this.state;
     const { handleUsernameChange, handlePasswordChange, handleSignUp } = this;
 
     return (
@@ -69,7 +70,10 @@ class SignUp extends Component {
             password={password}
             handleSignUp={handleSignUp}
           />
-          <p>{errorMessage}</p>
+        </Row>
+        <Row>&nbsp;</Row>
+        <Row type="flex" justify="center">
+          {errorMessage}
         </Row>
       </div>
     );

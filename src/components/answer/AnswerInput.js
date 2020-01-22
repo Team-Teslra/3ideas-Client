@@ -33,8 +33,7 @@ class AnswerInput extends Component {
         changeKeyState();
       })
       .catch(err => {
-        this.setState({ errorMessage: err.message });
-        console.log(err.message);
+        console.log(err.response.data);
       });
   };
 
