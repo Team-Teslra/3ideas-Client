@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col, Button, Input, PageHeader, Typography, Descriptions, Avatar } from 'antd';
+import { Row, Button, Input, PageHeader, Typography, Descriptions } from 'antd';
 const { Paragraph } = Typography;
 
 const { TextArea } = Input;
@@ -17,11 +17,10 @@ const AskTemplate = props => {
     questionFlag,
     isLogin,
     loginUsername,
-    author,
     displayAnswerInput,
     toggleDisplayAnswerInput
   } = props;
-  const { id, title, contents, username, createdAt, updatedAt } = props.askContents;
+  const { title, contents, username, createdAt, updatedAt } = props.askContents;
 
   const styleAskTemplate = { margin: '20px 0', paddingBottom: '18px', borderBottom: '1px solid #ededed' };
   const styleWrapper = { marginBottom: '15px' };

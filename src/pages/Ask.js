@@ -50,7 +50,6 @@ class Ask extends Component {
       }
       return result;
     })(selectedCategories);
-    console.log(categoryToRequest)
 
     axios
       .post('http://localhost:5000/ask', {

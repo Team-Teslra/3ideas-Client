@@ -3,8 +3,9 @@ import { withRouter } from 'react-router-dom';
 import qs from 'qs';
 import axios from 'axios';
 import AskListTemplate from '../components/ask/AskListTemplate';
-import { Row, Col, Button, Input, PageHeader, Typography, Descriptions, Avatar, Icon, BackTop, Card } from 'antd';
+import { Row, Col, Typography,BackTop, Card } from 'antd';
 
+const { Title } = Typography;
 
 axios.defaults.withCredentials = true;
 
@@ -61,7 +62,6 @@ class Asks extends Component {
         res.data.map((data) => {
           data.createdAt = data.createdAt.slice(0,-8).split('T').join(' ')
         })
-        console.log(res.data)
         this.setState({
           asks: res.data,
           keyword: filteredQuery || '',
@@ -100,6 +100,7 @@ class Asks extends Component {
     const { category } = this.props;
     const { handleCategoryChange } = this;
     const styleCard = { height: '350px'};
+    const styleTitle = { margin: '15px 0'}
     
     return (
       <>
@@ -112,11 +113,13 @@ class Asks extends Component {
             })}
           </select>
         </div>
-        <h3>{keyword !== '' ? `'${keyword}'의 검색결과` : '전체글 목록'}</h3>
+        <div style={styleTitle}>
+        <Title level={4}>{keyword !== '' ? `'${keyword}'의 검색결과` : '전체글 목록'}</Title>
         {asks.length === 0 && keyword !== '' && <p>검색결과가 없습니다.</p>}
+        </div>
         <Row gutter={[16, 16]}>
         {asks.map(ask => (
-          <Col span={8}><Card style={styleCard}><AskListTemplate key={ask.id} ask={ask} asks={asks} keyword={keyword} /></Card></Col>
+          <Col key={ask.id} span={8}><Card style={styleCard}><AskListTemplate ask={ask} asks={asks} keyword={keyword} /></Card></Col>
         ))}
         </Row>
         <BackTop />

@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import AskTemplate from './AskTemplate';
 import AnswerInput from '../answer/AnswerInput';
 import AnswerList from '../answer/AnswerList';
-import { Row, Col, Button, Input, Icon, BackTop } from 'antd';
+import { Row, Button, Icon, BackTop } from 'antd';
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
