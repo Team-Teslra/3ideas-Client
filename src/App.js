@@ -62,15 +62,15 @@ class App extends Component {
       return (
         <div>
           <Row>
-          <Col span={12} offset={6}>
-            <Template
-              isLogin={isLogin}
-              username={username}
-              handleIsLoginChange={handleIsLoginChange}
-              currentPage={currentPage}
-              changeCurrentPage={changeCurrentPage}
-            />
-          </Col>
+            <Col span={12} offset={6}>
+              <Template
+                isLogin={isLogin}
+                username={username}
+                handleIsLoginChange={handleIsLoginChange}
+                currentPage={currentPage}
+                changeCurrentPage={changeCurrentPage}
+              />
+            </Col>
           </Row>
           <Row>
           <Col span={12} offset={6}>
