@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import { Home, Login, SignUp, Ask, Asks, User } from './pages';
 import Template from './components/Template';
 import AskEntry from './components/ask/AskEntry';
+import { Row, Col } from 'antd';  
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
@@ -60,13 +61,19 @@ class App extends Component {
     if (renderChildren) {
       return (
         <div>
-          <Template
-            isLogin={isLogin}
-            username={username}
-            handleIsLoginChange={handleIsLoginChange}
-            currentPage={currentPage}
-            changeCurrentPage={changeCurrentPage}
-          />
+          <Row>
+          <Col span={12} offset={6}>
+            <Template
+              isLogin={isLogin}
+              username={username}
+              handleIsLoginChange={handleIsLoginChange}
+              currentPage={currentPage}
+              changeCurrentPage={changeCurrentPage}
+            />
+          </Col>
+          </Row>
+          <Row>
+          <Col span={12} offset={6}>
           <Switch>
             <Route
               exact
@@ -148,6 +155,8 @@ class App extends Component {
               )}
             />
           </Switch>
+          </Col>
+          </Row>
         </div>
       );
     } else {

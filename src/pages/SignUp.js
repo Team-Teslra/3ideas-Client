@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
 import SignUpInput from '../components/user/SignUpInput';
+import { Row, Col, Button, Input } from 'antd';  
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
@@ -59,15 +60,17 @@ class SignUp extends Component {
 
     return (
       <div>
-        {isLogin ? <Redirect to="/" /> : ''}
-        <SignUpInput
-          onUsernameChange={handleUsernameChange}
-          onPasswordChange={handlePasswordChange}
-          username={username}
-          password={password}
-        />
-        <p>{errorMessage}</p>
-        <button onClick={handleSignUp}>SignUp</button>
+        <Row type="flex" justify="center">
+          {isLogin ? <Redirect to="/" /> : ''}
+          <SignUpInput
+            onUsernameChange={handleUsernameChange}
+            onPasswordChange={handlePasswordChange}
+            username={username}
+            password={password}
+            handleSignUp={handleSignUp}
+          />
+          <p>{errorMessage}</p>
+        </Row>
       </div>
     );
   }
