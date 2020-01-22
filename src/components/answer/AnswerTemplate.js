@@ -78,19 +78,21 @@ const AnswerTemplate = props => {
           <Col span={21}>
             <span style={styleUsername}><Link to={`/user/${username}`}>{username}</Link>의 아이디어</span>
             {isEditable ? (
-              <textarea
+              <TextArea rows={4}
                 name="contents"
                 value={editedAnswerContents.contents}
                 onChange={e => handleInputChange(e)}
-              ></textarea>
+              ></TextArea>
             ) : (
               <Paragraph style={styleContents}>{contents}</Paragraph>
             )}
-            <Descriptions>
-              <Descriptions.Item label=""></Descriptions.Item>
-              <Descriptions.Item label="작성">{createdAt}</Descriptions.Item>
-              <Descriptions.Item label="수정">{updatedAt}</Descriptions.Item>
-            </Descriptions>
+            {!isEditable && (
+              <Descriptions>
+                <Descriptions.Item label=""></Descriptions.Item>
+                <Descriptions.Item label="작성">{createdAt}</Descriptions.Item>
+                <Descriptions.Item label="수정">{updatedAt}</Descriptions.Item>
+              </Descriptions>
+            )}
           </Col>
         </Row>
         <div>
