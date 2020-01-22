@@ -14,6 +14,12 @@ const AskTemplate = props => {
     toggleIsEditable,
     isEditable,
     editedAskContents,
+    questionFlag,
+    isLogin,
+    loginUsername,
+    author,
+    displayAnswerInput,
+    toggleDisplayAnswerInput
   } = props;
   const { id, title, contents, username, createdAt, updatedAt } = props.askContents;
 
@@ -60,6 +66,17 @@ const AskTemplate = props => {
         <div>
           {havePermission && isEditable && <Button style={styleButton} onClick={modifyAsk}>수정하기</Button>}
           {havePermission ? !isEditable ? <Button style={styleButton} onClick={deleteAsk}>글 삭제</Button> : null : null}
+        </div>
+        <div>
+          {questionFlag && isLogin ? (
+            loginUsername !== username ? (
+              displayAnswerInput ? (
+                <Button onClick={toggleDisplayAnswerInput}>작성 취소하기</Button>
+              ) : (
+                <Button onClick={toggleDisplayAnswerInput}>답글 작성하기</Button>
+              )
+            ) : null
+          ) : null}
         </div>
       </Row>
     </div>

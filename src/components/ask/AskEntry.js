@@ -198,16 +198,12 @@ class AskEntry extends Component {
           deleteAsk={deleteAsk}
           handleInputChange={handleInputChange}
           toggleIsEditable={toggleIsEditable}
+          questionFlag={questionFlag}
+          isLogin={isLogin}
+          loginUsername={username}
+          displayAnswerInput={displayAnswerInput}
+          toggleDisplayAnswerInput={toggleDisplayAnswerInput}
         />
-        {questionFlag && isLogin ? (
-          username !== askContents.username ? (
-            displayAnswerInput ? (
-              <Button onClick={toggleDisplayAnswerInput}>작성 취소하기</Button>
-            ) : (
-              <Button onClick={toggleDisplayAnswerInput}>답글 작성하기</Button>
-            )
-          ) : null
-        ) : null}
         {displayAnswerInput && (
           <AnswerInput
             username={username}
