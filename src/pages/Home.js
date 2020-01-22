@@ -23,8 +23,8 @@ class Home extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.location.state) {
-      if (prevProps.location.state.isHomeClicked !== this.props.location.state.isHomeClicked) {
+    if (prevProps.location) {
+      if (prevProps.location.key !== this.props.location.key) {
         this.setState({
           isSearching: false,
         });

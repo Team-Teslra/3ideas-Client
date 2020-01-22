@@ -11,19 +11,11 @@ class Template extends Component {
     super(props);
     this.state = {
       showWriteAndSearch: true,
-      showSearchOnly: false,
-      isHomeClicked: false,
+      showSearchOnly: false
     };
   }
 
-  toggleIsHomeClicked = () => {
-    this.setState({
-      isHomeClicked: !this.state.isHomeClicked,
-    });
-  };
-
   redirectToHome = () => {
-    this.toggleIsHomeClicked();
     this.props.history.push('/');
   };
 
@@ -80,8 +72,7 @@ class Template extends Component {
 
   render() {
     const { isLogin, username } = this.props;
-    const { showWriteAndSearch, isHomeClicked, showSearchOnly } = this.state;
-    const { redirectToHome } = this;
+    const { showWriteAndSearch, showSearchOnly } = this.state;
 
     const styleTemplate = { padding: '25px 0'};
     const styleNav = { height: '55px', paddingBottom: '8px', borderBottom: '1px solid #d5d5d5' };
@@ -96,7 +87,7 @@ class Template extends Component {
           <Col span={8}>
             <Row gutter={8}>
               <Col span={8}>
-                <Link to={{ state: { isHomeClicked: isHomeClicked } }} onClick={redirectToHome}>Home</Link>
+                <Link to={'/'}>Home</Link>
               </Col>
               <Col span={8}>{isLogin ? <span style={styleLogout} onClick={this.handleLogout}>로그아웃</span> : <Link to={'/login'}>로그인</Link>}</Col>
               <Col span={8}>{isLogin ? <Link to={`/user/${username}`}>내 정보</Link> : <Link to={'/signup'}>회원가입</Link>}</Col>
