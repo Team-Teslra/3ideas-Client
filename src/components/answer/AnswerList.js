@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import AnswerEntry from './AnswerEntry';
-import { Row, Col, Button, Input, PageHeader, Typography, Descriptions, Avatar, Icon } from 'antd';
+import { Button, Icon } from 'antd';
 
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
-
-const { Paragraph } = Typography;
-const { TextArea } = Input;
 
 class AnswerList extends Component {
   constructor(props) {

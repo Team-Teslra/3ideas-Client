@@ -50,7 +50,6 @@ class Ask extends Component {
       }
       return result;
     })(selectedCategories);
-    console.log(categoryToRequest)
 
     axios
       .post(`${process.env.REACT_APP_BACKEND_HOST}/ask`, {

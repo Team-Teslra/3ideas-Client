@@ -1,9 +1,8 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Row, Col, Button, Input, PageHeader, Typography, Descriptions, Avatar, Icon } from 'antd';
+import { Row, Typography } from 'antd';
 
-const { Paragraph, Title, Text } = Typography;
-const { TextArea } = Input;
+const { Paragraph, Text } = Typography;
 
 const AskListTemplate = props => {
   const { asks, keyword } = props;
@@ -32,11 +31,6 @@ const AskListTemplate = props => {
     return convertToHTMLElement(textToShow);
   };
 
-  const cutContents = text => {
-    return `${text.slice(0, 40)}...`;
-  };
-
-  // const styleAskListTemplate  = { border: '1px solid grey'}
   const styleTitle = { color: '#333', fontSize: '16px', marginTop: '5px' };
   const styleAnswerSign = { color: 'CORAL'}
 
@@ -56,7 +50,7 @@ const AskListTemplate = props => {
       </Row>
       <p>답변수 <Text strong={true}>{commentsCount}</Text></p>
       {keyword === '' ? (
-        <p>{cutContents(contents)}</p>
+        <Paragraph ellipsis={{ rows: 3, expandable: false }}>{contents}</Paragraph>
       ) : markKeywords(contents) === contents ? (
         null
       ) : (

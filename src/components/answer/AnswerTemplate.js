@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col, Button, Input, PageHeader, Typography, Descriptions, Avatar, Icon } from 'antd';
+import { Row, Col, Button, Input, Typography, Descriptions } from 'antd';
 
 const { Paragraph, Title } = Typography;
 const { TextArea } = Input;
@@ -79,20 +79,23 @@ const AnswerTemplate = props => {
           </Col>
           <Col span={21}>
             <span style={styleUsername}><Link to={`/user/${username}`}>{username}</Link>의 아이디어</span>
+
             {isLogin && isEditable ? (
-              <textarea
+              <TextArea rows={4}
                 name="contents"
                 value={editedAnswerContents.contents}
                 onChange={e => handleInputChange(e)}
-              ></textarea>
+              ></TextArea>
             ) : (
               <Paragraph style={styleContents}>{contents}</Paragraph>
             )}
-            <Descriptions>
-              <Descriptions.Item label=""></Descriptions.Item>
-              <Descriptions.Item label="작성">{createdAt}</Descriptions.Item>
-              <Descriptions.Item label="수정">{updatedAt}</Descriptions.Item>
-            </Descriptions>
+            {!isEditable && (
+              <Descriptions>
+                <Descriptions.Item label=""></Descriptions.Item>
+                <Descriptions.Item label="작성">{createdAt}</Descriptions.Item>
+                <Descriptions.Item label="수정">{updatedAt}</Descriptions.Item>
+              </Descriptions>
+            )}
           </Col>
         </Row>
         <div>
