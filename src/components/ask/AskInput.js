@@ -1,35 +1,22 @@
 import React from 'react';
 
-const AskInput = ({
-  title,
-  contents,
-  category,
-  answerLength,
-  answerAmount,
-  dueTo,
-  onInputChange,
-  onCategoryChange
-}) => {
+const AskInput = ({ title, contents, category, onInputChange, onCategoryChange }) => {
   return (
     <div>
-      <h1>질문하기!</h1>
+      <h1>질문하기</h1>
       <form>
         <div>
           카테고리 선택
           {category.map((item, i) => {
-            const {categoryName} = item;
+            const { categoryName } = item;
             return (
-              // eslint-disable-next-line react/jsx-key
               <div key={i}>
                 <label>
-                  <input
-                    type="checkbox"
-                    value={categoryName}
-                    onChange={onCategoryChange}
-                  />{categoryName}
+                  <input type="checkbox" value={categoryName} onChange={onCategoryChange} />
+                  {categoryName}
                 </label>
               </div>
-            )
+            );
           })}
         </div>
         <div>
@@ -59,40 +46,6 @@ const AskInput = ({
             value={contents}
             onChange={onInputChange('contents')}
           ></input>
-        </div>
-        <div>
-          답변 옵션
-          <div></div>
-          <span>
-            답변 길이
-            <select type="answerLength" value={answerLength} onChange={onInputChange('answerLength')}>
-              <option>&nbsp;</option>
-              <option>1 ~ 10개의 단어</option>
-              <option>한 줄</option>
-              <option>한 문장</option>
-              <option>doesn't matter</option>
-            </select>
-          </span>
-          <span>
-            답변 갯수
-            <select type="answerAmount" value={answerAmount} onChange={onInputChange('answerAmount')}>
-              <option>&nbsp;</option>
-              <option>1 answer</option>
-              <option>2 answers</option>
-              <option>3 answers</option>
-              <option>doesn't matter</option>
-            </select>
-          </span>
-        </div>
-        <div>
-          답변 제출 마감 시간?
-          <select type="dueTo" value={dueTo} onChange={onInputChange('dueTo')}>
-            <option>&nbsp;</option>
-            <option>6 hours later</option>
-            <option>12 hours later</option>
-            <option>1 day later</option>
-            <option>doesn't matter</option>
-          </select>
         </div>
       </form>
     </div>
