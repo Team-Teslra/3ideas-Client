@@ -23,7 +23,7 @@ const AskTemplate = props => {
   } = props;
   const { id, title, contents, username, createdAt, updatedAt } = props.askContents;
 
-  const styleAskTemplate = { margin: '20px 0' };
+  const styleAskTemplate = { margin: '20px 0', paddingBottom: '18px', borderBottom: '1px solid #ededed' };
   const styleWrapper = { marginBottom: '15px' };
   const styleContents = { marginBottom: '10px' };
   const styleButton = { marginRight: '8px' };
@@ -53,19 +53,19 @@ const AskTemplate = props => {
           )}
         </Row>
       </Row>
-      <Row type="flex" justify="start">
+      <Row type="flex" justify="end">
         <div>
           {havePermission ? (
             isEditable ? (
-              <Button style={styleButton} onClick={toggleIsEditable}>수정 취소</Button>
+              <Button type="link" style={styleButton} onClick={toggleIsEditable}>수정 취소</Button>
             ) : (
-              <Button style={styleButton} onClick={toggleIsEditable}>글 수정</Button>
+              <Button type="link" style={styleButton} onClick={toggleIsEditable}>글 수정</Button>
             )
           ) : null}
         </div>
         <div>
-          {havePermission && isEditable && <Button style={styleButton} onClick={modifyAsk}>수정하기</Button>}
-          {havePermission ? !isEditable ? <Button style={styleButton} onClick={deleteAsk}>글 삭제</Button> : null : null}
+          {havePermission && isEditable && <Button type="link" style={styleButton} onClick={modifyAsk}>수정하기</Button>}
+          {havePermission ? !isEditable ? <Button type="link" style={styleButton} onClick={deleteAsk}>글 삭제</Button> : null : null}
         </div>
         <div>
           {questionFlag && isLogin ? (

@@ -53,7 +53,9 @@ class AnswerInput extends Component {
         <p>{username} 이름으로 작성하기</p>
         <TextArea rows={4} value={contents} onChange={e => handleContentsChange(e)} />
         </div>
-        <Button onClick={postAnswer}>답글작성</Button>
+        <Row type="flex" justify="end">
+          <Button onClick={postAnswer}>답글작성</Button>
+        </Row>
       </div>
     );
   }
