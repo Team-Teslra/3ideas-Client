@@ -31,7 +31,7 @@ class Template extends Component {
     const { username, handleIsLoginChange } = this.props;
 
     axios
-      .post('http://localhost:5000/user/logout', {
+      .post(`${process.env.REACT_APP_BACKEND_HOST}/user/logout`, {
         username: username,
       })
       .then(() => {

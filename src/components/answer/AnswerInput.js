@@ -24,7 +24,7 @@ class AnswerInput extends Component {
     const { username, askId, toggleDisplayAnswerInput, changeKeyState } = this.props;
     const { contents } = this.state;
     axios
-      .post(`http://localhost:5000/answer/${askId}`, {
+      .post(`${process.env.REACT_APP_BACKEND_HOST}/answer/${askId}`, {
         username: username,
         contents: contents,
       })

@@ -20,10 +20,10 @@ class Asks extends Component {
   }
 
   getCategorizedAskList = () => {
-    let url = `http://localhost:5000/asks`;
+    let url = `${process.env.REACT_APP_BACKEND_HOST}/asks`;
     const category = qs.parse(this.props.location.pathname.split('/')[2]);
     if (Object.keys(category)[0] !== '전체 글 보기' && Object.keys(category)[0] && Object.keys(category)[0] !== '') {
-      url = `http://localhost:5000/category/${encodeURIComponent(Object.keys(category)[0])}`;
+      url = `${process.env.REACT_APP_BACKEND_HOST}/category/${encodeURIComponent(Object.keys(category)[0])}`;
     }
     axios
       .get(url)
@@ -43,7 +43,7 @@ class Asks extends Component {
 
   // 키워드로 검색한(키워드가 존재할 때, 없으면 전체) 모든 글의 id 목록을 받음
   getAskList = () => {
-    let url = `http://localhost:5000/asks`;
+    let url = `${process.env.REACT_APP_BACKEND_HOST}/asks`;
 
     // this.props.location 객체에서 search값을 객체로 뽑아주는 라이브러리 qs
     const query = qs.parse(this.props.location.search, { ignoreQueryPrefix: true });
@@ -51,7 +51,7 @@ class Asks extends Component {
     const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
     let filteredQuery = query.q && query.q.replace(regExp, '');
     if ('q' in query && filteredQuery && filteredQuery !== '') {
-      url = `http://localhost:5000/search?q=${encodeURIComponent(filteredQuery)}`;
+      url = `${process.env.REACT_APP_BACKEND_HOST}/search?q=${encodeURIComponent(filteredQuery)}`;
     }
 
     axios
