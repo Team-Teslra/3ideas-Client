@@ -65,8 +65,7 @@ class AnswerList extends Component {
         this.props.changeKeyState();
       })
       .catch(err => {
-        console.log(err.message);
-        // this.setState({ errorMessage: err.message });
+        console.log(err.response.data);
       });
   };
 
@@ -83,8 +82,7 @@ class AnswerList extends Component {
         );
       })
       .catch(err => {
-        console.log(err.message);
-        // this.setState({ errorMessage: err.message });
+        console.log(err.response.data);
       });
   };
 

@@ -82,7 +82,9 @@ class AskEntry extends Component {
     axios
       .get(`http://localhost:5000/ask/${id}`)
       .then(res => {
-        console.log('게시글 정보 요청 성공');
+        console.log('게시글 정보 요청 성공');  
+        res.data.createdAt = res.data.createdAt.slice(0,-8).split('T').join(' ');
+        res.data.updatedAt = res.data.updatedAt.slice(0,-8).split('T').join(' ');
         this.setState(
           {
             askContents: res.data,
@@ -95,8 +97,7 @@ class AskEntry extends Component {
         );
       })
       .catch(err => {
-        console.log(err.message);
-        // this.setState({ errorMessage: err.message });
+        console.log(err.response.data);
       });
   };
 
@@ -122,8 +123,7 @@ class AskEntry extends Component {
           this.toggleIsEditable();
         })
         .catch(err => {
-          console.log(err.message);
-          // this.setState({ errorMessage: err.message });
+          console.log(err.response.data);
         });
     } else {
       this.toggleIsEditable();
@@ -142,8 +142,7 @@ class AskEntry extends Component {
         this.props.history.goBack();
       })
       .catch(err => {
-        console.log(err.message);
-        // this.setState({ errorMessage: err.message });
+        console.log(err.response.data);
       });
   };
 

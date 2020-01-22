@@ -22,12 +22,13 @@ class User extends Component {
     axios
       .get(`http://localhost:5000/user/${username}`)
       .then(res => {
+        res.data.createdAt = res.data.createdAt.slice(0,-8).split('T').join(' ');
         this.setState({
           userInfo: res.data,
         });
       })
       .catch(err => {
-        console.log(err.message);
+        console.log(err.response.data);
       });
   };
 

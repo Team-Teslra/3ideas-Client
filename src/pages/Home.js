@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import SearchInput from '../components/SearchInput';
-import { Row, Col, Button, Popconfirm } from 'antd';
+import { Row, Button, Popconfirm } from 'antd';
 
 class Home extends Component {
   constructor(props) {
