@@ -163,8 +163,9 @@ class AnswerList extends Component {
       }
     }
 
-    const styleAnswerList = { marginBottom: '60px'}
-    const styleButton = { marginBottom: '15px' }
+    const styleAnswerList = { marginBottom: '60px'};
+    const styleButton = { marginBottom: '15px' };
+
     return (
       <div style={styleAnswerList}>
         <div style={styleButton}>
