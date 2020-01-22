@@ -1,5 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Row, Col, Button, Input, PageHeader, Typography, Descriptions, Avatar } from 'antd';
+const { Paragraph } = Typography;
+
+const { TextArea } = Input;
 
 const AskTemplate = props => {
   const {
@@ -10,38 +14,71 @@ const AskTemplate = props => {
     toggleIsEditable,
     isEditable,
     editedAskContents,
+    questionFlag,
+    isLogin,
+    loginUsername,
+    author,
+    displayAnswerInput,
+    toggleDisplayAnswerInput
   } = props;
   const { id, title, contents, username, createdAt, updatedAt } = props.askContents;
+
+  const styleAskTemplate = { margin: '20px 0', paddingBottom: '18px', borderBottom: '1px solid #ededed' };
+  const styleWrapper = { marginBottom: '15px' };
+  const styleContents = { marginBottom: '10px' };
+  const styleButton = { marginRight: '8px' };
+  
   return (
-    <div>
-      <h3>질문글</h3>
-      <ul>
-        <li>id: {id}</li>
-        {isEditable ? (
-          <input type="text" name="title" value={editedAskContents.title} onChange={e => handleInputChange(e)} />
-        ) : (
-          <li>title: {title}</li>
-        )}
-        {isEditable ? (
-          <textarea name="contents" value={editedAskContents.contents} onChange={e => handleInputChange(e)}></textarea>
-        ) : (
-          <li>contents: {contents}</li>
-        )}
-        <li>
-          username: <Link to={`/user/${username}`}>{username}</Link>
-        </li>
-        <li>createdAt: {createdAt}</li>
-        <li>updatedAt: {updatedAt}</li>
-      </ul>
-      {havePermission ? (
-        isEditable ? (
-          <button onClick={toggleIsEditable}>수정 취소하기</button>
-        ) : (
-          <button onClick={toggleIsEditable}>질문글 수정하기</button>
-        )
-      ) : null}
-      {havePermission && isEditable && <button onClick={modifyAsk}>modifyAsk 실행</button>}
-      {havePermission && <button onClick={deleteAsk}>deleteAsk 실행</button>}
+    <div style={styleAskTemplate}>
+      <Row style={styleWrapper}>
+        <Row style={styleContents}>
+          {isEditable ? (
+            <Input size="large" type="text" name="title" value={editedAskContents.title} onChange={e => handleInputChange(e)} />
+          ) : (
+            <PageHeader title={title} />
+          )}
+          {isEditable ? (
+            <TextArea rows={5} name="contents" value={editedAskContents.contents} onChange={e => handleInputChange(e)}></TextArea>
+          ) : (
+            <Paragraph>{contents}</Paragraph>
+          )}
+        </Row>
+        <Row>
+          {!isEditable && (
+            <Descriptions>
+              <Descriptions.Item label="작성자"><Link to={`/user/${username}`}>{username}</Link></Descriptions.Item>
+              <Descriptions.Item label="작성일시">{createdAt}</Descriptions.Item>
+              <Descriptions.Item label="수정일시">{updatedAt}</Descriptions.Item>
+            </Descriptions>
+          )}
+        </Row>
+      </Row>
+      <Row type="flex" justify="end">
+        <div>
+          {havePermission ? (
+            isEditable ? (
+              <Button type="link" style={styleButton} onClick={toggleIsEditable}>수정 취소</Button>
+            ) : (
+              <Button type="link" style={styleButton} onClick={toggleIsEditable}>글 수정</Button>
+            )
+          ) : null}
+        </div>
+        <div>
+          {havePermission && isEditable && <Button type="link" style={styleButton} onClick={modifyAsk}>수정하기</Button>}
+          {havePermission ? !isEditable ? <Button type="link" style={styleButton} onClick={deleteAsk}>글 삭제</Button> : null : null}
+        </div>
+        <div>
+          {questionFlag && isLogin ? (
+            loginUsername !== username ? (
+              displayAnswerInput ? (
+                <Button onClick={toggleDisplayAnswerInput}>작성 취소하기</Button>
+              ) : (
+                <Button onClick={toggleDisplayAnswerInput}>답글 작성하기</Button>
+              )
+            ) : null
+          ) : null}
+        </div>
+      </Row>
     </div>
   );
 };

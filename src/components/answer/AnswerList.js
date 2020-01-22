@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import AnswerEntry from './AnswerEntry';
+import { Row, Col, Button, Input, PageHeader, Typography, Descriptions, Avatar, Icon } from 'antd';
+
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
+
+const { Paragraph } = Typography;
+const { TextArea } = Input;
 
 class AnswerList extends Component {
   constructor(props) {
@@ -158,20 +163,24 @@ class AnswerList extends Component {
       }
     }
 
+    const styleAnswerList = { marginBottom: '60px'};
+    const styleButton = { marginBottom: '15px' };
+
     return (
-      <div>
-        <div>-------------------------------------------------------------------------</div>
-        {questionFlag ? (
-          sortButton ? (
-            <button onClick={sortButtonChanger}>좋아요 많은 순</button>
+      <div style={styleAnswerList}>
+        <div style={styleButton}>
+          {questionFlag ? (
+            sortButton ? (
+              <Button onClick={sortButtonChanger}><Icon type="down" />좋아요 많은 순</Button>
+            ) : (
+              <Button onClick={sortButtonChanger}><Icon type="down" />먼저 등록한 순</Button>
+            )
+          ) : sortButtonAfterRanked ? (
+            <Button onClick={sortButtonChangerAfterRanked}>모든 답변 보기(좋아요순)</Button>
           ) : (
-            <button onClick={sortButtonChanger}>먼저 등록한 답변 순</button>
-          )
-        ) : sortButtonAfterRanked ? (
-          <button onClick={sortButtonChangerAfterRanked}>모든 답변 보기(좋아요순)</button>
-        ) : (
-          <button onClick={sortButtonChangerAfterRanked}>선택된 답변 보기</button>
-        )}
+            <Button onClick={sortButtonChangerAfterRanked}>질문자가 선택한 답변</Button>
+          )}
+        </div>
         {answers.map(answer => (
           <AnswerEntry
             key={answer.id}

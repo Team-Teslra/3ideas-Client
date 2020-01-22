@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import AskTemplate from './AskTemplate';
 import AnswerInput from '../answer/AnswerInput';
 import AnswerList from '../answer/AnswerList';
+import { Row, Col, Button, Input, Icon, BackTop } from 'antd';
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
@@ -179,8 +180,15 @@ class AskEntry extends Component {
       asksLength = this.props.location.state.asksLength;
     }
 
+    const styleWrapper = { width: '85%', margin: '0 auto'}
+
     return (
       <div>
+        <Row type="flex" justify="center">
+          <Row style={styleWrapper}>
+        {asksLength > 0 && (
+          <Button onClick={() => this.props.history.goBack()}><Icon type="left" />목록으로 돌아가기</Button>
+        )}
         <AskTemplate
           askContents={askContents}
           editedAskContents={editedAskContents}
@@ -190,16 +198,12 @@ class AskEntry extends Component {
           deleteAsk={deleteAsk}
           handleInputChange={handleInputChange}
           toggleIsEditable={toggleIsEditable}
+          questionFlag={questionFlag}
+          isLogin={isLogin}
+          loginUsername={username}
+          displayAnswerInput={displayAnswerInput}
+          toggleDisplayAnswerInput={toggleDisplayAnswerInput}
         />
-        {questionFlag && isLogin ? (
-          username !== askContents.username ? (
-            displayAnswerInput ? (
-              <button onClick={toggleDisplayAnswerInput}>작성 취소하기</button>
-            ) : (
-              <button onClick={toggleDisplayAnswerInput}>답글 작성하기</button>
-            )
-          ) : null
-        ) : null}
         {displayAnswerInput && (
           <AnswerInput
             username={username}
@@ -221,11 +225,9 @@ class AskEntry extends Component {
             getAskContents={getAskContents}
           />
         ) : null}
-        {asksLength > 0 && (
-          <button onClick={() => this.props.history.goBack()}>
-            <b>목록으로 돌아가기</b>
-          </button>
-        )}
+        </Row>
+        </Row>
+      <BackTop />
       </div>
     );
   }

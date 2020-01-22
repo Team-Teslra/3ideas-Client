@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
+import { Row, Col, Button, Input, PageHeader, Typography, Descriptions, Avatar } from 'antd';
+const { TextArea } = Input;
 
 axios.defaults.withCredentials = true;
 
@@ -42,11 +44,18 @@ class AnswerInput extends Component {
     const { username } = this.props;
     const { contents } = this.state;
     const { handleContentsChange, postAnswer } = this;
+
+    const styleAnswerInput = { marginBottom: '20px'}
+    const styleContents = { marginBottom: '15px' };
     return (
-      <div>
-        <p>{username}</p>
-        <input type="text" value={contents} onChange={e => handleContentsChange(e)} />
-        <button onClick={postAnswer}>답글작성</button>
+      <div style={styleAnswerInput}>
+        <div style={styleContents}>
+        <p>{username} 이름으로 작성하기</p>
+        <TextArea rows={4} value={contents} onChange={e => handleContentsChange(e)} />
+        </div>
+        <Row type="flex" justify="end">
+          <Button onClick={postAnswer}>답글작성</Button>
+        </Row>
       </div>
     );
   }
