@@ -3,9 +3,9 @@ import { withRouter } from 'react-router-dom';
 import qs from 'qs';
 import axios from 'axios';
 import AskListTemplate from '../components/ask/AskListTemplate';
-import { Row, Col, Button, Input, PageHeader, Typography, Descriptions, Avatar, Icon, BackTop, Card } from 'antd';
+import { Row, Col, Typography,BackTop, Card } from 'antd';
 
-const { Paragraph, Title, Text } = Typography;
+const { Title } = Typography;
 
 axios.defaults.withCredentials = true;
 

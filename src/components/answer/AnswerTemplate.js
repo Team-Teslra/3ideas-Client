@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col, Button, Input, PageHeader, Typography, Descriptions, Avatar, Icon } from 'antd';
+import { Row, Col, Button, Input, Typography, Descriptions } from 'antd';
 
 const { Paragraph, Title } = Typography;
 const { TextArea } = Input;

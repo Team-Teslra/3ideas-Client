@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
-import { Row, Col, Button, Input, PageHeader, Typography, Descriptions, Avatar } from 'antd';
+import { Row, Button, Input } from 'antd';
 const { TextArea } = Input;
 
 axios.defaults.withCredentials = true;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Row, Col, Button, Input, PageHeader, Typography, Descriptions, Avatar, Icon, BackTop, Card } from 'antd';
+import { Button, Icon } from 'antd';
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
