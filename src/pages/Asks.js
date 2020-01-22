@@ -3,6 +3,8 @@ import { withRouter } from 'react-router-dom';
 import qs from 'qs';
 import axios from 'axios';
 import AskListTemplate from '../components/ask/AskListTemplate';
+import { Row, Col, Button, Input, PageHeader, Typography, Descriptions, Avatar, Icon, BackTop } from 'antd';
+
 
 axios.defaults.withCredentials = true;
 
@@ -104,9 +106,12 @@ class Asks extends Component {
         </div>
         <h3>{keyword !== '' ? `'${keyword}'의 검색결과` : '전체글 목록'}</h3>
         {asks.length === 0 && keyword !== '' && <p>검색결과가 없습니다.</p>}
+        <Row gutter={[16, 16]}>
         {asks.map(ask => (
-          <AskListTemplate key={ask.id} ask={ask} asks={asks} keyword={keyword} />
+          <Col span={8}><AskListTemplate key={ask.id} ask={ask} asks={asks} keyword={keyword} /></Col>
         ))}
+        </Row>
+        <BackTop />
       </>
     );
   }
