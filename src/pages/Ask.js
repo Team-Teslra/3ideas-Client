@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
 import AskInput from '../components/ask/AskInput';
 import axios from 'axios';
+import { Button } from 'antd';
 
 axios.defaults.withCredentials = true;
 
@@ -76,33 +77,21 @@ class Ask extends Component {
     if (isLogin) {
       return (
         <div>
-          <center>
-            <AskInput
-              title={title}
-              contents={contents}
-              category={category}
-              onInputChange={handleInputValue}
-              onCategoryChange={handleSelectedCategories}
-            />
-            <p>{errorMessage}</p>
-            <button
-              style={{
-                width: '200px',
-                height: '30px',
-                margin: '5px',
-                borderRadius: '5px',
-                backgroundColor: 'skyblue',
-              }}
-              type="submit"
-              onClick={handleAsk}
-            >
-              제출하기
-            </button>
-          </center>
+          <AskInput
+            title={title}
+            contents={contents}
+            category={category}
+            onInputChange={handleInputValue}
+            onCategoryChange={handleSelectedCategories}
+          />
+          <p>{errorMessage}</p>
+          <Button type="primary" onClick={handleAsk}>
+            제출하기
+          </Button>
         </div>
       );
     }
-    alert('로그인 하십쇼!');
+    
     return <Redirect to="/login" />;
   }
 }
