@@ -120,7 +120,7 @@ class Asks extends Component {
         </div>
         <Row gutter={[16, 16]}>
         {asks.map(ask => (
-          <Col span={8}><Card style={styleCard}><AskListTemplate key={ask.id} ask={ask} asks={asks} keyword={keyword} /></Card></Col>
+          <Col key={ask.id} span={8}><Card style={styleCard}><AskListTemplate ask={ask} asks={asks} keyword={keyword} /></Card></Col>
         ))}
         </Row>
         <BackTop />
