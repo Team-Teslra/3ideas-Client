@@ -36,7 +36,7 @@ class SignUp extends Component {
     const { username, password } = this.state;
 
     axios
-      .post('http://localhost:5000/user/signup', {
+      .post(`${process.env.REACT_APP_BACKEND_HOST}/user/signup`, {
         username: username,
         password: password,
       })

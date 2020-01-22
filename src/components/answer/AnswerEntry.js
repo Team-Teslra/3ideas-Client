@@ -38,7 +38,7 @@ class AnswerEntry extends Component {
     const { id } = this.state.answerContents;
     const { username } = this.props;
     axios
-      .post(`http://localhost:5000/like/${id}`, { username: username })
+      .post(`${process.env.REACT_APP_BACKEND_HOST}/like/${id}`, { username: username })
       .then(res => {
         this.getAnswerContents(id);
       })
@@ -51,7 +51,7 @@ class AnswerEntry extends Component {
     const { id } = this.state.answerContents;
     const { username } = this.props;
     axios
-      .delete(`http://localhost:5000/like/${id}`, { data: { username: username } })
+      .delete(`${process.env.REACT_APP_BACKEND_HOST}/like/${id}`, { data: { username: username } })
       .then(res => {
         this.getAnswerContents(id);
       })
@@ -86,7 +86,7 @@ class AnswerEntry extends Component {
 
   getAnswerContents = id => {
     axios
-      .get(`http://localhost:5000/answer/${id}`)
+      .get(`${process.env.REACT_APP_BACKEND_HOST}/answer/${id}`)
       .then(res => {
         console.log('답변글 한 개 요청 성공');
         res.data.createdAt = res.data.createdAt.slice(0,-8).split('T').join(' ');
@@ -116,7 +116,7 @@ class AnswerEntry extends Component {
 
     if (Object.keys(body).length > 0) {
       axios
-        .patch(`http://localhost:5000/answer/${answerContents.id}`, body)
+        .patch(`${process.env.REACT_APP_BACKEND_HOST}/answer/${answerContents.id}`, body)
         .then(res => {
           console.log('답글 수정 성공');
           // 다시 해당 글 정보 요청
@@ -136,7 +136,7 @@ class AnswerEntry extends Component {
     const { id } = this.state.answerContents;
 
     axios
-      .delete(`http://localhost:5000/answer/${id}`)
+      .delete(`${process.env.REACT_APP_BACKEND_HOST}/answer/${id}`)
       .then(res => {
         console.log('답글 삭제 성공');
         this.props.getAnswerListInformation(this.props.askId);

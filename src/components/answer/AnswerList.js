@@ -55,7 +55,7 @@ class AnswerList extends Component {
     };
 
     axios
-      .patch(`http://localhost:5000/ask/selection/${this.props.askId}`, body)
+      .patch(`${process.env.REACT_APP_BACKEND_HOST}/ask/selection/${this.props.askId}`, body)
       .then(res => {
         console.log('최종 답변 선택 성공');
         this.props.getAskContents(this.props.askId);
@@ -68,7 +68,7 @@ class AnswerList extends Component {
 
   getAnswerListInformation = id => {
     axios
-      .get(`http://localhost:5000/answers/${id}`)
+      .get(`${process.env.REACT_APP_BACKEND_HOST}/answers/${id}`)
       .then(res => {
         console.log('답변글 목록 요청 성공');
         this.setState(

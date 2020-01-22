@@ -80,7 +80,7 @@ class AskEntry extends Component {
 
   getAskContents = id => {
     axios
-      .get(`http://localhost:5000/ask/${id}`)
+      .get(`${process.env.REACT_APP_BACKEND_HOST}/ask/${id}`)
       .then(res => {
         console.log('게시글 정보 요청 성공');  
         res.data.createdAt = res.data.createdAt.slice(0,-8).split('T').join(' ');
@@ -97,7 +97,7 @@ class AskEntry extends Component {
         );
       })
       .catch(err => {
-        console.log(err.response.data);
+        console.log(err);
       });
   };
 
@@ -114,7 +114,7 @@ class AskEntry extends Component {
 
     if (Object.keys(body).length > 0) {
       axios
-        .patch(`http://localhost:5000/ask/${askContents.id}`, body)
+        .patch(`${process.env.REACT_APP_BACKEND_HOST}/ask/${askContents.id}`, body)
         .then(res => {
           console.log('게시글 수정 성공');
           // 다시 해당 글 정보 요청
@@ -134,7 +134,7 @@ class AskEntry extends Component {
     const { id } = this.state.askContents;
 
     axios
-      .delete(`http://localhost:5000/ask/${id}`)
+      .delete(`${process.env.REACT_APP_BACKEND_HOST}/ask/${id}`)
       .then(res => {
         console.log('게시글 삭제 성공');
         // 우선 /asks 로 돌아감. 검색어와 카테고리 통해서 필터링 되었던 글 목록으로 돌아가려면

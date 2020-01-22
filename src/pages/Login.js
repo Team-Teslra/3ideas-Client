@@ -37,7 +37,7 @@ class Login extends Component {
     const { handleIsLoginChange, handleUsername } = this.props;
 
     axios
-      .post('http://localhost:5000/user/login', {
+      .post(`${process.env.REACT_APP_BACKEND_HOST}/user/login`, {
         username: username,
         password: password,
       })

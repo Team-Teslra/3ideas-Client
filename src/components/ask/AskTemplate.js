@@ -20,7 +20,10 @@ const AskTemplate = props => {
     displayAnswerInput,
     toggleDisplayAnswerInput
   } = props;
-  const { title, contents, username, createdAt, updatedAt } = props.askContents;
+
+  const { title, username, createdAt, updatedAt } = props.askContents;
+  let {contents} = props.askContents;
+  if (contents) { contents = contents.split('\n').map( (line,i) => {return (<span key={i}>{line}<br/></span>)}) }
 
   const styleAskTemplate = { margin: '20px 0', paddingBottom: '18px', borderBottom: '1px solid #ededed' };
   const styleWrapper = { marginBottom: '15px' };
@@ -31,12 +34,12 @@ const AskTemplate = props => {
     <div style={styleAskTemplate}>
       <Row style={styleWrapper}>
         <Row style={styleContents}>
-          {isEditable ? (
+          {isLogin && isEditable ? (
             <Input size="large" type="text" name="title" value={editedAskContents.title} onChange={e => handleInputChange(e)} />
           ) : (
             <PageHeader title={title} />
           )}
-          {isEditable ? (
+          {isLogin && isEditable ? (
             <TextArea rows={5} name="contents" value={editedAskContents.contents} onChange={e => handleInputChange(e)}></TextArea>
           ) : (
             <Paragraph>{contents}</Paragraph>

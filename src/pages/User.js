@@ -21,7 +21,7 @@ class User extends Component {
 
   getUserInfo = username => {
     axios
-      .get(`http://localhost:5000/user/${username}`)
+      .get(`${process.env.REACT_APP_BACKEND_HOST}/user/${username}`)
       .then(res => {
         res.data.createdAt = res.data.createdAt.slice(0,-8).split('T').join(' ');
         this.setState({

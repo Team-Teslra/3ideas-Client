@@ -6,7 +6,9 @@ const { Paragraph, Title } = Typography;
 const { TextArea } = Input;
 
 const AnswerTemplate = props => {
-  const { id, username, contents, answerFlag, like, createdAt, updatedAt } = props.answerContents;
+  let {contents} = props.answerContents;
+  if (contents) { contents = contents.split('\n').map( (line,i) => {return (<span key={i}>{line}<br/></span>)}) }
+  const { id, username, answerFlag, like, createdAt, updatedAt } = props.answerContents;
   const {
     editedAnswerContents,
     havePermission,
@@ -77,7 +79,8 @@ const AnswerTemplate = props => {
           </Col>
           <Col span={21}>
             <span style={styleUsername}><Link to={`/user/${username}`}>{username}</Link>의 아이디어</span>
-            {isEditable ? (
+
+            {isLogin && isEditable ? (
               <TextArea rows={4}
                 name="contents"
                 value={editedAnswerContents.contents}

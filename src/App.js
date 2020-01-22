@@ -28,7 +28,7 @@ class App extends Component {
 
   componentDidMount() {
     axios
-      .get('http://localhost:5000/category')
+      .get(`${process.env.REACT_APP_BACKEND_HOST}/category`)
       .then(res =>
         this.setState({
           category: res.data,

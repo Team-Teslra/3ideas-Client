@@ -52,7 +52,7 @@ class Ask extends Component {
     })(selectedCategories);
 
     axios
-      .post('http://localhost:5000/ask', {
+      .post(`${process.env.REACT_APP_BACKEND_HOST}/ask`, {
         username: username,
         title: title,
         contents: contents,
