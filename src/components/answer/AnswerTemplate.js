@@ -66,6 +66,7 @@ const AnswerTemplate = props => {
   const styleAnswerTemplate = { margin: '30px 0', borderBottom: '1px solid #ededed'};
   const styleUsername = { borderBottom: '1px solid #d5d5d5', paddingBottom: '2px'};
   const styleContents = { margin: '10px 0'};
+  const styleNumberZero = { color: '#D2D1D1'}
   
   return (
     <div style={styleAnswerTemplate}>
@@ -73,9 +74,9 @@ const AnswerTemplate = props => {
         <Row type="flex">
           <Col span={3}>
             <p>좋아요</p>
-            {like.length ? <Title level={4} type="warning">{like.length}</Title> : <Title level={4} disabled>{like.length}</Title> }
+            {like.length ? <Title level={4} type="warning">{like.length}</Title> : <Title style={styleNumberZero} level={4}>{like.length}</Title> }
             <p>답변순위</p>
-            {number ? <Title level={3} type="danger">{number}</Title> : <Title level={3} disabled>0</Title> }
+            {number ? <Title level={3} type="danger">{number}</Title> : <Title style={styleNumberZero} level={3}>0</Title> }
           </Col>
           <Col span={21}>
             <span style={styleUsername}><Link to={`/user/${username}`}>{username}</Link>의 아이디어</span>
