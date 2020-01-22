@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import { Row, Col, Button, Input, PageHeader, Typography, Descriptions, Avatar, Icon, BackTop, Card } from 'antd';
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
@@ -63,7 +64,7 @@ class User extends Component {
         <p>가입일: {createdAt}</p>
         {this.props.username === match.params.username && <p>작성한 질문글 수: {postCount}</p>}
         {this.props.username === match.params.username && <p>작성한 답글 수: {commentsCount}</p>}
-        {fromAskEntry && <button onClick={() => this.props.history.goBack()}>글로 돌아가기</button>}
+        {fromAskEntry && <Button onClick={() => this.props.history.goBack()}><Icon type="left" />글로 돌아가기</Button>}
       </div>
     );
   }
