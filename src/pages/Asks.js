@@ -62,7 +62,6 @@ class Asks extends Component {
         res.data.map((data) => {
           data.createdAt = data.createdAt.slice(0,-8).split('T').join(' ')
         })
-        console.log(res.data)
         this.setState({
           asks: res.data,
           keyword: filteredQuery || '',
