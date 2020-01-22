@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
-import SignUpInput from '../components/user/SignUpInput'
+import SignUpInput from '../components/user/SignUpInput';
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
@@ -12,7 +12,7 @@ class SignUp extends Component {
       username: '',
       password: '',
       errorMessage: '',
-    }
+    };
 
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -21,34 +21,37 @@ class SignUp extends Component {
 
   handleUsernameChange(e) {
     this.setState({
-      username: e.target.value
+      username: e.target.value,
     });
   }
 
   handlePasswordChange(e) {
     this.setState({
-      password: e.target.value
+      password: e.target.value,
     });
   }
 
   handleSignUp() {
     const { username, password } = this.state;
 
-    axios.post('http://localhost:5000/user/signup', {
-      username: username,
-      password: password,
-    }).then(() => {
-      this.props.history.push('/login');
-    }).catch(err => {
-      this.setState({ errorMessage: err.message });
-      console.log(err.message);
-    });
+    axios
+      .post('http://localhost:5000/user/signup', {
+        username: username,
+        password: password,
+      })
+      .then(() => {
+        this.props.history.push('/login');
+      })
+      .catch(err => {
+        this.setState({ errorMessage: err.message });
+        console.log(err.message);
+      });
   }
 
   componentDidMount() {
     this.props.changeCurrentPage('signUp');
   }
-  
+
   render() {
     const { isLogin } = this.props;
     const { username, password, errorMessage } = this.state;
@@ -57,10 +60,10 @@ class SignUp extends Component {
     return (
       <div>
         {isLogin ? <Redirect to="/" /> : ''}
-        <SignUpInput 
+        <SignUpInput
           onUsernameChange={handleUsernameChange}
           onPasswordChange={handlePasswordChange}
-          username={username} 
+          username={username}
           password={password}
         />
         <p>{errorMessage}</p>

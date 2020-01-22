@@ -1,11 +1,6 @@
 import React from 'react';
 
-const SignUpInput = ({
-  username,
-  password,
-  onUsernameChange,
-  onPasswordChange
-}) => {
+const SignUpInput = ({ username, password, onUsernameChange, onPasswordChange }) => {
   return (
     <div>
       <div>
@@ -14,11 +9,7 @@ const SignUpInput = ({
       </div>
       <div>
         <label>Password</label>
-        <input
-          type="password"
-          value={password}
-          onChange={onPasswordChange}
-        />
+        <input type="password" value={password} onChange={onPasswordChange} />
       </div>
     </div>
   );

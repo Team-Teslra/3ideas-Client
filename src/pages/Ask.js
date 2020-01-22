@@ -8,14 +8,11 @@ axios.defaults.withCredentials = true;
 class Ask extends Component {
   constructor(props) {
     super(props);
-    this.state = {  
+    this.state = {
       title: '',
       contents: '',
-      selectedCategories: [],  // ? 어드밴스드
-      answerLength: '',  // ? 나이트메어 1
-      answerAmount: '',  // ? 나이트메어 2
-      dueTo: '', // ? 나이트메어 3
-      errorMessage: ''
+      selectedCategories: [],
+      errorMessage: '',
     };
     this.handleInputValue = this.handleInputValue.bind(this);
     this.handleSelectedCategories = this.handleSelectedCategories.bind(this);
@@ -28,13 +25,13 @@ class Ask extends Component {
 
   handleSelectedCategories(e) {
     if (!this.state.selectedCategories.includes(e.target.value)) {
-      this.setState({selectedCategories: [...this.state.selectedCategories, e.target.value]});
+      this.setState({ selectedCategories: [...this.state.selectedCategories, e.target.value] });
     } else {
       var array = [...this.state.selectedCategories];
-      var index = array.indexOf(e.target.value)
+      var index = array.indexOf(e.target.value);
       if (index !== -1) {
         array.splice(index, 1);
-        this.setState({selectedCategories: array})
+        this.setState({ selectedCategories: array });
       }
     }
   }
@@ -42,54 +39,48 @@ class Ask extends Component {
   handleAsk() {
     const { username } = this.props;
     const { title, contents, selectedCategories } = this.state;
-    var categoryToRequest = (function (arr) {
-      var result=[];
-      arr.map((el) => {
-        result.push({categoryName: el})
-      })
+    var categoryToRequest = (function(arr) {
+      var result = [];
+      arr.map(el => {
+        result.push({ categoryName: el });
+      });
       return result;
-    })(selectedCategories)
-    console.log(categoryToRequest)
+    })(selectedCategories);
 
-    axios.post('http://localhost:5000/ask', {
-      username: username,
-      title: title,
-      contents: contents,
-      categories: categoryToRequest
-    })
-    .then(res => {
-      console.log(res.data.id);
-      alert('제출 성공');
-      this.props.history.push(`/ask/${res.data.id}`);
-    })
-    .catch(err => {
-      this.setState({ errorMessage: err.message});
-      console.log(err.message);
-    });
+    axios
+      .post('http://localhost:5000/ask', {
+        username: username,
+        title: title,
+        contents: contents,
+        categories: categoryToRequest,
+      })
+      .then(res => {
+        alert('제출 성공');
+        this.props.history.push(`/ask/${res.data.id}`);
+      })
+      .catch(err => {
+        this.setState({ errorMessage: err.message });
+        console.log(err.message);
+      });
   }
 
   componentDidMount() {
     this.props.changeCurrentPage('ask');
   }
-  
+
   render() {
     const { isLogin, category } = this.props;
-    const { title, contents, answerLength, answerAmount, dueTo, errorMessage} = this.state;
+    const { title, contents, errorMessage } = this.state;
     const { handleInputValue, handleSelectedCategories, handleAsk } = this;
-    
+
     if (isLogin) {
-      
       return (
-        
         <div>
           <center>
             <AskInput
               title={title}
               contents={contents}
               category={category}
-              answerLength={answerLength}
-              answerAmount={answerAmount}
-              dueTo={dueTo}
               onInputChange={handleInputValue}
               onCategoryChange={handleSelectedCategories}
             />
@@ -105,19 +96,14 @@ class Ask extends Component {
               type="submit"
               onClick={handleAsk}
             >
-            제출하기
+              제출하기
             </button>
           </center>
         </div>
       );
-      
     }
-      console.log("isLogin?1 :",  isLogin)
-      alert("로그인 하십쇼!");
-      return <Redirect to="/login" />;
-      
-      
-    
+    alert('로그인 하십쇼!');
+    return <Redirect to="/login" />;
   }
 }
 
