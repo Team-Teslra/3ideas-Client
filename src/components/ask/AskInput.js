@@ -1,4 +1,5 @@
 import React from 'react';
+import { Checkbox, Card } from 'antd';
 
 const AskInput = ({ title, contents, category, onInputChange, onCategoryChange }) => {
   return (
@@ -7,17 +8,27 @@ const AskInput = ({ title, contents, category, onInputChange, onCategoryChange }
       <form>
         <div>
           카테고리 선택
-          {category.map((item, i) => {
+          {/* <Checkbox.Group onChange={onCategoryChange} options={category.map((item) => {
             const { categoryName } = item;
-            return (
-              <div key={i}>
-                <label>
-                  <input type="checkbox" value={categoryName} onChange={onCategoryChange} />
-                  {categoryName}
-                </label>
-              </div>
-            );
-          })}
+            return categoryName})}/> */}
+          <div>
+            <Card bodyStyle={{ padding: 5 }} style={{ width: 300, height: 100 }}>
+              {category.map((item, i) => {
+                const { categoryName } = item;
+                console.log(categoryName);
+                return (
+                  <Checkbox
+                    style={{ display: 'inline-block' }}
+                    key={i}
+                    value={categoryName}
+                    onChange={onCategoryChange}
+                  >
+                    {categoryName}{' '}
+                  </Checkbox>
+                );
+              })}
+            </Card>
+          </div>
         </div>
         <div>
           <input
