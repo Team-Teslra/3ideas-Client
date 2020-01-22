@@ -28,7 +28,7 @@ const AnswerTemplate = props => {
   } = props;
 
   const rankColors = {
-    '1': '#FFED90',
+    '1': '#FFF3B3',
     '2': '#F8F8F8',
     '3': '#F8F8F8',
   };

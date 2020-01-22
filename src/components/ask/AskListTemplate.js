@@ -1,14 +1,13 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { Row, Col, Button, Input, PageHeader, Typography, Descriptions, Avatar, Icon } from 'antd';
+
+const { Paragraph, Title, Text } = Typography;
+const { TextArea } = Input;
 
 const AskListTemplate = props => {
   const { asks, keyword } = props;
   const { id, title, questionFlag, createdAt, username, commentsCount, contents, answers } = props.ask;
-  const style = {
-    width: '200px',
-    border: '1px solid black',
-    padding: '15px',
-  };
 
   // 텍스트 안에 검색 키워드가 없다면 그대로 반환하고, 있다면 키워드를 <mark>태그로 감싸 텍스트에 넣어 반환한다.
   const markKeywords = text => {
@@ -37,23 +36,33 @@ const AskListTemplate = props => {
     return `${text.slice(0, 40)}...`;
   };
 
+  // const styleAskListTemplate  = { border: '1px solid grey'}
+  const styleTitle = { color: '#333', fontSize: '16px', marginTop: '5px' };
+  const styleAnswerSign = { color: 'CORAL'}
+
   return (
-    <div style={style}>
+    <div>
+      {questionFlag ? <Text style={styleAnswerSign}>답변모집중</Text> : <Text type="secondary">마감된질문</Text>}
       <Link to={{ pathname: `/ask/${id}`, state: { asksLength: asks.length || 0 } }}>
-        {keyword === '' ? title : convertToHTMLElement(markKeywords(title))}
+        {keyword === '' ?
+          <Paragraph strong={true} style={styleTitle} ellipsis={{ rows: 2, expandable: false }}>{title}</Paragraph>
+          :
+          <Paragraph strong={true} style={styleTitle} ellipsis={{ rows: 2, expandable: false }}>{convertToHTMLElement(markKeywords(title))}</Paragraph>
+        }
       </Link>
-      <p>{questionFlag ? '답변모집중' : '마감된질문'}</p>
-      <p>작성일 : {createdAt}</p>
-      <p>작성자 : {username}</p>
-      <p>답변수 : {commentsCount}</p>
+      <Row type="flex" justify="space-between">
+        <p>{username}의 질문</p>
+        <p>{createdAt.slice(0, 10)}</p>
+      </Row>
+      <p>답변수 <Text strong={true}>{commentsCount}</Text></p>
       {keyword === '' ? (
-        <p>내용 : {cutContents(contents)}</p>
+        <p>{cutContents(contents)}</p>
       ) : markKeywords(contents) === contents ? (
-        <p>내용 : {cutContents(contents)}</p>
+        null
       ) : (
-        <p>내용검색 : {cutMarkedText(contents)}</p>
+        <Paragraph>내용검색 : <Text strong={true}>{cutMarkedText(contents)}</Text></Paragraph>
       )}
-      {answers && answers.length > 0 && <p>답글검색 : {cutMarkedText(answers[0].contents)}</p>}
+      {answers && answers.length > 0 && <Paragraph>답글검색 : <Text strong={true}>{cutMarkedText(answers[0].contents)}</Text></Paragraph>}
     </div>
   );
 };
