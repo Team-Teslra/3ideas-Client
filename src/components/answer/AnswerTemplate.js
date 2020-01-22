@@ -94,15 +94,15 @@ const AnswerTemplate = props => {
           </Col>
         </Row>
         <div>
-          {havePermission ? (
+          {isLogin && havePermission ? (
             isEditable ? (
               <Button onClick={toggleIsEditable}>수정취소</Button>
             ) : (
               <Button onClick={toggleIsEditable}>답글수정</Button>
             )
           ) : null}
-          {havePermission && isEditable && <Button onClick={modifyAnswer}>전송하기</Button>}
-          {havePermission && <Button onClick={deleteAnswer}>답글삭제</Button>}
+          {isLogin && havePermission && isEditable && <Button onClick={modifyAnswer}>전송하기</Button>}
+          {isLogin && havePermission && <Button onClick={deleteAnswer}>답글삭제</Button>}
           <div>
             {!havePermission && isLogin && !likers.includes(myUserName) && <Button onClick={postLike}>좋아요!</Button>}
             {!havePermission && isLogin && likers.includes(myUserName) && <Button onClick={deleteLike}>좋아요 취소</Button>}
