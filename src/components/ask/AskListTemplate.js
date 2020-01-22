@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Row, Input, Typography } from 'antd';
+import { Row, Typography } from 'antd';
 
 const { Paragraph, Text } = Typography;
 
