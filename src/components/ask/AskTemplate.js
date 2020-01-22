@@ -55,7 +55,7 @@ const AskTemplate = props => {
       </Row>
       <Row type="flex" justify="end">
         <div>
-          {havePermission ? (
+          {isLogin && havePermission ? (
             isEditable ? (
               <Button type="link" style={styleButton} onClick={toggleIsEditable}>수정 취소</Button>
             ) : (
@@ -64,8 +64,8 @@ const AskTemplate = props => {
           ) : null}
         </div>
         <div>
-          {havePermission && isEditable && <Button type="link" style={styleButton} onClick={modifyAsk}>수정하기</Button>}
-          {havePermission ? !isEditable ? <Button type="link" style={styleButton} onClick={deleteAsk}>글 삭제</Button> : null : null}
+          {isLogin && havePermission && isEditable && <Button type="link" style={styleButton} onClick={modifyAsk}>수정하기</Button>}
+          {isLogin && havePermission ? !isEditable ? <Button type="link" style={styleButton} onClick={deleteAsk}>글 삭제</Button> : null : null}
         </div>
         <div>
           {questionFlag && isLogin ? (
