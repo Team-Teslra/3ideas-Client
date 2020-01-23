@@ -3,6 +3,7 @@ import { Redirect, withRouter } from 'react-router-dom';
 import AskInput from '../components/ask/AskInput';
 import axios from 'axios';
 import { Button } from 'antd';
+import { Row } from 'antd';
 
 axios.defaults.withCredentials = true;
 
@@ -79,17 +80,24 @@ class Ask extends Component {
     if (isLogin) {
       return (
         <div>
-          <AskInput
-            title={title}
-            contents={contents}
-            category={category}
-            onInputChange={handleInputValue}
-            onCategoryChange={handleSelectedCategories}
-          />
-          <p>{errorMessage}</p>
-          <Button type="primary" onClick={handleAsk}>
-            제출하기
-          </Button>
+          <Row type="flex" justify="center">
+            <div>
+              <AskInput
+                title={title}
+                contents={contents}
+                category={category}
+                onInputChange={handleInputValue}
+                onCategoryChange={handleSelectedCategories}
+              />
+              <div>
+                <Button type="primary" onClick={handleAsk}>
+                  제출하기
+                </Button>
+                <div>&nbsp;</div>
+                <p>{errorMessage}</p>
+              </div>
+            </div>
+          </Row>
         </div>
       );
     }
