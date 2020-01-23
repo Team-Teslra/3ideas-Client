@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Button, Icon } from 'antd';
+import { Button, Icon, Row } from 'antd';
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
@@ -57,14 +57,21 @@ class User extends Component {
     const { match } = this.props;
     const { fromAskEntry } = this.state;
     const { username, createdAt, postCount, commentsCount } = this.state.userInfo;
+    const styleContents = { margin: '15px 0', marginBottom: '25px' }
     return (
       <div>
-        {this.props.username === match.params.username ? <h3>내 정보</h3> : <h3>{username} 정보</h3>}
-        <p>username: {username}</p>
-        <p>가입일: {createdAt}</p>
-        {this.props.username === match.params.username && <p>작성한 질문글 수: {postCount}</p>}
-        {this.props.username === match.params.username && <p>작성한 답글 수: {commentsCount}</p>}
-        {fromAskEntry && <Button onClick={() => this.props.history.goBack()}><Icon type="left" />글로 돌아가기</Button>}
+        <Row type="flex" justify="center">
+          <div>
+            {this.props.username === match.params.username ? <h3>내 정보</h3> : <h3>{username} 정보</h3>}
+            <div style={styleContents}>
+              <p>username : {username}</p>
+              <p>가입일 : {createdAt}</p>
+              {this.props.username === match.params.username && <p>작성한 질문글 수 : {postCount}</p>}
+              {this.props.username === match.params.username && <p>작성한 답변글 수 : {commentsCount}</p>}
+            </div>
+            {fromAskEntry && <Button onClick={() => this.props.history.goBack()}><Icon type="left" />글로 돌아가기</Button>}
+          </div>
+        </Row>
       </div>
     );
   }
